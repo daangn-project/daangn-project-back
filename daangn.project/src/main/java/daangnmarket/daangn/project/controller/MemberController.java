@@ -1,5 +1,6 @@
 package daangnmarket.daangn.project.controller;
 
+import daangnmarket.daangn.project.dto.MemberLoginDto;
 import daangnmarket.daangn.project.dto.MemberSaveDto;
 import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.service.MemberService;
@@ -16,6 +17,12 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<Message> signUp(@RequestBody MemberSaveDto memberSaveDto) {
         return memberService.join(memberSaveDto);
+    }
+
+    // 임시 메서드
+    @PostMapping("/login")
+    public String login(@RequestBody MemberLoginDto memberLoginDto ){
+        return "Login!";
     }
 
     @PutMapping("/{id}/password")
