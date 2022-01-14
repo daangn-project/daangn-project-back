@@ -24,9 +24,9 @@ public class Vote {
     @Column(nullable = true)
     private String voteDescription;
 
-    @OneToMany
-    @JoinColumn(name = "VOTE_OPTION_ID")
-    private List<VoteOption> voteOptions = new ArrayList<>();
+//    @OneToMany
+//    @JoinColumn(name = "VOTE_OPTION_ID")
+//    private List<VoteOption> voteOptions = new ArrayList<>();
 
     // 24시간 뒤 시간을 default로 둔다.
     @Column(columnDefinition = "")

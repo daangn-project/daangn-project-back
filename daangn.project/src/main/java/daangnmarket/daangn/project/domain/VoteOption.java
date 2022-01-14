@@ -14,6 +14,11 @@ public class VoteOption {
     @Column(name = "VOTE_OPTION_ID")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY) // 지연로딩
+    @JoinColumn(name = "VOTE_ID")
+    private VoteOption voteOptions;
+
+
     private String voteOptionName;
 
     private Integer voteTotalCount;
