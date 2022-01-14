@@ -1,5 +1,8 @@
 package daangnmarket.daangn.project.controller;
 
+import daangnmarket.daangn.project.dto.CommunityPostSaveDto;
+import daangnmarket.daangn.project.dto.CommunityPostUpdateDto;
+import daangnmarket.daangn.project.service.CommunityPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -25,6 +25,4 @@ public class CommunityPost {
     private CommunityCategory communityCategory;
 
     private Integer viewCount;
-
-
 }
