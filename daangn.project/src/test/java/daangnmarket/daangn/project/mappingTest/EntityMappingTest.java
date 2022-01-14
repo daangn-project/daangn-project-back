@@ -43,12 +43,13 @@ public class EntityMappingTest {
     public void findMember_From_ItemPostRepository(){
         Member member = new Member();
         member.setUsername("ABC");
+        memberRepository.save(member);
+
         List<Member> all = memberRepository.findAll();
         Long memberId = all.get(0).getId();
         ItemPost p = new ItemPost();
         p.setMember(member);
 
-        memberRepository.save(member);
         itemPostRepository.save(p);
         ItemPost x = itemPostRepository.findByMemberId(memberId);
 

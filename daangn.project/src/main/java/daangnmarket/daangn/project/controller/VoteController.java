@@ -1,5 +1,9 @@
 package daangnmarket.daangn.project.controller;
 
+import daangnmarket.daangn.project.dto.VoteParticipateDto;
+import daangnmarket.daangn.project.dto.VoteSaveDto;
+import daangnmarket.daangn.project.dto.VoteUpdateDto;
+import daangnmarket.daangn.project.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +37,7 @@ public class VoteController {
     }
 
     @PostMapping("/participate")
-    public ResponseEntity<Long> participateVote(@RequestBody ParticipateVoteDto participateVoteDto) {
+    public ResponseEntity<Long> participateVote(@RequestBody VoteParticipateDto voteParticipateDto) {
         return null;
     }
 }

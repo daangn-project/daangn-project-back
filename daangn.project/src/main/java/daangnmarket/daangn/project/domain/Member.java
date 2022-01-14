@@ -1,15 +1,16 @@
 package daangnmarket.daangn.project.domain;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 
     @Id
@@ -18,6 +19,8 @@ public class Member {
     private Long id;
 
     private String username;
+
+    private String nickname;
 
     private String password;
 
@@ -29,6 +32,8 @@ public class Member {
 //    private Role role;
 
     private String auth;
+
+
 
 }
 

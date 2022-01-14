@@ -1,7 +1,6 @@
 package daangnmarket.daangn.project.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,6 +9,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ItemPost {
 
     @Id
@@ -19,13 +21,13 @@ public class ItemPost {
 
     private String title;
 
-    // 이게 맞나
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default // 빌더 패턴으로 생성 시 기본값으로 비어있는 리스트 생성
     private List<Photo> photoList = new ArrayList<>();
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY) // 지연로딩
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
