@@ -22,4 +22,16 @@ public class Photo {
     private String path;
     private Long size;
 
+    @ManyToOne
+    @JoinColumn(name = "ITEM_POST_ID")
+    private ItemPost itemPost;
+
+    // 연관관계 메서드
+    public void setItemPost(ItemPost itemPost) {
+        this.itemPost = itemPost;
+        if (!itemPost.getPhotoList().contains(this)) {
+            itemPost.getPhotoList().add(this);
+        }
+    }
+
 }
