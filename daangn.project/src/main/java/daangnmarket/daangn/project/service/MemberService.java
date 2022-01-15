@@ -6,7 +6,6 @@ import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     public ResponseEntity<Message> join(MemberSaveDto memberSaveDto){
         Member newMember = memberSaveDto.toEntity();
@@ -25,4 +23,10 @@ public class MemberService {
         return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("회원가입이 완료되었습니다").build(), HttpStatus.OK);
     }
 
+    public Member findById(Long id){
+        System.out.println("id = " + id);
+        Member member = memberRepository.findAll().get(0);
+        System.out.println("member = " + member);
+        return memberRepository.findById(id).get();
+    }
 }

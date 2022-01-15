@@ -32,6 +32,8 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	testImplementation('com.h2database:h2')
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
+
+	implementation 'commons-io:commons-io:2.6'
 }
 
 test {

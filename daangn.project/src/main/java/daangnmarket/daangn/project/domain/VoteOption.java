@@ -18,7 +18,6 @@ public class VoteOption {
     @JoinColumn(name = "VOTE_ID")
     private VoteOption voteOptions;
 
-
     private String voteOptionName;
 
     private Integer voteTotalCount;
