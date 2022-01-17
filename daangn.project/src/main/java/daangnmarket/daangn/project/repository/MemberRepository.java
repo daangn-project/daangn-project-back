@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface MemberRepository extends JpaRepository<Member, Long>{
 
     @Modifying(clearAutomatically = true)
@@ -17,4 +19,6 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
 
     @Query("select m from Member m where m.nickname = :nickname")
     Member findByNickname(@Param(value="nickname") String writer);
+
+
 }
