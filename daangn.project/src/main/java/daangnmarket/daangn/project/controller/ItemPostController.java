@@ -34,14 +34,13 @@ public class ItemPostController {
         for(PhotoResponseDto photoResponseDto : photoResponseDtoList)
             photoId.add(photoResponseDto.getFileId());
 
-        System.out.println("photoId = " + photoId);
 
         // 게시글 id와 첨부파일 id 목록 전달받아 결과 반환
         return itemPostService.searchById(id, photoId);
     }
 
     @PostMapping("")
-    public ResponseEntity<Message> createItemPost(ItemPostFileVO itemPostFileVO) throws Exception{
+    public ResponseEntity<Message> createItemPost(@ModelAttribute ItemPostFileVO itemPostFileVO) throws Exception{
         System.out.println("itemPostFileVO = " + itemPostFileVO);
         Member member = memberService.findById(Long.parseLong(itemPostFileVO.getMemberId()));
 
