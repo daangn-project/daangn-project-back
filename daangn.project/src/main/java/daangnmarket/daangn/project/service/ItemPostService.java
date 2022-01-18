@@ -13,7 +13,6 @@ import daangnmarket.daangn.project.repository.ItemPostRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.repository.PhotoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,15 +30,15 @@ public class ItemPostService {
     private final PhotoRepository photoRepository;
     private final FileHandler fileHandler;
 
-
-
     public ResponseEntity<Message> save(ItemPostSaveDto itemPostSaveDto, List<MultipartFile> files) throws Exception{
         Member member = memberRepository.findByNickname(itemPostSaveDto.getWriter());
         ItemPost itemPost = ItemPost.builder()
                 .member(member)
                 .title(itemPostSaveDto.getTitle())
                 .description(itemPostSaveDto.getDescription())
+                .price(itemPostSaveDto.getPrice())
                 .build();
+
         List<Photo> photoList = fileHandler.parseFileInfo(files);
 
         // 파일이 존재할 때에만 처리
@@ -49,16 +48,12 @@ public class ItemPostService {
                 itemPost.addPhoto(photoRepository.save(photo));
         }
 
-//        return boardRepository.save(board).getId();
-//        ItemPost itemPost = itemPostSaveDto.toEntity();
         ItemPost savedPost = itemPostRepository.save(itemPost);
         return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("게시물이 등록되었어요.").build(), HttpStatus.OK);
     }
 
     public List<PhotoResponseDto> findAllPhotoById(String id) {
         ItemPost itemPost = itemPostRepository.findById(Long.parseLong(id)).get();
-        System.out.println("itemPost = " + itemPost);
-        System.out.println("itemPost.getPhotoList() = " + itemPost.getPhotoList());
         return itemPost.getPhotoList().stream().map(PhotoResponseDto::new).collect(Collectors.toList());
     }
 

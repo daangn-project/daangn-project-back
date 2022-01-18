@@ -36,6 +36,7 @@ public class ItemPost {
 
     private Integer viewCount;
 
+    private Integer price;
 
     // itemPost에서 파일 처리
     public void addPhoto(Photo photo){
@@ -43,6 +44,4 @@ public class ItemPost {
         // 게시글에 파일이 저장되어있지 않은 경우
         if(photo.getItemPost() != this) photo.setItemPost(this);
     }
-
-
 }
