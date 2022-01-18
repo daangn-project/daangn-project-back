@@ -12,6 +12,7 @@ import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.repository.ItemPostRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.repository.PhotoRepository;
+import daangnmarket.daangn.project.vo.ItemPostFileVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,8 @@ public class ItemPostService {
     private final PhotoRepository photoRepository;
     private final FileHandler fileHandler;
 
-    public ResponseEntity<Message> save(ItemPostSaveDto itemPostSaveDto, List<MultipartFile> files) throws Exception{
+    // 생성
+    public Long save(ItemPostSaveDto itemPostSaveDto, List<MultipartFile> files) throws Exception{
         Member member = memberRepository.findByNickname(itemPostSaveDto.getWriter());
         ItemPost itemPost = ItemPost.builder()
                 .member(member)
@@ -47,16 +49,27 @@ public class ItemPostService {
                 // 파일을 DB에 저장
                 itemPost.addPhoto(photoRepository.save(photo));
         }
-
-        ItemPost savedPost = itemPostRepository.save(itemPost);
-        return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("게시물이 등록되었어요.").build(), HttpStatus.OK);
+        return itemPostRepository.save(itemPost).getId();
     }
 
+    public ItemPostSaveDto update(Long id, ItemPostFileVO itemPostFileVO){
+        ItemPost itemPost = itemPostRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        return ItemPostSaveDto.builder()
+                .writer(itemPost.getMember().getNickname())
+                .title(itemPostFileVO.getTitle())
+                .description(itemPostFileVO.getDescription())
+                .itemCategory(itemPostFileVO.getItemCategory())
+                .build();
+    }
+
+    // 아이템 포스트에 포함된 모든 사진들을 반환
     public List<PhotoResponseDto> findAllPhotoById(String id) {
         ItemPost itemPost = itemPostRepository.findById(Long.parseLong(id)).get();
         return itemPost.getPhotoList().stream().map(PhotoResponseDto::new).collect(Collectors.toList());
     }
 
+    // 아이템 포스트 조회
     @Transactional(readOnly = true)
     public ItemPostResponseDto searchById(String id, List<Long> photoId) {
         ItemPost itemPost = itemPostRepository.findById(Long.parseLong(id)).orElseThrow(()
@@ -64,8 +77,11 @@ public class ItemPostService {
         return new ItemPostResponseDto(itemPost, photoId);
     }
 
-    @Transactional(readOnly = true)
-    public List<ItemPost> searchAllDesc() {
-        return itemPostRepository.findAll();
+    // 삭제
+    public void delete(Long id) throws IllegalArgumentException{
+        ItemPost itemPost = itemPostRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        itemPostRepository.delete(itemPost);
     }
+
 }
