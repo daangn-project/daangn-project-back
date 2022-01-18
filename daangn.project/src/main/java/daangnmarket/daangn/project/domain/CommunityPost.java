@@ -1,5 +1,6 @@
 package daangnmarket.daangn.project.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -25,4 +26,15 @@ public class CommunityPost {
     private CommunityCategory communityCategory;
 
     private Integer viewCount;
+
+    public void update(String content){
+        this.content = content;
+    }
+
+    @Builder
+    public CommunityPost (String content, Member member, CommunityCategory communityCategory){
+        this.content = content;
+        this.member = member;
+        this.communityCategory = communityCategory;
+    }
 }

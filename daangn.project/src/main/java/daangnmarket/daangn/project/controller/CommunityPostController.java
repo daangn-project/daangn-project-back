@@ -1,10 +1,13 @@
 package daangnmarket.daangn.project.controller;
 
-import daangnmarket.daangn.project.dto.CommunityPostSaveDto;
-import daangnmarket.daangn.project.dto.CommunityPostUpdateDto;
+import daangnmarket.daangn.project.domain.CommunityPost;
+import daangnmarket.daangn.project.dto.communitypost.CommunityPostResponseDto;
+import daangnmarket.daangn.project.dto.communitypost.CommunityPostSaveRequestDto;
+import daangnmarket.daangn.project.dto.communitypost.CommunityPostUpdateRequestDto;
 import daangnmarket.daangn.project.service.CommunityPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,20 +17,21 @@ public class CommunityPostController {
     private final CommunityPostService communityPostService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Long> showCommunityPost(@PathVariable String id) {
-        return null;
+    public CommunityPostResponseDto showCommunityPost(@PathVariable Long id, Model model) {
+        CommunityPostResponseDto communityPost = communityPostService.findById(id);
+//        model.addAttribute(con,communityPost.getContent())
+        return communityPost;
     }
 
-
+    // ResponseEntity<Long>
     @PostMapping
-    public ResponseEntity<Long> createCommunityPost(@RequestBody CommunityPostSaveDto communityPostSaveDto){
-        return null;
+    public Long createCommunityPost(@RequestBody CommunityPostSaveRequestDto communityPostSaveRequestDto){
+        return communityPostService.save(communityPostSaveRequestDto);
     }
 
-
-    @PutMapping
-    public ResponseEntity<Long> updateCommunityPost(@RequestBody CommunityPostUpdateDto communityPostUpdateDto) {
-        return null;
+    @PutMapping("/{id}")
+    public Long updateCommunityPost(@PathVariable Long id, @RequestBody CommunityPostUpdateRequestDto communityPostUpdateRequestDto) {
+        return communityPostService.update(id,communityPostUpdateRequestDto);
     }
 
     @DeleteMapping("/{id}")
