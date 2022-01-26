@@ -1,5 +1,6 @@
 package daangnmarket.daangn.project.service;
 
+import daangnmarket.daangn.project.domain.ItemCategory;
 import daangnmarket.daangn.project.domain.ItemPost;
 import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.domain.Photo;
@@ -7,20 +8,18 @@ import daangnmarket.daangn.project.dto.ItemPostResponseDto;
 import daangnmarket.daangn.project.dto.ItemPostSaveDto;
 import daangnmarket.daangn.project.dto.PhotoResponseDto;
 import daangnmarket.daangn.project.handler.FileHandler;
-import daangnmarket.daangn.project.message.Message;
-import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.repository.ItemPostRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.repository.PhotoRepository;
 import daangnmarket.daangn.project.vo.ItemPostFileVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +31,7 @@ public class ItemPostService {
     private final FileHandler fileHandler;
 
     // 생성
-    public Long save(ItemPostSaveDto itemPostSaveDto, List<MultipartFile> files) throws Exception{
+    public void save(ItemPostSaveDto itemPostSaveDto, List<MultipartFile> files) throws Exception {
         Member member = memberRepository.findByNickname(itemPostSaveDto.getWriter());
         ItemPost itemPost = ItemPost.builder()
                 .member(member)
@@ -44,17 +43,18 @@ public class ItemPostService {
         List<Photo> photoList = fileHandler.parseFileInfo(files);
 
         // 파일이 존재할 때에만 처리
-        if(!photoList.isEmpty()){
-            for(Photo photo : photoList)
+        if (!photoList.isEmpty()) {
+            for (Photo photo : photoList)
                 // 파일을 DB에 저장
                 itemPost.addPhoto(photoRepository.save(photo));
         }
-        return itemPostRepository.save(itemPost).getId();
+        itemPostRepository.save(itemPost);
     }
 
-    public ItemPostSaveDto update(Long id, ItemPostFileVO itemPostFileVO){
+    // 수정
+    public ItemPostSaveDto update(Long id, ItemPostFileVO itemPostFileVO) {
         ItemPost itemPost = itemPostRepository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+                -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
         return ItemPostSaveDto.builder()
                 .writer(itemPost.getMember().getNickname())
                 .title(itemPostFileVO.getTitle())
@@ -73,15 +73,35 @@ public class ItemPostService {
     @Transactional(readOnly = true)
     public ItemPostResponseDto searchById(String id, List<Long> photoId) {
         ItemPost itemPost = itemPostRepository.findById(Long.parseLong(id)).orElseThrow(()
-                -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-        return new ItemPostResponseDto(itemPost, photoId);
+                -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
+        return new ItemPostResponseDto(itemPost);
     }
 
     // 삭제
-    public void delete(Long id) throws IllegalArgumentException{
+    public void delete(Long id) throws IllegalArgumentException {
         ItemPost itemPost = itemPostRepository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+                -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
         itemPostRepository.delete(itemPost);
     }
 
+    // 카테고리로 조회
+    @Transactional(readOnly = true)
+    public List<ItemPostResponseDto> findByCategory(String category) {
+        ItemCategory categoryByEnum = ItemCategory.valueOf(category);
+        List<ItemPost> byCategory = itemPostRepository.findByCategory(categoryByEnum);
+        return byCategory.stream().map(ItemPostResponseDto::new).collect(Collectors.toList());
+    }
+
+    // 모든 게시물 조회
+    @Transactional(readOnly = true)
+    public List<ItemPostResponseDto> findAll(){
+        return itemPostRepository.findAll().stream().map(ItemPostResponseDto::new).collect(Collectors.toList());
+    }
+
+    // Id로 게시물 조회
+    public ItemPostResponseDto findById(Long id) {
+        ItemPost itemPost = itemPostRepository.findById(id).orElseThrow(()
+                -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
+        return new ItemPostResponseDto(itemPost);
+    }
 }
