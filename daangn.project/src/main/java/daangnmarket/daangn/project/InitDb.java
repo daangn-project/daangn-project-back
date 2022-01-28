@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
@@ -46,32 +47,15 @@ public class InitDb {
             memberRepository.save(member2);
             memberRepository.save(member3);
 
-
-            ItemPost itemPost1 = ItemPost.builder()
-                    .member(member1)
-                    .title("아이템1 판매")
-                    .price(50000)
-                    .itemCategory(ItemCategory.CLOTHES)
-                    .description("아이템1 상세설명입니다")
-                    .build();
-            ItemPost itemPost2 = ItemPost.builder()
-                    .member(member2)
-                    .title("아이템2 판매")
-                    .price(10000)
-                    .itemCategory(ItemCategory.SPORTS)
-                    .description("아이템2 상세설명입니다")
-                    .build();
-            ItemPost itemPost3 = ItemPost.builder()
-                    .member(member1)
-                    .title("아이템3 판매")
-                    .price(1210000)
-                    .itemCategory(ItemCategory.SPORTS)
-                    .description("아이템3 상세설명입니다")
-                    .build();
-
-            itemPostRepository.save(itemPost1);
-            itemPostRepository.save(itemPost2);
-            itemPostRepository.save(itemPost3);
+            Member[] memberArr = new Member[]{member1, member2, member3};
+            ItemCategory[] categories = new ItemCategory[]{ItemCategory.CLOTHES, ItemCategory.SPORTS};
+            for(int i = 0; i < 100; i++){
+                Member member = memberArr[new Random().nextInt(memberArr.length)];
+                ItemCategory category = categories[new Random().nextInt(categories.length)];
+                int price = (int) (Math.random() * 100000);
+                ItemPost itemPost = ItemPost.builder().member(member).title("Item : " + i).price(price).itemCategory(category).description("아이템 " + i +" 에 대한 설명입니다.").build();
+                itemPostRepository.save(itemPost);
+            }
         }
     }
 }
