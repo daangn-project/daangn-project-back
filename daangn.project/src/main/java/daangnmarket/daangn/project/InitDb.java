@@ -47,13 +47,15 @@ public class InitDb {
             memberRepository.save(member2);
             memberRepository.save(member3);
 
+
             Member[] memberArr = new Member[]{member1, member2, member3};
             ItemCategory[] categories = new ItemCategory[]{ItemCategory.CLOTHES, ItemCategory.SPORTS};
             for(int i = 0; i < 100; i++){
                 Member member = memberArr[new Random().nextInt(memberArr.length)];
                 ItemCategory category = categories[new Random().nextInt(categories.length)];
                 int price = (int) (Math.random() * 100000);
-                ItemPost itemPost = ItemPost.builder().member(member).title("Item : " + i).price(price).itemCategory(category).description("아이템 " + i +" 에 대한 설명입니다.").build();
+                ItemPost itemPost = ItemPost.builder().member(member).title("Item : " + i).price(price).viewCount(0).itemCategory(category).description("아이템 " + i +" 에 대한 설명입니다.").build();
+                itemPost.setMember(member);
                 itemPostRepository.save(itemPost);
             }
         }
