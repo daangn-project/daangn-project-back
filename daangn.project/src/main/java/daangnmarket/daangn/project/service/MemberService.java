@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +30,10 @@ public class MemberService {
         Member member = memberRepository.findAll().get(0);
         System.out.println("member = " + member);
         return memberRepository.findById(id).get();
+    }
+
+    public Optional<Member> findUserByEmail(String name){
+        Member member = memberRepository.findByNickname(name);
+        return 
     }
 }
