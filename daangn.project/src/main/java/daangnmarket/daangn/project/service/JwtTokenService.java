@@ -31,7 +31,7 @@ public class JwtTokenService implements Serializable {
     MemberService memberService;
 
     // token으로 유저이름 찾기
-    public String getusernameFromToken(String token){
+    public String getUsernameFromToken(String token){
         try{
             return getClaimFromToken(token, Claims::getSubject);
         }catch(Exception ex){
@@ -62,7 +62,7 @@ public class JwtTokenService implements Serializable {
     }
 
     // 토큰 만들기
-    public String generateToekn(UserDetails userDetails){
+    public String generateToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, userDetails.getUsername());
     }

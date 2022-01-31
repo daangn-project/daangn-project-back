@@ -33,7 +33,7 @@ public class MemberService {
     }
 
     public Optional<Member> findUserByEmail(String name){
-        Member member = memberRepository.findByNickname(name);
-        return 
+        Optional<Member> member = Optional.ofNullable(memberRepository.findByNickname(name));
+        return member;
     }
 }

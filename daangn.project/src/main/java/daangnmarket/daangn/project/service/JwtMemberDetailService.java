@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-public class JWTMemberDetailService implements UserDetailsService {
+public class JwtMemberDetailService implements UserDetailsService {
 
     @Autowired
     MemberService memberService;
