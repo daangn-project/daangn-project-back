@@ -12,10 +12,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+
 public interface ItemPostRepository extends JpaRepository<ItemPost, Long> {
 
-    @Query(value = "select i from ItemPost i where i.id = :member_id")
-    ItemPost findByMemberId(@Param(value="member_id") Long member_id);
+    @Query(value = "select i from ItemPost i join fetch i.member where i.member.id = :member_id")
+    List<ItemPost> findByMemberId(@Param(value="member_id") Long member_id);
 
     @Query(value = "select i from ItemPost i where i.itemCategory = :category")
     List<ItemPost> findByCategory(@Param(value="category") ItemCategory category);

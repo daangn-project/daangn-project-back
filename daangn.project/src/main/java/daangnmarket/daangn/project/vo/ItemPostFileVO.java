@@ -11,6 +11,7 @@ public class ItemPostFileVO {
     private String memberId;
     private String title;
     private String description;
+    private Integer price;
     private ItemCategory itemCategory;
     private List<MultipartFile> files;
 }

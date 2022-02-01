@@ -2,15 +2,17 @@ package daangnmarket.daangn.project.domain;
 
 import daangnmarket.daangn.project.converter.ItemCategoryConverter;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity @Getter @Setter @Builder
+@Entity @Getter @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemPost {
+public class ItemPost extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +38,17 @@ public class ItemPost {
 
     private Integer price;
 
+
     // itemPost에서 파일 처리
     public void addPhoto(Photo photo){
         this.photoList.add(photo);
         // 게시글에 파일이 저장되어있지 않은 경우
         if(photo.getItemPost() != this) photo.setItemPost(this);
+    }
+
+    // 연관관계 메서드
+    public void setMember(Member member){
+        this.member = member;
+        member.getItemPostList().add(this);
     }
 }
