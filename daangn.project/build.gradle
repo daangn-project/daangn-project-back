@@ -33,6 +33,7 @@ dependencies {
 	testImplementation('com.h2database:h2')
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
 	implementation 'commons-io:commons-io:2.11.0'
+	implementation 'com.sun.xml.bind:jaxb-impl:2.3.3'
 }
 
 test {

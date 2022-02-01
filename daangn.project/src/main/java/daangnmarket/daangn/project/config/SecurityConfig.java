@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -36,12 +37,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Autowired
     public void configGlobal(AuthenticationManagerBuilder auth) throws Exception{
         // 일치하는 자격증명을 위해 사용자를 로드할 위치를 알수 있도록
         // AuthenticationManager를 구성한다.
         // BCryptPasswordEncoder를 이용
-        auth.userDetailsService(jwtMemberDetailService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(jwtMemberDetailService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override

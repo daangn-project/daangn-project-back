@@ -7,6 +7,7 @@ import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +19,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -41,8 +41,8 @@ public class MemberService {
         return memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
     }
 
-    public Optional<Member> findUserByEmail(String name){
-        Optional<Member> member = Optional.ofNullable(memberRepository.findByNickname(name));
-        return member;
+    public Member findByUsername(String name){
+        return memberRepository.findByUsername(name).orElseThrow(() -> new IllegalArgumentException("유저가 없음"));
     }
+
 }

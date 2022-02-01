@@ -49,10 +49,10 @@ public class MemberController {
         return new ResponseEntity<>(new ApiResponse(), HttpStatus.OK);
     }
 
-    //이메일 중복체크
-    @GetMapping("/exist_user/{email}")
-    public boolean findUserByEmail(@PathVariable String email){
-        Optional<Member> member = memberService.findUserByEmail(email);
-        return member.isPresent() ? true : false;
-    }
+//    //이메일 중복체크
+//    @GetMapping("/exist_user/{email}")
+//    public boolean findUserByEmail(@PathVariable String email){
+//        Optional<Member> member = memberService.findUserByEmail(email);
+//        return member.isPresent() ? true : false;
+//    }
 }

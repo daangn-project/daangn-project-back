@@ -1,6 +1,7 @@
 package daangnmarket.daangn.project.service;
 
 import daangnmarket.daangn.project.domain.Member;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,16 +12,14 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class JwtMemberDetailService implements UserDetailsService {
 
-    @Autowired
-    MemberService memberService;
+    private final MemberService memberService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        Optional<Member> memberOptional = memberService.findUserByEmail(username);
-
-        Member member = memberOptional.orElseThrow(()->new UsernameNotFoundException("user name not found!"));
-        return new org.springframework.security.core.userdetails.User(member.getEmail(), member.getPassword(), new ArrayList<>());
+        Member member = memberService.findByUsername(username);
+        return new org.springframework.security.core.userdetails.User(member.getUsername(), member.getPassword(), new ArrayList<>());
     }
 }
