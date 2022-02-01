@@ -6,15 +6,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface MemberRepository extends JpaRepository<Member, Long>{
 
     @Modifying(clearAutomatically = true)
     @Query("update Member m SET m.nickname = :nickname where m.id = :id")
     int updateUserNickname(@Param(value="nickname") String nickname, @Param(value="id")Long id);
 
-    @Query("select m from Member m where m.id = :id")
-    Member findByPostId(@Param(value="id") Long id);
-
     @Query("select m from Member m where m.nickname = :nickname")
     Member findByNickname(@Param(value="nickname") String writer);
+
 }

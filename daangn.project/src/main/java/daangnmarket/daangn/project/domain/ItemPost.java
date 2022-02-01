@@ -1,18 +1,23 @@
 package daangnmarket.daangn.project.domain;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< Updated upstream
 @Entity
 @Getter
 @Setter
+=======
+@Entity @Getter @Setter
+>>>>>>> Stashed changes
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemPost {
+public class ItemPost extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,17 +36,28 @@ public class ItemPost {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+<<<<<<< Updated upstream
     @Enumerated(EnumType.STRING)
+=======
+    @Convert(converter = ItemCategoryConverter.class)
+>>>>>>> Stashed changes
     private ItemCategory itemCategory;
 
     private Integer viewCount;
 
     private Integer price;
 
+
     // itemPost에서 파일 처리
     public void addPhoto(Photo photo){
         this.photoList.add(photo);
         // 게시글에 파일이 저장되어있지 않은 경우
         if(photo.getItemPost() != this) photo.setItemPost(this);
+    }
+
+    // 연관관계 메서드
+    public void setMember(Member member){
+        this.member = member;
+        member.getItemPostList().add(this);
     }
 }
