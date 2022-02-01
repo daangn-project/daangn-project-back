@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface MemberRepository extends JpaRepository<Member, Long>{
 
     public Optional<Member> findByEmail(String email);
@@ -18,11 +18,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
     @Query("update Member m SET m.nickname = :nickname where m.id = :id")
     int updateUserNickname(@Param(value="nickname") String nickname, @Param(value="id")Long id);
 
-    @Query("select m from Member m where m.id = :id")
-    Member findByPostId(@Param(value="id") Long id);
-
     @Query("select m from Member m where m.nickname = :nickname")
     Member findByNickname(@Param(value="nickname") String writer);
-
 
 }
