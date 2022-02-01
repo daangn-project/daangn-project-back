@@ -2,8 +2,9 @@ package daangnmarket.daangn.project.domain;
 
 
 import lombok.*;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,7 +34,8 @@ public class Member {
 
     private String auth;
 
-
-
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    private List<ItemPost> itemPostList = new ArrayList<>();
 }
 

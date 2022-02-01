@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,27 +52,26 @@ public class EntityMappingTest {
         p.setMember(member);
 
         itemPostRepository.save(p);
-        ItemPost x = itemPostRepository.findByMemberId(memberId);
+        List<ItemPost> x = itemPostRepository.findByMemberId(memberId);
 
-        assertThat(x.getMember()).isEqualTo(member);
+        assertThat(x.get(0)).isEqualTo(member);
     }
-
-    @Test
-    @Transactional
-    public void findItemPost_From_MemberRepository(){
-        Member member = new Member();
-        member.setUsername("ABC");
-        ItemPost p = new ItemPost();
-        p.setMember(member);
-
-        itemPostRepository.save(p);
-        memberRepository.save(member);
-
-        List<ItemPost> all = itemPostRepository.findAll();
-        Long postId = all.get(0).getId();
-        Member findMember = memberRepository.findByPostId(postId);
-
-        assertThat(findMember).isEqualTo(member);
-    }
-
+//
+//    @Test
+//    @Transactional
+//    public void findItemPost_From_MemberRepository(){
+//        Member member = new Member();
+//        member.setUsername("ABC");
+//        ItemPost p = new ItemPost();
+//        p.setMember(member);
+//
+//        itemPostRepository.save(p);
+//        memberRepository.save(member);
+//
+//        List<ItemPost> all = itemPostRepository.findAll();
+//        Long postId = all.get(0).getId();
+//        Member findMember = memberRepository.findByPostId(postId).orElseThrow(() ->
+//                new NoSuchElementException("해당 회원이 없습니다."));
+//        assertThat(findMember).isEqualTo(member);
+//    }
 }
