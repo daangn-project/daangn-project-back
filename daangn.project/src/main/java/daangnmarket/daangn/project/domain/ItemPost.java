@@ -7,13 +7,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< Updated upstream
-@Entity
-@Getter
-@Setter
-=======
+
 @Entity @Getter @Setter
->>>>>>> Stashed changes
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,11 +31,8 @@ public class ItemPost extends BaseTimeEntity{
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-<<<<<<< Updated upstream
-    @Enumerated(EnumType.STRING)
-=======
+
     @Convert(converter = ItemCategoryConverter.class)
->>>>>>> Stashed changes
     private ItemCategory itemCategory;
 
     private Integer viewCount;

@@ -2,14 +2,12 @@ package daangnmarket.daangn.project.dto;
 import daangnmarket.daangn.project.domain.ItemPost;
 import lombok.Data;
 
-<<<<<<< Updated upstream
-=======
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
->>>>>>> Stashed changes
 import java.util.List;
 
 @Data
@@ -19,16 +17,13 @@ public class ItemPostResponseDto {
     private String writer;
     private String title;
     private String description;
-<<<<<<< Updated upstream
-    private List<Long> fileId;  // 첨부 파일 id 목록
-=======
+
     private Integer viewCount;
     private Integer price;
     private LocalDateTime createdDate;
     private String adjustedCreatedDate;
     private LocalDateTime modifiedDate;
     private List<Long> fileId = new ArrayList<>();  // 첨부 파일 id 목록
->>>>>>> Stashed changes
 
     public ItemPostResponseDto(ItemPost entity, List<Long> fileId) {
         this.id = entity.getId();
@@ -36,9 +31,6 @@ public class ItemPostResponseDto {
         this.writer = entity.getMember().getNickname();
         this.title = entity.getTitle();
         this.description = entity.getDescription();
-<<<<<<< Updated upstream
-        this.fileId = fileId;
-=======
         this.viewCount = entity.getViewCount();
         this.price = entity.getPrice();
         this.createdDate = entity.getCreatedTime();
@@ -65,6 +57,5 @@ public class ItemPostResponseDto {
             this.adjustedCreatedDate = this.createdDate.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
         }
         return this.adjustedCreatedDate;
->>>>>>> Stashed changes
     }
 }
