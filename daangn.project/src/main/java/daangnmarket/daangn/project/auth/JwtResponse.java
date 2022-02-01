@@ -1,4 +1,4 @@
-package daangnmarket.daangn.project.message;
+package daangnmarket.daangn.project.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

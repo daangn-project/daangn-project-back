@@ -8,6 +8,7 @@ import daangnmarket.daangn.project.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,6 +19,8 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+
 
     public ResponseEntity<Message> join(MemberSaveDto memberSaveDto){
         Member newMember = memberSaveDto.toEntity();
@@ -25,6 +28,14 @@ public class MemberService {
         return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("회원가입이 완료되었습니다").build(), HttpStatus.OK);
     }
 
+    public void save(Member member){
+        Optional<Member> alreadyMember = memberRepository.findByEmail(member.getEmail());
+        if(alreadyMember.isPresent()){
+            //여기서 예외처리?
+        }
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        memberRepository.save(member);
+    }
     public Member findById(Long id){
         System.out.println("id = " + id);
         Member member = memberRepository.findAll().get(0);

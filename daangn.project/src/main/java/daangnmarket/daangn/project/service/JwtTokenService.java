@@ -35,7 +35,7 @@ public class JwtTokenService implements Serializable {
         try{
             return getClaimFromToken(token, Claims::getSubject);
         }catch(Exception ex){
-            throw new UsernameFromTokenException("username from token exception");
+            throw ex;
         }
     }
 
@@ -80,7 +80,7 @@ public class JwtTokenService implements Serializable {
 
     // token 검증
     public Boolean validateToken(String token, UserDetails userDetails){
-        final String username = getusernameFromToken(token);
+        final String username = getUsernameFromToken(token);
         return(username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
