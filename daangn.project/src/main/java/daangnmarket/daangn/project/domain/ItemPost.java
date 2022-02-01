@@ -7,7 +7,13 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< Updated upstream
 @Entity @Getter @Setter @Builder
+=======
+
+@Entity @Getter @Setter
+@Builder
+>>>>>>> Stashed changes
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemPost {
