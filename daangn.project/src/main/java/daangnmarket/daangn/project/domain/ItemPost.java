@@ -1,15 +1,13 @@
 package daangnmarket.daangn.project.domain;
 
+import daangnmarket.daangn.project.converter.ItemCategoryConverter;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Getter
-@Setter
-@Builder
+@Entity @Getter @Setter @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemPost {
@@ -31,11 +29,13 @@ public class ItemPost {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = ItemCategoryConverter.class)
+//    @Enumerated(EnumType.STRING)
     private ItemCategory itemCategory;
 
     private Integer viewCount;
 
+    private Integer price;
 
     // itemPost에서 파일 처리
     public void addPhoto(Photo photo){
@@ -43,6 +43,4 @@ public class ItemPost {
         // 게시글에 파일이 저장되어있지 않은 경우
         if(photo.getItemPost() != this) photo.setItemPost(this);
     }
-
-
 }

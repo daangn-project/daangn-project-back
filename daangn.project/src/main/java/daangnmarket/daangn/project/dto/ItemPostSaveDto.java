@@ -15,6 +15,7 @@ public class ItemPostSaveDto {
     private String writer;
     private String title;
     private String description;
+    private Integer price;
     private ItemCategory itemCategory;
     private List<PhotoDto> photoList;
 

@@ -1,5 +1,6 @@
 package daangnmarket.daangn.project.service;
 
+import daangnmarket.daangn.project.domain.ItemPost;
 import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.dto.MemberSaveDto;
 import daangnmarket.daangn.project.message.Message;
@@ -37,10 +38,7 @@ public class MemberService {
         memberRepository.save(member);
     }
     public Member findById(Long id){
-        System.out.println("id = " + id);
-        Member member = memberRepository.findAll().get(0);
-        System.out.println("member = " + member);
-        return memberRepository.findById(id).get();
+        return memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
     }
 
     public Optional<Member> findUserByEmail(String name){

@@ -22,7 +22,7 @@ public class Photo {
     private String path;
     private Long size;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ITEM_POST_ID")
     private ItemPost itemPost;
 
