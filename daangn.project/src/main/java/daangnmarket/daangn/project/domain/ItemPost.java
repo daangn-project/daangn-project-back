@@ -30,7 +30,6 @@ public class ItemPost {
     private Member member;
 
     @Convert(converter = ItemCategoryConverter.class)
-//    @Enumerated(EnumType.STRING)
     private ItemCategory itemCategory;
 
     private Integer viewCount;
