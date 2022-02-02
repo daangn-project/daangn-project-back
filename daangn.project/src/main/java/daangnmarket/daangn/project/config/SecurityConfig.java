@@ -3,6 +3,7 @@ package daangnmarket.daangn.project.config;
 import daangnmarket.daangn.project.auth.JwtAuthenticationEntryPoint;
 import daangnmarket.daangn.project.auth.JwtRequestFilter;
 import daangnmarket.daangn.project.service.JwtMemberDetailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -27,16 +29,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    private JwtMemberDetailService jwtMemberDetailService;
+    private final JwtMemberDetailService jwtMemberDetailService;
 
-    private JwtRequestFilter jwtRequestFilter;
+    private final JwtRequestFilter jwtRequestFilter;
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+//    private final BCryptPasswordEncoder passwordEncoder;
+//    @Bean
+//    public BCryptPasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
     @Autowired
     public void configGlobal(AuthenticationManagerBuilder auth) throws Exception{
@@ -49,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http
-                .cors().disable()
+                .cors()
+                .and()
                 .csrf().disable()
                 // 이 요청은 인증을 하지 않는다.
                 .authorizeRequests().antMatchers(

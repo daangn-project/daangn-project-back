@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
 
 
     public ResponseEntity<Message> join(MemberSaveDto memberSaveDto){
@@ -34,7 +34,7 @@ public class MemberService {
         if(alreadyMember.isPresent()){
             //여기서 예외처리?
         }
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        member.setPassword(new BCryptPasswordEncoder().encode(member.getPassword()));
         memberRepository.save(member);
     }
     public Member findById(Long id){

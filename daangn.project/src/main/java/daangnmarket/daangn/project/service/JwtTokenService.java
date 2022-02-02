@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +20,7 @@ import java.util.*;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtTokenService implements Serializable {
 
     private static final long serialVersionUID = -798416586417070603L;
@@ -27,8 +29,7 @@ public class JwtTokenService implements Serializable {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @Autowired
-    MemberService memberService;
+    private final MemberService memberService;
 
     // token으로 유저이름 찾기
     public String getUsernameFromToken(String token){

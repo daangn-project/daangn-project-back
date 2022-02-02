@@ -32,10 +32,10 @@ public class MemberController {
     }
 
 //////////////////////////////////회원가입/////////////////////
-    @PostMapping("/signup")
-    public ResponseEntity<Message> signUp(@RequestBody MemberSaveDto memberSaveDto) {
-        return memberService.join(memberSaveDto);
-    }
+//    @PostMapping("/signup")
+//    public ResponseEntity<Message> signUp(@RequestBody MemberSaveDto memberSaveDto) {
+//        return memberService.join(memberSaveDto);
+//    }
 
     @PostMapping("/signup")
     @ResponseBody
