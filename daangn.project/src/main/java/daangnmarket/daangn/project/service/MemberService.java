@@ -30,7 +30,7 @@ public class MemberService {
     }
 
     public void save(Member member){
-        Optional<Member> alreadyMember = memberRepository.findByEmail(member.getEmail());
+        Optional<Member> alreadyMember = memberRepository.findByUsername(member.getUsername());
         if(alreadyMember.isPresent()){
             //여기서 예외처리?
         }
