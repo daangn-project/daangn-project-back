@@ -57,9 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 // 이 요청은 인증을 하지 않는다.
                 .authorizeRequests().antMatchers(
-                        "/authenticate",
-                        "/api/v1/user",
-                        "/api/v1/authenticate")
+                        "**")
                 .permitAll()
                 // 다른 모든 요청은 인증을 한다.
                 .anyRequest().authenticated().and()
