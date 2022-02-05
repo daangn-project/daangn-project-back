@@ -1,7 +1,6 @@
 package daangnmarket.daangn.project.controller;
 
 import daangnmarket.daangn.project.domain.Photo;
-import daangnmarket.daangn.project.dto.PhotoDto;
 import daangnmarket.daangn.project.service.PhotoService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;

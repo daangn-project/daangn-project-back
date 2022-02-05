@@ -7,7 +7,7 @@ import daangnmarket.daangn.project.domain.Photo;
 import daangnmarket.daangn.project.dto.ItemPostResponseDto;
 import daangnmarket.daangn.project.dto.ItemPostSaveDto;
 import daangnmarket.daangn.project.dto.PhotoResponseDto;
-import daangnmarket.daangn.project.handler.FileHandler;
+import daangnmarket.daangn.project.handler.S3Uploader;
 import daangnmarket.daangn.project.repository.ItemPostRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.repository.PhotoRepository;
@@ -16,7 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.ArrayList;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -27,27 +28,36 @@ public class ItemPostService {
     private final ItemPostRepository itemPostRepository;
     private final MemberRepository memberRepository;
     private final PhotoRepository photoRepository;
-    private final FileHandler fileHandler;
+    private final S3Uploader s3Uploader;
 
     // 생성
-    public void save(ItemPostSaveDto itemPostSaveDto, List<MultipartFile> files) throws Exception {
+    public void save(ItemPostSaveDto itemPostSaveDto, List<MultipartFile> files) throws IOException {
         Member member = memberRepository.findByNickname(itemPostSaveDto.getWriter());
         ItemPost itemPost = ItemPost.builder()
                 .member(member)
                 .title(itemPostSaveDto.getTitle())
                 .description(itemPostSaveDto.getDescription())
                 .price(itemPostSaveDto.getPrice())
+                .itemCategory(itemPostSaveDto.getItemCategory())
                 .viewCount(0)
                 .build();
 
-        List<Photo> photoList = fileHandler.parseFileInfo(files);
-
-        // 파일이 존재할 때에만 처리
-        if (!photoList.isEmpty()) {
-            for (Photo photo : photoList)
-                // 파일을 DB에 저장
-                itemPost.addPhoto(photoRepository.save(photo));
-        }
+        files.forEach((f) -> {
+            try {
+                String S3Url = s3Uploader.upload(f, "static");
+                itemPost.addPhoto(photoRepository.save(Photo.builder().path(S3Url).build()));
+                itemPostSaveDto.getPhotoList().add(S3Url);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+//        List<Photo> photoList = fileHandler.parseFileInfo(files);
+//        // 파일이 존재할 때에만 처리
+//        if (!files.isEmpty()) {
+//            for (Photo photo : files)
+//                 파일을 DB에 저장
+//                itemPost.addPhoto(photoRepository.save(photo));
+//        }
         itemPost.setMember(member);
         itemPostRepository.save(itemPost);
     }

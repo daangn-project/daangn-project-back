@@ -2,8 +2,6 @@ package daangnmarket.daangn.project.domain;
 
 import daangnmarket.daangn.project.converter.ItemCategoryConverter;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
