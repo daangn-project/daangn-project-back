@@ -4,6 +4,7 @@ import daangnmarket.daangn.project.domain.ItemCategory;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,5 +15,6 @@ public class ItemPostSaveDto {
     private String description;
     private Integer price;
     private ItemCategory itemCategory;
-    private List<PhotoDto> photoList;
+    @Builder.Default
+    private List<String> photoList = new ArrayList<>();
 }

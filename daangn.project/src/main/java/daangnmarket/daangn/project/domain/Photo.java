@@ -17,10 +17,9 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PHOTO_ID")
     private Long id;
-
-    private String name;
     private String path;
-    private Long size;
+//    private String name;
+//    private Long size;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ITEM_POST_ID")

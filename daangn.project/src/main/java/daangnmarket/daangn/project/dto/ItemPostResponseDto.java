@@ -1,5 +1,6 @@
 package daangnmarket.daangn.project.dto;
 import daangnmarket.daangn.project.domain.ItemPost;
+import daangnmarket.daangn.project.domain.Photo;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class ItemPostResponseDto {
@@ -17,12 +19,13 @@ public class ItemPostResponseDto {
     private String writer;
     private String title;
     private String description;
+    private String itemCategory;
     private Integer viewCount;
     private Integer price;
     private LocalDateTime createdDate;
     private String adjustedCreatedDate;
     private LocalDateTime modifiedDate;
-    private List<Long> fileId = new ArrayList<>();  // 첨부 파일 id 목록
+    private List<String> imageUrls = new ArrayList<>();  // 첨부 파일 id 목록
 
     public ItemPostResponseDto(ItemPost entity) {
         this.id = entity.getId();
@@ -32,6 +35,8 @@ public class ItemPostResponseDto {
         this.description = entity.getDescription();
         this.viewCount = entity.getViewCount();
         this.price = entity.getPrice();
+        this.itemCategory = entity.getItemCategory().getValue();
+        this.imageUrls = entity.getPhotoList().stream().map(Photo::getPath).collect(Collectors.toList());
         this.createdDate = entity.getCreatedTime();
         this.modifiedDate = entity.getModifiedTime();
         this.adjustedCreatedDate = adjustCreatedTime();
