@@ -25,7 +25,8 @@ public class ItemPostResponseDto {
     private LocalDateTime createdDate;
     private String adjustedCreatedDate;
     private LocalDateTime modifiedDate;
-    private List<String> imageUrls = new ArrayList<>();  // 첨부 파일 id 목록
+    private List<String> imageUrls = new ArrayList<>();
+    private String thumbnailImg;
 
     public ItemPostResponseDto(ItemPost entity) {
         this.id = entity.getId();
@@ -37,6 +38,7 @@ public class ItemPostResponseDto {
         this.price = entity.getPrice();
         this.itemCategory = entity.getItemCategory().getValue();
         this.imageUrls = entity.getPhotoList().stream().map(Photo::getPath).collect(Collectors.toList());
+        this.thumbnailImg = entity.getPhotoList().isEmpty() ? null : entity.getPhotoList().get(0).getPath();
         this.createdDate = entity.getCreatedTime();
         this.modifiedDate = entity.getModifiedTime();
         this.adjustedCreatedDate = adjustCreatedTime();

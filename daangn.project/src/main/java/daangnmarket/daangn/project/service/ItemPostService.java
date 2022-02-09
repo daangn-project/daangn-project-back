@@ -51,13 +51,6 @@ public class ItemPostService {
                 e.printStackTrace();
             }
         });
-//        List<Photo> photoList = fileHandler.parseFileInfo(files);
-//        // 파일이 존재할 때에만 처리
-//        if (!files.isEmpty()) {
-//            for (Photo photo : files)
-//                 파일을 DB에 저장
-//                itemPost.addPhoto(photoRepository.save(photo));
-//        }
         itemPost.setMember(member);
         itemPostRepository.save(itemPost);
     }

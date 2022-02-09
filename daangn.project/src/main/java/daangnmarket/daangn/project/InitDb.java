@@ -50,11 +50,12 @@ public class InitDb {
 
             Member[] memberArr = new Member[]{member1, member2, member3};
             ItemCategory[] categories = new ItemCategory[]{ItemCategory.CLOTHES, ItemCategory.SPORTS};
-            for(int i = 0; i < 100; i++){
+            for(int i = 0; i < 10; i++){
                 Member member = memberArr[new Random().nextInt(memberArr.length)];
                 ItemCategory category = categories[new Random().nextInt(categories.length)];
                 int price = (int) (Math.random() * 100000);
-
+                int itemImageIndex = (int) (1 + Math.random() * 8);
+                Photo p = Photo.builder().path("https://daangn-images.s3.ap-northeast-2.amazonaws.com/static/test-"+String.valueOf(itemImageIndex)+".jpeg").build();
                 ItemPost itemPost = ItemPost.builder()
                         .member(member)
                         .title("Item : " + i)
@@ -63,6 +64,7 @@ public class InitDb {
                         .itemCategory(category)
                         .description("아이템 " + i +" 에 대한 설명입니다.")
                         .build();
+                itemPost.addPhoto(p);
                 itemPost.setMember(member);
                 itemPostRepository.save(itemPost);
             }
