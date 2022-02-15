@@ -1,5 +1,6 @@
 package daangnmarket.daangn.project.service;
 
+import daangnmarket.daangn.project.auth.JwtRequestFilter;
 import daangnmarket.daangn.project.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
