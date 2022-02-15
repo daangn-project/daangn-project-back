@@ -37,4 +37,12 @@ public class Photo {
         }
     }
 
+    // 동네 생활
+    public void setCommunityPost(CommunityPost communityPost) {
+        this.communityPost = communityPost;
+        if(!communityPost.getPhotoList().contains(this)){
+            communityPost.getPhotoList().add(this);
+        }
+    }
+
 }

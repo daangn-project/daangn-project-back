@@ -38,7 +38,18 @@ public class CommunityPost extends BaseTimeEntity{
 //    public void update(String description){
 //        this.description = description;
 //    }
+// itemPost에서 파일 처리
+public void addPhoto(Photo photo){
+    this.photoList.add(photo);
+    // 게시글에 파일이 저장되어있지 않은 경우
+    if(photo.getCommunityPost() != this) photo.setCommunityPost(this);
+}
 
+    // 연관관계 메서드
+    public void setMember(Member member){
+        this.member = member;
+        member.getCommunityPostList().add(this);
+    }
     @Builder
     public CommunityPost (String description, Member member, CommunityCategory communityCategory){
         this.description = description;
