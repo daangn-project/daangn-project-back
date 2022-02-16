@@ -6,10 +6,13 @@ import daangnmarket.daangn.project.dto.ItemPostResponseDto;
 import daangnmarket.daangn.project.dto.ItemPostSaveDto;
 import daangnmarket.daangn.project.dto.communitypost.CommunityPostResponseDto;
 import daangnmarket.daangn.project.dto.communitypost.CommunityPostSaveDto;
+import daangnmarket.daangn.project.dto.communitypost.CommunityPostUpdateDto;
 import daangnmarket.daangn.project.handler.S3Uploader;
 import daangnmarket.daangn.project.repository.CommunityPostRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.repository.PhotoRepository;
+import daangnmarket.daangn.project.vo.CommunityPostFileVO;
+import daangnmarket.daangn.project.vo.ItemPostFileVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -71,12 +75,24 @@ public class CommunityPostService {
         communityPostRepository.save(communityPost);
     }
 
-//    @Transactional
-//    public Long update(Long id, CommunityPostUpdateRequestDto communityPostUpdateRequestDto) {
-//        CommunityPost communityPost = communityPostRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 동네생활이 없습니다. id="+id));
-//
-//        communityPost.update(communityPostUpdateRequestDto.getContent());
-//        return id;
-//    }
+    // 동네 생활 수정
+    @Transactional
+    public CommunityPostSaveDto update(Long id, CommunityPostFileVO communityPostFileVO) {
+        CommunityPost communityPost = communityPostRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 동네생활이 없습니다. id="+id));
+
+        return CommunityPostSaveDto.builder()
+                .writer(communityPost.getMember().getNickname())
+                .title(communityPostFileVO.getTitle())
+                .description(communityPostFileVO.getDescription())
+                .communityCategory(communityPostFileVO.getCommunityCategory())
+                .build();
+    }
+
+    // 동네 생활 삭제
+    public void delete(Long id) throws IllegalArgumentException {
+        CommunityPost communityPost = communityPostRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 동네생활이 없습니다. id="+id));
+        communityPostRepository.delete(communityPost);
+    }
+
 
 }
