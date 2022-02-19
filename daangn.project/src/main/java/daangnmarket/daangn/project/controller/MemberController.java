@@ -10,6 +10,7 @@ import daangnmarket.daangn.project.vo.SignVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -31,28 +32,20 @@ public class MemberController {
         return null;
     }
 
-//////////////////////////////////회원가입/////////////////////
-//    @PostMapping("/signup")
-//    public ResponseEntity<Message> signUp(@RequestBody MemberSaveDto memberSaveDto) {
-//        return memberService.join(memberSaveDto);
-//    }
-
+    // 회원가입
     @PostMapping("/signup")
     @ResponseBody
+    @Transactional
     public ResponseEntity<ApiResponse> saveUser(@RequestBody SignVo signVo){
-        Member member = Member.builder()
-                .email(signVo.getEmail())
-                .password(signVo.getPassword())
-                .username(signVo.getUsername())
-                .build();
-        memberService.save(member);
+
+        memberService.save(signVo);
         return new ResponseEntity<>(new ApiResponse(), HttpStatus.OK);
     }
 
 //    //이메일 중복체크
-//    @GetMapping("/exist_user/{email}")
-//    public boolean findUserByEmail(@PathVariable String email){
-//        Optional<Member> member = memberService.findUserByEmail(email);
+//    @GetMapping("/exist_user/{userName}")
+//    public boolean findUserByName(@PathVariable String userName){
+//        Optional<Member> member = memberService.findByUsername(userName);
 //        return member.isPresent() ? true : false;
 //    }
 }

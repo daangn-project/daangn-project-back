@@ -4,6 +4,7 @@ package daangnmarket.daangn.project.domain;
 import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 @Entity
 @Getter @Setter
@@ -40,5 +41,10 @@ public class Member {
     @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<CommunityPost> communityPostList = new ArrayList<>();
+
+    private String appendDate;
+    private String updateDate;
+
+    private String userAuth;
 }
 
