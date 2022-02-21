@@ -2,18 +2,15 @@ package daangnmarket.daangn.project.dto;
 import daangnmarket.daangn.project.domain.ItemPost;
 import daangnmarket.daangn.project.domain.Photo;
 import lombok.Data;
-
-import java.util.ArrayList;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class ItemPostResponseDto {
+public class ItemPostDetailResponseDto {
     private Long id;
     private Long memberId;
     private String writer;
@@ -25,10 +22,12 @@ public class ItemPostResponseDto {
     private LocalDateTime createdDate;
     private String adjustedCreatedDate;
     private LocalDateTime modifiedDate;
-    private List<String> imageUrls = new ArrayList<>();
+    private List<String> imageUrls;
     private String thumbnailImg;
+    private List<ItemPostByUserDto> itemPostByUserDtos;
 
-    public ItemPostResponseDto(ItemPost entity) {
+
+    public ItemPostDetailResponseDto(ItemPost entity) {
         this.id = entity.getId();
         this.memberId = entity.getMember().getId();
         this.writer = entity.getMember().getNickname();

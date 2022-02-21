@@ -1,9 +1,9 @@
 package daangnmarket.daangn.project.controller;
 
 import daangnmarket.daangn.project.domain.Member;
-import daangnmarket.daangn.project.dto.ItemPostResponseDto;
+import daangnmarket.daangn.project.dto.ItemPostByUserDto;
+import daangnmarket.daangn.project.dto.ItemPostDetailResponseDto;
 import daangnmarket.daangn.project.dto.ItemPostSaveDto;
-import daangnmarket.daangn.project.dto.PhotoResponseDto;
 import daangnmarket.daangn.project.handler.S3Uploader;
 import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.message.StatusEnum;
@@ -30,7 +30,7 @@ public class ItemPostController {
     @GetMapping("")
     public ResponseEntity<Message> showAllItemPosts() {
         // 전체 게시물 조회
-        List<ItemPostResponseDto> itemPostResponseDtoList = itemPostService.findAll();
+        List<ItemPostDetailResponseDto> itemPostResponseDtoList = itemPostService.findAll();
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
                 .message("전체 게시물 조회 결과입니다.")
@@ -38,24 +38,28 @@ public class ItemPostController {
                 .build(), HttpStatus.OK);
     }
 
-    // 개별 게시물 조회 by id
+    // 개별 게시물 조회
+    // TODO: 1) ResponseEntity의 형태를 변경해야 하는가? 2) DTO를 분리해서 위와 같이 Setter 주입으로 하는 것이 맞는가?
     @GetMapping("/{id}")
-    public ResponseEntity<Message> showItemPost(@PathVariable String id) {
-        ItemPostResponseDto itemPostResponseDto = itemPostService.findById(Long.parseLong(id));
+    public ResponseEntity<Message> findItemPost(@PathVariable String id) {
+        // 게시물의 상세 정보
+        ItemPostDetailResponseDto itemPostDetailResponseDto = itemPostService.findById(Long.parseLong(id));
+
+        // 유저가 작성한 게시물도 같이 보여준다.
+        List<ItemPostByUserDto> itemPostByUserDtoList = itemPostService.findByUserId(itemPostDetailResponseDto.getMemberId());
+        itemPostDetailResponseDto.setItemPostByUserDtos(itemPostByUserDtoList);
+
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
                 .message("ID: " + id + " 게시물 조회")
-                .data(itemPostResponseDto)
+                .data(itemPostDetailResponseDto)
                 .build(), HttpStatus.OK);
     }
-
-    // 회원이 등록한 itemPost 조회
-
 
     // 카테고리에 해당하는 모든 ItemPost 조회
     @GetMapping("/category/{category}")
     public ResponseEntity<Message> showItemPostByCategory(@PathVariable String category) {
-        List<ItemPostResponseDto> itemPostResponseDtoList = itemPostService.findByCategory(category);
+        List<ItemPostDetailResponseDto> itemPostResponseDtoList = itemPostService.findByCategory(category);
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
                 .message(category + "카테고리에 대한 조회 결과입니다.")

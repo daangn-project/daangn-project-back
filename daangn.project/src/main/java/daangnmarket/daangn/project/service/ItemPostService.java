@@ -4,7 +4,8 @@ import daangnmarket.daangn.project.domain.ItemCategory;
 import daangnmarket.daangn.project.domain.ItemPost;
 import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.domain.Photo;
-import daangnmarket.daangn.project.dto.ItemPostResponseDto;
+import daangnmarket.daangn.project.dto.ItemPostByUserDto;
+import daangnmarket.daangn.project.dto.ItemPostDetailResponseDto;
 import daangnmarket.daangn.project.dto.ItemPostSaveDto;
 import daangnmarket.daangn.project.dto.PhotoResponseDto;
 import daangnmarket.daangn.project.handler.S3Uploader;
@@ -93,22 +94,27 @@ public class ItemPostService {
 
     // 카테고리로 조회
     @Transactional(readOnly = true)
-    public List<ItemPostResponseDto> findByCategory(String category) {
+    public List<ItemPostDetailResponseDto> findByCategory(String category) {
         ItemCategory categoryByEnum = ItemCategory.valueOf(category);
         List<ItemPost> byCategory = itemPostRepository.findByCategory(categoryByEnum);
-        return byCategory.stream().map(ItemPostResponseDto::new).collect(Collectors.toList());
+        return byCategory.stream().map(ItemPostDetailResponseDto::new).collect(Collectors.toList());
     }
 
     // 모든 게시물 조회
     @Transactional(readOnly = true)
-    public List<ItemPostResponseDto> findAll(){
-        return itemPostRepository.findAll().stream().map(ItemPostResponseDto::new).collect(Collectors.toList());
+    public List<ItemPostDetailResponseDto> findAll(){
+        return itemPostRepository.findAll().stream().map(ItemPostDetailResponseDto::new).collect(Collectors.toList());
     }
 
     // Id로 게시물 조회
-    public ItemPostResponseDto findById(Long id) {
+    public ItemPostDetailResponseDto findById(Long id) {
         ItemPost itemPost = itemPostRepository.findById(id).orElseThrow(()
                 -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
-        return new ItemPostResponseDto(itemPost);
+        return new ItemPostDetailResponseDto(itemPost);
+    }
+
+    // 유저 ID로 유저가 작성한 게시물 조회
+    public List<ItemPostByUserDto> findByUserId(Long id) {
+        return itemPostRepository.findByMemberId(id).stream().map(ItemPostByUserDto::new).collect(Collectors.toList());
     }
 }
