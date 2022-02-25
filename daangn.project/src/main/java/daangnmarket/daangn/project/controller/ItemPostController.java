@@ -1,9 +1,9 @@
 package daangnmarket.daangn.project.controller;
 
 import daangnmarket.daangn.project.domain.Member;
-import daangnmarket.daangn.project.dto.ItemPostByUserDto;
-import daangnmarket.daangn.project.dto.ItemPostDetailResponseDto;
-import daangnmarket.daangn.project.dto.ItemPostSaveDto;
+import daangnmarket.daangn.project.dto.product.ProductByUserDto;
+import daangnmarket.daangn.project.dto.product.ProductDetailResponseDto;
+import daangnmarket.daangn.project.dto.product.ProductSaveDto;
 import daangnmarket.daangn.project.handler.S3Uploader;
 import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.message.StatusEnum;
@@ -30,7 +30,7 @@ public class ItemPostController {
     @GetMapping("")
     public ResponseEntity<Message> showAllItemPosts() {
         // 전체 게시물 조회
-        List<ItemPostDetailResponseDto> itemPostResponseDtoList = itemPostService.findAll();
+        List<ProductDetailResponseDto> itemPostResponseDtoList = itemPostService.findAll();
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
                 .message("전체 게시물 조회 결과입니다.")
@@ -43,10 +43,10 @@ public class ItemPostController {
     @GetMapping("/{id}")
     public ResponseEntity<Message> findItemPost(@PathVariable String id) {
         // 게시물의 상세 정보
-        ItemPostDetailResponseDto itemPostDetailResponseDto = itemPostService.findById(Long.parseLong(id));
+        ProductDetailResponseDto itemPostDetailResponseDto = itemPostService.findById(Long.parseLong(id));
 
         // 유저가 작성한 게시물도 같이 보여준다.
-        List<ItemPostByUserDto> itemPostByUserDtoList = itemPostService.findByUserId(itemPostDetailResponseDto.getMemberId());
+        List<ProductByUserDto> itemPostByUserDtoList = itemPostService.findByUserId(itemPostDetailResponseDto.getMemberId());
         itemPostDetailResponseDto.setItemPostByUserDtos(itemPostByUserDtoList);
 
         return new ResponseEntity<>(Message.builder()
@@ -59,7 +59,7 @@ public class ItemPostController {
     // 카테고리에 해당하는 모든 ItemPost 조회
     @GetMapping("/category/{category}")
     public ResponseEntity<Message> showItemPostByCategory(@PathVariable String category) {
-        List<ItemPostDetailResponseDto> itemPostResponseDtoList = itemPostService.findByCategory(category);
+        List<ProductDetailResponseDto> itemPostResponseDtoList = itemPostService.findByCategory(category);
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
                 .message(category + "카테고리에 대한 조회 결과입니다.")
@@ -72,7 +72,7 @@ public class ItemPostController {
     @PostMapping("")
     public ResponseEntity<Message> createItemPost(@ModelAttribute ItemPostFileVO itemPostFileVO) throws IOException{
         Member member = memberService.findById(Long.parseLong(itemPostFileVO.getMemberId()));
-        ItemPostSaveDto itemPostSaveDto = ItemPostSaveDto.builder()
+        ProductSaveDto productSaveDto = ProductSaveDto.builder()
                 .writer(member.getNickname())
                 .title(itemPostFileVO.getTitle())
                 .description(itemPostFileVO.getDescription())
@@ -80,14 +80,14 @@ public class ItemPostController {
                 .itemCategory(itemPostFileVO.getItemCategory())
                 .build();
 
-        itemPostService.save(itemPostSaveDto, itemPostFileVO.getFiles());
-        return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("게시물이 등록되었어요.").data(itemPostSaveDto).build(), HttpStatus.OK);
+        itemPostService.save(productSaveDto, itemPostFileVO.getFiles());
+        return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("게시물이 등록되었어요.").data(productSaveDto).build(), HttpStatus.OK);
     }
 
     // 수정
     @PutMapping("/{id}")
     public ResponseEntity<Message> updateItemPost(@PathVariable Long id, @ModelAttribute ItemPostFileVO itemPostFileVO) {
-        ItemPostSaveDto updatedDto = itemPostService.update(id, itemPostFileVO);
+        ProductSaveDto updatedDto = itemPostService.update(id, itemPostFileVO);
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
                 .message("게시물을 수정했어요.")

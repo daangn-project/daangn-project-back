@@ -1,6 +1,7 @@
 package daangnmarket.daangn.project.dto;
 
 import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.dto.product.ProductDetailResponseDto;
 import lombok.Data;
 
 import java.util.List;
@@ -10,13 +11,13 @@ import java.util.stream.Collectors;
 public class MemberResponseDto {
     private String nickname;
     private String email;
-    private List<ItemPostDetailResponseDto> itemPostResponseDtoList;
+    private List<ProductDetailResponseDto> itemPostResponseDtoList;
 
     public  MemberResponseDto(Member member){
         this.nickname = member.getNickname();
         this.email = member.getNickname();
         this.itemPostResponseDtoList = member.getItemPostList()
-                .stream().map(ItemPostDetailResponseDto::new).collect(Collectors.toList());
+                .stream().map(ProductDetailResponseDto::new).collect(Collectors.toList());
     }
 }
 

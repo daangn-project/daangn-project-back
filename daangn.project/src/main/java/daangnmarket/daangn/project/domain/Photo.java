@@ -1,5 +1,6 @@
 package daangnmarket.daangn.project.domain;
 
+import daangnmarket.daangn.project.domain.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,14 +24,14 @@ public class Photo {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ITEM_POST_ID")
-    private ItemPost itemPost;
+    private Product itemPost;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "COMMUNITY_POST_ID")
     private CommunityPost communityPost;
 
     // 연관관계 메서드
-    public void setItemPost(ItemPost itemPost) {
+    public void setItemPost(Product itemPost) {
         this.itemPost = itemPost;
         if (!itemPost.getPhotoList().contains(this)) {
             itemPost.getPhotoList().add(this);

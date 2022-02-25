@@ -1,7 +1,7 @@
 package daangnmarket.daangn.project;
 
-import daangnmarket.daangn.project.domain.ItemCategory;
-import daangnmarket.daangn.project.domain.ItemPost;
+import daangnmarket.daangn.project.domain.product.ProductCategory;
+import daangnmarket.daangn.project.domain.product.Product;
 import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.domain.Photo;
 import daangnmarket.daangn.project.repository.ItemPostRepository;
@@ -49,14 +49,14 @@ public class InitDb {
 
 
             Member[] memberArr = new Member[]{member1, member2, member3};
-            ItemCategory[] categories = new ItemCategory[]{ItemCategory.CLOTHES, ItemCategory.SPORTS};
+            ProductCategory[] categories = new ProductCategory[]{ProductCategory.CLOTHES, ProductCategory.SPORTS};
             for(int i = 0; i < 10; i++){
                 Member member = memberArr[new Random().nextInt(memberArr.length)];
-                ItemCategory category = categories[new Random().nextInt(categories.length)];
+                ProductCategory category = categories[new Random().nextInt(categories.length)];
                 int price = (int) (Math.random() * 100000);
                 int itemImageIndex = (int) (1 + Math.random() * 8);
                 Photo p = Photo.builder().path("https://daangn-images.s3.ap-northeast-2.amazonaws.com/static/test-"+String.valueOf(itemImageIndex)+".jpeg").build();
-                ItemPost itemPost = ItemPost.builder()
+                Product itemPost = Product.builder()
                         .member(member)
                         .title("Item : " + i)
                         .price(price)

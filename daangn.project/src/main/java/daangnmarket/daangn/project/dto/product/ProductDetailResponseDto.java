@@ -1,5 +1,5 @@
-package daangnmarket.daangn.project.dto;
-import daangnmarket.daangn.project.domain.ItemPost;
+package daangnmarket.daangn.project.dto.product;
+import daangnmarket.daangn.project.domain.product.Product;
 import daangnmarket.daangn.project.domain.Photo;
 import lombok.Data;
 import java.time.Duration;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class ItemPostDetailResponseDto {
+public class ProductDetailResponseDto {
     private Long id;
     private Long memberId;
     private String writer;
@@ -24,10 +24,10 @@ public class ItemPostDetailResponseDto {
     private LocalDateTime modifiedDate;
     private List<String> imageUrls;
     private String thumbnailImg;
-    private List<ItemPostByUserDto> itemPostByUserDtos;
+    private List<ProductByUserDto> itemPostByUserDtos;
 
 
-    public ItemPostDetailResponseDto(ItemPost entity) {
+    public ProductDetailResponseDto(Product entity) {
         this.id = entity.getId();
         this.memberId = entity.getMember().getId();
         this.writer = entity.getMember().getNickname();

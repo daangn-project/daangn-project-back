@@ -2,8 +2,8 @@ package daangnmarket.daangn.project.service;
 
 
 import daangnmarket.daangn.project.domain.*;
-import daangnmarket.daangn.project.dto.communitypost.CommunityPostResponseDto;
-import daangnmarket.daangn.project.dto.communitypost.CommunityPostSaveDto;
+import daangnmarket.daangn.project.dto.community.CommunityPostResponseDto;
+import daangnmarket.daangn.project.dto.community.CommunityPostSaveDto;
 import daangnmarket.daangn.project.handler.S3Uploader;
 import daangnmarket.daangn.project.repository.CommunityPostRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;

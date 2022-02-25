@@ -1,6 +1,9 @@
-package daangnmarket.daangn.project.domain;
+package daangnmarket.daangn.project.domain.product;
 
 import daangnmarket.daangn.project.converter.ItemCategoryConverter;
+import daangnmarket.daangn.project.domain.BaseTimeEntity;
+import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.Photo;
 import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,7 +14,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemPost extends BaseTimeEntity{
+public class Product extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +34,7 @@ public class ItemPost extends BaseTimeEntity{
     private Member member;
 
     @Convert(converter = ItemCategoryConverter.class)
-    private ItemCategory itemCategory;
+    private ProductCategory itemCategory;
 
     private Integer viewCount;
 

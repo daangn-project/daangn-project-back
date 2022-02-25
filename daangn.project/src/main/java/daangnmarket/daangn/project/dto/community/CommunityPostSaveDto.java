@@ -1,12 +1,8 @@
-package daangnmarket.daangn.project.dto.communitypost;
+package daangnmarket.daangn.project.dto.community;
 
 import daangnmarket.daangn.project.domain.CommunityCategory;
-import daangnmarket.daangn.project.domain.CommunityPost;
-import daangnmarket.daangn.project.domain.Member;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,12 +1,12 @@
 package daangnmarket.daangn.project.service;
 
-import daangnmarket.daangn.project.domain.ItemCategory;
-import daangnmarket.daangn.project.domain.ItemPost;
+import daangnmarket.daangn.project.domain.product.ProductCategory;
+import daangnmarket.daangn.project.domain.product.Product;
 import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.domain.Photo;
-import daangnmarket.daangn.project.dto.ItemPostByUserDto;
-import daangnmarket.daangn.project.dto.ItemPostDetailResponseDto;
-import daangnmarket.daangn.project.dto.ItemPostSaveDto;
+import daangnmarket.daangn.project.dto.product.ProductByUserDto;
+import daangnmarket.daangn.project.dto.product.ProductDetailResponseDto;
+import daangnmarket.daangn.project.dto.product.ProductSaveDto;
 import daangnmarket.daangn.project.dto.PhotoResponseDto;
 import daangnmarket.daangn.project.handler.S3Uploader;
 import daangnmarket.daangn.project.repository.ItemPostRepository;
@@ -32,14 +32,14 @@ public class ItemPostService {
     private final S3Uploader s3Uploader;
 
     // 생성
-    public void save(ItemPostSaveDto itemPostSaveDto, List<MultipartFile> files) throws IOException {
-        Member member = memberRepository.findByNickname(itemPostSaveDto.getWriter());
-        ItemPost itemPost = ItemPost.builder()
+    public void save(ProductSaveDto productSaveDto, List<MultipartFile> files) throws IOException {
+        Member member = memberRepository.findByNickname(productSaveDto.getWriter());
+        Product itemPost = Product.builder()
                 .member(member)
-                .title(itemPostSaveDto.getTitle())
-                .description(itemPostSaveDto.getDescription())
-                .price(itemPostSaveDto.getPrice())
-                .itemCategory(itemPostSaveDto.getItemCategory())
+                .title(productSaveDto.getTitle())
+                .description(productSaveDto.getDescription())
+                .price(productSaveDto.getPrice())
+                .itemCategory(productSaveDto.getItemCategory())
                 .viewCount(0)
                 .build();
 
@@ -47,7 +47,7 @@ public class ItemPostService {
             try {
                 String S3Url = s3Uploader.upload(f, "static");
                 itemPost.addPhoto(photoRepository.save(Photo.builder().path(S3Url).build()));
-                itemPostSaveDto.getPhotoList().add(S3Url);
+                productSaveDto.getPhotoList().add(S3Url);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -57,10 +57,10 @@ public class ItemPostService {
     }
 
     // 수정
-    public ItemPostSaveDto update(Long id, ItemPostFileVO itemPostFileVO) {
-        ItemPost itemPost = itemPostRepository.findById(id).orElseThrow(()
+    public ProductSaveDto update(Long id, ItemPostFileVO itemPostFileVO) {
+        Product itemPost = itemPostRepository.findById(id).orElseThrow(()
                 -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
-        return ItemPostSaveDto.builder()
+        return ProductSaveDto.builder()
                 .writer(itemPost.getMember().getNickname())
                 .title(itemPostFileVO.getTitle())
                 .description(itemPostFileVO.getDescription())
@@ -71,7 +71,7 @@ public class ItemPostService {
 
     // 아이템 포스트에 포함된 모든 사진들을 반환
     public List<PhotoResponseDto> findAllPhotoById(String id) {
-        ItemPost itemPost = itemPostRepository.findById(Long.parseLong(id)).orElseThrow(
+        Product itemPost = itemPostRepository.findById(Long.parseLong(id)).orElseThrow(
                 () -> new NoSuchElementException("해당 게시물이 존재하지 않습니다.")
         );
         return itemPost.getPhotoList().stream().map(PhotoResponseDto::new).collect(Collectors.toList());
@@ -87,34 +87,34 @@ public class ItemPostService {
 
     // 삭제
     public void delete(Long id) throws IllegalArgumentException {
-        ItemPost itemPost = itemPostRepository.findById(id).orElseThrow(()
+        Product itemPost = itemPostRepository.findById(id).orElseThrow(()
                 -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
         itemPostRepository.delete(itemPost);
     }
 
     // 카테고리로 조회
     @Transactional(readOnly = true)
-    public List<ItemPostDetailResponseDto> findByCategory(String category) {
-        ItemCategory categoryByEnum = ItemCategory.valueOf(category);
-        List<ItemPost> byCategory = itemPostRepository.findByCategory(categoryByEnum);
-        return byCategory.stream().map(ItemPostDetailResponseDto::new).collect(Collectors.toList());
+    public List<ProductDetailResponseDto> findByCategory(String category) {
+        ProductCategory categoryByEnum = ProductCategory.valueOf(category);
+        List<Product> byCategory = itemPostRepository.findByCategory(categoryByEnum);
+        return byCategory.stream().map(ProductDetailResponseDto::new).collect(Collectors.toList());
     }
 
     // 모든 게시물 조회
     @Transactional(readOnly = true)
-    public List<ItemPostDetailResponseDto> findAll(){
-        return itemPostRepository.findAll().stream().map(ItemPostDetailResponseDto::new).collect(Collectors.toList());
+    public List<ProductDetailResponseDto> findAll(){
+        return itemPostRepository.findAll().stream().map(ProductDetailResponseDto::new).collect(Collectors.toList());
     }
 
     // Id로 게시물 조회
-    public ItemPostDetailResponseDto findById(Long id) {
-        ItemPost itemPost = itemPostRepository.findById(id).orElseThrow(()
+    public ProductDetailResponseDto findById(Long id) {
+        Product itemPost = itemPostRepository.findById(id).orElseThrow(()
                 -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
-        return new ItemPostDetailResponseDto(itemPost);
+        return new ProductDetailResponseDto(itemPost);
     }
 
     // 유저 ID로 유저가 작성한 게시물 조회
-    public List<ItemPostByUserDto> findByUserId(Long id) {
-        return itemPostRepository.findByMemberId(id).stream().map(ItemPostByUserDto::new).collect(Collectors.toList());
+    public List<ProductByUserDto> findByUserId(Long id) {
+        return itemPostRepository.findByMemberId(id).stream().map(ProductByUserDto::new).collect(Collectors.toList());
     }
 }

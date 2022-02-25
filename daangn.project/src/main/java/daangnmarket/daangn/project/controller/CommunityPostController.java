@@ -1,16 +1,13 @@
 package daangnmarket.daangn.project.controller;
 
-import daangnmarket.daangn.project.domain.CommunityPost;
 import daangnmarket.daangn.project.domain.Member;
-import daangnmarket.daangn.project.dto.ItemPostSaveDto;
-import daangnmarket.daangn.project.dto.communitypost.CommunityPostResponseDto;
-import daangnmarket.daangn.project.dto.communitypost.CommunityPostSaveDto;
+import daangnmarket.daangn.project.dto.community.CommunityPostResponseDto;
+import daangnmarket.daangn.project.dto.community.CommunityPostSaveDto;
 import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.service.CommunityPostService;
 import daangnmarket.daangn.project.service.MemberService;
 import daangnmarket.daangn.project.vo.CommunityPostFileVO;
-import daangnmarket.daangn.project.vo.ItemPostFileVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,7 @@
 package daangnmarket.daangn.project.domain;
 
 
+import daangnmarket.daangn.project.domain.product.Product;
 import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
-    private List<ItemPost> itemPostList = new ArrayList<>();
+    private List<Product> itemPostList = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "member")

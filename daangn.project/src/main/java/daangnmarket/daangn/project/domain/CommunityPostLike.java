@@ -1,5 +1,6 @@
 package daangnmarket.daangn.project.domain;
 
+import daangnmarket.daangn.project.domain.product.Product;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -18,5 +19,5 @@ public class CommunityPostLike {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMMUNITY_POST_ID")
-    private ItemPost itemPost;
+    private Product itemPost;
 }

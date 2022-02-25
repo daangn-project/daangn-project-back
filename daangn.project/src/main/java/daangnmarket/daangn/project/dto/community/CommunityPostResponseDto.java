@@ -1,6 +1,6 @@
-package daangnmarket.daangn.project.dto;
+package daangnmarket.daangn.project.dto.community;
 
-import daangnmarket.daangn.project.domain.ItemPost;
+import daangnmarket.daangn.project.domain.CommunityPost;
 import daangnmarket.daangn.project.domain.Photo;
 import lombok.Data;
 
@@ -8,37 +8,42 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class ItemPostByUserDto {
+public class CommunityPostResponseDto {
     private Long id;
+    private Long memberId;
+    private String writer;
     private String title;
     private String description;
-    private String itemCategory;
+    private String communityCategory;
     private Integer viewCount;
-    private Integer price;
+//    private Integer price;
     private LocalDateTime createdDate;
     private String adjustedCreatedDate;
     private LocalDateTime modifiedDate;
-    private List<String> imageUrls;
+    private List<String> imageUrls = new ArrayList<>();
     private String thumbnailImg;
 
-    public ItemPostByUserDto(ItemPost entity) {
+    public CommunityPostResponseDto(CommunityPost entity) {
         this.id = entity.getId();
+        this.memberId = entity.getMember().getId();
+        this.writer = entity.getMember().getNickname();
         this.title = entity.getTitle();
         this.description = entity.getDescription();
         this.viewCount = entity.getViewCount();
-        this.price = entity.getPrice();
-        this.itemCategory = entity.getItemCategory().getValue();
+        this.communityCategory = entity.getCommunityCategory().getValue();
         this.imageUrls = entity.getPhotoList().stream().map(Photo::getPath).collect(Collectors.toList());
         this.thumbnailImg = entity.getPhotoList().isEmpty() ? null : entity.getPhotoList().get(0).getPath();
         this.createdDate = entity.getCreatedTime();
         this.modifiedDate = entity.getModifiedTime();
         this.adjustedCreatedDate = adjustCreatedTime();
     }
-    public String adjustCreatedTime(){
+
+    public String adjustCreatedTime(){ // 보여지는 시간 카운트
         LocalDateTime created = this.createdDate;
         LocalDateTime now = LocalDateTime.now();
         this.adjustedCreatedDate = "";

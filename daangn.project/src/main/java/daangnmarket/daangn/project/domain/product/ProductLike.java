@@ -1,12 +1,13 @@
-package daangnmarket.daangn.project.domain;
+package daangnmarket.daangn.project.domain.product;
 
+import daangnmarket.daangn.project.domain.Member;
 import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-public class ItemPostLike {
+public class ProductLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,5 +19,5 @@ public class ItemPostLike {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ITEM_POST_ID")
-    private ItemPost itemPost;
+    private Product itemPost;
 }

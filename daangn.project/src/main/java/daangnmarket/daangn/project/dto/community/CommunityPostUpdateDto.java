@@ -1,4 +1,4 @@
-package daangnmarket.daangn.project.dto.communitypost;
+package daangnmarket.daangn.project.dto.community;
 
 import daangnmarket.daangn.project.domain.CommunityCategory;
 import lombok.Builder;
