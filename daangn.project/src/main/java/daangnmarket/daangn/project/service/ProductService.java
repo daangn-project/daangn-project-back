@@ -12,11 +12,9 @@ import daangnmarket.daangn.project.handler.S3Uploader;
 import daangnmarket.daangn.project.repository.ProductRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.repository.PhotoRepository;
-import daangnmarket.daangn.project.vo.ItemPostFileVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
