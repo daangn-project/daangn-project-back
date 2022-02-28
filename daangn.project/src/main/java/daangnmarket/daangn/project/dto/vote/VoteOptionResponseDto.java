@@ -11,12 +11,9 @@ import java.util.stream.Collectors;
 public class VoteOptionResponseDto {
     private Long id;
     private String content;
-    private List<String> imgUrls;
 
     public VoteOptionResponseDto(VoteOption voteOption){
         this.id = voteOption.getId();
         this.content = voteOption.getContent();
-        this.imgUrls = voteOption.getPhotoList().stream().map(Photo::getPath).collect(Collectors.toList());
-
     }
 }

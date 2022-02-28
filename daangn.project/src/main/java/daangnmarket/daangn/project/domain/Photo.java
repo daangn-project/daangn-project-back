@@ -25,29 +25,29 @@ public class Photo {
 //    private Long size;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ITEM_POST_ID")
-    private Product itemPost;
+    @JoinColumn(name = "PRODUCT_ID")
+    private Product product;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "COMMUNITY_POST_ID")
     private CommunityPost communityPost;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "VOTE_OPTION_ID")
-    private VoteOption voteOption;
+    @JoinColumn(name = "VOTE_ID")
+    private Vote vote;
 
     // 연관관계 메서드
-    public void setItemPost(Product itemPost) {
-        this.itemPost = itemPost;
-        if (!itemPost.getPhotoList().contains(this)) {
-            itemPost.getPhotoList().add(this);
+    public void setProduct(Product product) {
+        this.product = product;
+        if (!product.getPhotoList().contains(this)) {
+            product.getPhotoList().add(this);
         }
     }
 
-    public void setVoteOption(VoteOption voteOption) {
-        this.voteOption = voteOption;
-        if (!voteOption.getPhotoList().contains(this)) {
-            voteOption.getPhotoList().add(this);
+    public void setVote(Vote vote) {
+        this.vote = vote;
+        if (!vote.getPhotoList().contains(this)) {
+            vote.getPhotoList().add(this);
         }
     }
 

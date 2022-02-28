@@ -4,17 +4,18 @@ import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.domain.Photo;
 import daangnmarket.daangn.project.domain.vote.Vote;
 import daangnmarket.daangn.project.domain.vote.VoteOption;
+import daangnmarket.daangn.project.domain.vote.VoteResult;
 import daangnmarket.daangn.project.dto.vote.VoteResponseDto;
+import daangnmarket.daangn.project.dto.vote.VoteResultResponseDto;
 import daangnmarket.daangn.project.dto.vote.VoteSaveDto;
 import daangnmarket.daangn.project.handler.S3Uploader;
-import daangnmarket.daangn.project.repository.MemberRepository;
-import daangnmarket.daangn.project.repository.PhotoRepository;
-import daangnmarket.daangn.project.repository.VoteOptionRepository;
-import daangnmarket.daangn.project.repository.VoteRepository;
+import daangnmarket.daangn.project.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class VoteService {
     private final MemberRepository memberRepository;
     private final PhotoRepository photoRepository;
     private final VoteOptionRepository voteOptionRepository;
+    private final VoteResultRepository voteResultRepository;
     private final S3Uploader s3Uploader;
 
     public Vote findById(Long id) {
@@ -41,22 +43,34 @@ public class VoteService {
                 .description(voteSaveDto.getDescription())
                 .build();
 
+        voteSaveDto.getImages().forEach((f) -> {
+            try {
+                String S3Url = s3Uploader.upload(f, "static");
+                vote.addPhoto(photoRepository.save(Photo.builder().path(S3Url).build()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         voteSaveDto.getVoteOptionCreateDtoList().forEach((vo) -> {
             VoteOption voteOption = VoteOption.builder()
                     .content(vo.getContent())
                     .build();
-            vo.getImages().forEach((f) -> {
-                try{
-                    String S3Url = s3Uploader.upload(f, "static");
-                    voteOption.addPhoto(photoRepository.save(Photo.builder().path(S3Url).build()));
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-
-            });
             voteOption.setVote(vote);
             voteOptionRepository.save(voteOption);
         });
         voteRepository.save(vote);
     }
+
+    public void getResultForVote(VoteResponseDto voteResponseDto){
+        List<VoteResultResponseDto> collectedVoteResult = voteResponseDto.getVoteOptionResponseDtos().stream().map(
+                (e) -> {
+                    Long voteOptionId = e.getId();
+                    List<Long> participants = voteResultRepository.findAllMemberByVoteOptionId(voteOptionId)
+                            .stream().map(Member::getId).collect(Collectors.toList());
+                    return new VoteResultResponseDto(voteOptionId, participants);
+                }
+        ).collect(Collectors.toList());
+        voteResponseDto.setVoteResultResponseDtos(collectedVoteResult);
+    }
+
 }

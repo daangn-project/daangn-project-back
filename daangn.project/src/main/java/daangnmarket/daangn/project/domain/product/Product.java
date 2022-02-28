@@ -23,7 +23,7 @@ public class Product extends BaseTimeEntity {
 
     private String title;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "itemPost", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default // 빌더 패턴으로 생성 시 기본값으로 비어있는 리스트 생성
     private List<Photo> photoList = new ArrayList<>();
 
@@ -41,11 +41,10 @@ public class Product extends BaseTimeEntity {
     private Integer price;
 
 
-    // itemPost에서 파일 처리
     public void addPhoto(Photo photo){
         this.photoList.add(photo);
         // 게시글에 파일이 저장되어있지 않은 경우
-        if(photo.getItemPost() != this) photo.setItemPost(this);
+        if(photo.getProduct() != this) photo.setProduct(this);
     }
 
     // 연관관계 메서드

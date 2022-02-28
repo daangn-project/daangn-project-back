@@ -16,7 +16,6 @@ import java.io.IOException;
 @RequestMapping("/votes")
 public class VoteController {
     private final VoteService voteService;
-    private final MemberService memberService;
     @PostMapping
     public ResponseEntity<VoteSaveDto> createVote(@RequestBody VoteSaveDto voteSaveDto) throws IOException {
         voteService.save(voteSaveDto);
@@ -26,6 +25,7 @@ public class VoteController {
     @GetMapping("/{id}")
     public ResponseEntity<VoteResponseDto> showVote(@PathVariable Long id) {
         VoteResponseDto voteResponseDto = new VoteResponseDto(voteService.findById(id));
+        voteService.getResultForVote(voteResponseDto);
         return ResponseEntity.ok(voteResponseDto);
     }
 

@@ -28,20 +28,9 @@ public class VoteOption {
 
     private String content;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "voteOption", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<Photo> photoList = new ArrayList<>();
-
-    public void addPhoto(Photo photo){
-        this.photoList.add(photo);
-        // 게시글에 파일이 저장되어있지 않은 경우
-        if(photo.getVoteOption() != this) photo.setVoteOption(this);
-    }
-
     // 연관관계 메서드
     public void setVote(Vote vote){
         this.vote = vote;
         vote.getVoteOptionList().add(this);
     }
-
 }

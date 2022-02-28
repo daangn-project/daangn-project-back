@@ -16,16 +16,11 @@ public class VoteResult {
     @Column(name = "VOTE_RESULT_ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "VOTE_ID")
-    private Vote vote;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "VOTE_OPTION_ID")
     private VoteOption voteOption;
-
 }

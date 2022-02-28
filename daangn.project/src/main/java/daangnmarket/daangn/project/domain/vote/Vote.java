@@ -1,6 +1,7 @@
 package daangnmarket.daangn.project.domain.vote;
 
 import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.Photo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,6 +34,10 @@ public class Vote {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "vote", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    private List<Photo> photoList = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vote", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<VoteOption> voteOptionList = new ArrayList<>();
 
     // 24시간 뒤 시간을 default로 둔다.
@@ -43,5 +48,11 @@ public class Vote {
     public void setMember(Member member){
         this.member = member;
         member.getVoteList().add(this);
+    }
+
+    public void addPhoto(Photo photo){
+        this.photoList.add(photo);
+        // 게시글에 파일이 저장되어있지 않은 경우
+        if(photo.getVote() != this) photo.setVote(this);
     }
 }
