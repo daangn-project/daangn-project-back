@@ -3,7 +3,7 @@ package daangnmarket.daangn.project.mappingTest;
 
 import daangnmarket.daangn.project.domain.product.Product;
 import daangnmarket.daangn.project.domain.Member;
-import daangnmarket.daangn.project.repository.ItemPostRepository;
+import daangnmarket.daangn.project.repository.ProductRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public class EntityMappingTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private ItemPostRepository itemPostRepository;
+    private ProductRepository itemPostRepository;
 
     @BeforeEach
     public void deleteAll(){

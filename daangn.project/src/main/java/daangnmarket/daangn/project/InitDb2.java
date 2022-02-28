@@ -2,9 +2,8 @@ package daangnmarket.daangn.project;
 
 import daangnmarket.daangn.project.domain.*;
 import daangnmarket.daangn.project.repository.CommunityPostRepository;
-import daangnmarket.daangn.project.repository.ItemPostRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
-import daangnmarket.daangn.project.service.ItemPostService;
+import daangnmarket.daangn.project.service.ProductService;
 import daangnmarket.daangn.project.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,7 +28,7 @@ public class InitDb2 {
     static class InitService {
 
         private final MemberService memberService;
-        private final ItemPostService itemPostService;
+        private final ProductService itemPostService;
         private final MemberRepository memberRepository;
         private final CommunityPostRepository communityPostRepository;
 

@@ -4,9 +4,9 @@ import daangnmarket.daangn.project.domain.product.ProductCategory;
 import daangnmarket.daangn.project.domain.product.Product;
 import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.domain.Photo;
-import daangnmarket.daangn.project.repository.ItemPostRepository;
+import daangnmarket.daangn.project.repository.ProductRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
-import daangnmarket.daangn.project.service.ItemPostService;
+import daangnmarket.daangn.project.service.ProductService;
 import daangnmarket.daangn.project.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -35,9 +35,9 @@ public class InitDb {
     static class InitService {
 
         private final MemberService memberService;
-        private final ItemPostService itemPostService;
+        private final ProductService itemPostService;
         private final MemberRepository memberRepository;
-        private final ItemPostRepository itemPostRepository;
+        private final ProductRepository itemPostRepository;
 
         public void dbInit1() {
             Member member1 = Member.builder().nickname("jsh1").email("email1@naver.com").password("1234").username("member1").build();
@@ -61,7 +61,7 @@ public class InitDb {
                         .title("Item : " + i)
                         .price(price)
                         .viewCount(0)
-                        .itemCategory(category)
+                        .productCategory(category)
                         .description("아이템 " + i +" 에 대한 설명입니다.")
                         .build();
                 itemPost.addPhoto(p);

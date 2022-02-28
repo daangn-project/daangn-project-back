@@ -48,7 +48,8 @@ public class CommunityPostService {
 
     // 생성
     public void save(CommunityPostSaveDto communityPostSaveDto, List<MultipartFile> files) throws IOException {
-        Member member = memberRepository.findByNickname(communityPostSaveDto.getWriter());
+        Member member = memberRepository.findByNickname(communityPostSaveDto.getWriter()).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
         CommunityPost communityPost = CommunityPost.builder()
                 .member(member)
                 .title(communityPostSaveDto.getTitle())

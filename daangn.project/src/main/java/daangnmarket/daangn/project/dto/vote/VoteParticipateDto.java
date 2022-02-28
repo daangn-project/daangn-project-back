@@ -1,4 +1,4 @@
-package daangnmarket.daangn.project.dto;
+package daangnmarket.daangn.project.dto.vote;
 
 import lombok.Data;
 

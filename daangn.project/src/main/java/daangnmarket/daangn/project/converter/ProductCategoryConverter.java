@@ -8,12 +8,12 @@ import javax.persistence.Converter;
 
 @Converter
 @Slf4j
-public class ItemCategoryConverter implements AttributeConverter<ProductCategory, String> {
+public class ProductCategoryConverter implements AttributeConverter<ProductCategory, String> {
 
     @Override
-    public String convertToDatabaseColumn(ProductCategory itemCategory) {
-        if(itemCategory == null) return null;
-        return itemCategory.getValue();
+    public String convertToDatabaseColumn(ProductCategory productCategory) {
+        if(productCategory == null) return null;
+        return productCategory.getValue();
     }
 
     @Override

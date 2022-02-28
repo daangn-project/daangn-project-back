@@ -14,7 +14,7 @@ public class ProductSaveDto {
     private String title;
     private String description;
     private Integer price;
-    private ProductCategory itemCategory;
+    private ProductCategory productCategory;
     @Builder.Default
     private List<String> photoList = new ArrayList<>();
 }

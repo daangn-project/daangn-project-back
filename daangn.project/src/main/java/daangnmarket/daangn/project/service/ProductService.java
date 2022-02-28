@@ -9,7 +9,7 @@ import daangnmarket.daangn.project.dto.product.ProductDetailResponseDto;
 import daangnmarket.daangn.project.dto.product.ProductSaveDto;
 import daangnmarket.daangn.project.dto.PhotoResponseDto;
 import daangnmarket.daangn.project.handler.S3Uploader;
-import daangnmarket.daangn.project.repository.ItemPostRepository;
+import daangnmarket.daangn.project.repository.ProductRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.repository.PhotoRepository;
 import daangnmarket.daangn.project.vo.ItemPostFileVO;
@@ -25,21 +25,23 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ItemPostService {
-    private final ItemPostRepository itemPostRepository;
+public class ProductService {
+    private final ProductRepository itemPostRepository;
     private final MemberRepository memberRepository;
     private final PhotoRepository photoRepository;
     private final S3Uploader s3Uploader;
 
     // 생성
     public void save(ProductSaveDto productSaveDto, List<MultipartFile> files) throws IOException {
-        Member member = memberRepository.findByNickname(productSaveDto.getWriter());
+        Member member = memberRepository.findByNickname(productSaveDto.getWriter()).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
+        );
         Product itemPost = Product.builder()
                 .member(member)
                 .title(productSaveDto.getTitle())
                 .description(productSaveDto.getDescription())
                 .price(productSaveDto.getPrice())
-                .itemCategory(productSaveDto.getItemCategory())
+                .productCategory(productSaveDto.getProductCategory())
                 .viewCount(0)
                 .build();
 
@@ -65,7 +67,7 @@ public class ItemPostService {
                 .title(itemPostFileVO.getTitle())
                 .description(itemPostFileVO.getDescription())
                 .price(itemPostFileVO.getPrice())
-                .itemCategory(itemPostFileVO.getItemCategory())
+                .productCategory(itemPostFileVO.getItemCategory())
                 .build();
     }
 
