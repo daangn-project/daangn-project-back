@@ -1,6 +1,5 @@
 package daangnmarket.daangn.project.controller;
 
-import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.dto.product.ProductByUserDto;
 import daangnmarket.daangn.project.dto.product.ProductDetailResponseDto;
 import daangnmarket.daangn.project.dto.product.ProductSaveDto;
@@ -9,7 +8,6 @@ import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.service.ProductService;
 import daangnmarket.daangn.project.service.MemberService;
-import daangnmarket.daangn.project.vo.ItemPostFileVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,30 +68,30 @@ public class ProductController {
 
     // 생성
     @PostMapping("")
-    public ResponseEntity<Message> createProduct(@ModelAttribute ItemPostFileVO itemPostFileVO) throws IOException{
-        Member member = memberService.findById(Long.parseLong(itemPostFileVO.getMemberId()));
-        ProductSaveDto productSaveDto = ProductSaveDto.builder()
-                .writer(member.getNickname())
-                .title(itemPostFileVO.getTitle())
-                .description(itemPostFileVO.getDescription())
-                .price(itemPostFileVO.getPrice())
-                .productCategory(itemPostFileVO.getItemCategory())
-                .build();
+    public ResponseEntity<Message> createProduct(@ModelAttribute ProductSaveDto productSaveDto) throws IOException{
+//        Member member = memberService.findByNickname(productSaveDto.getWriter());
+//        ProductSaveDto productSaveDto = ProductSaveDto.builder()
+//                .writer(member.getNickname())
+//                .title(itemPostFileVO.getTitle())
+//                .description(itemPostFileVO.getDescription())
+//                .price(itemPostFileVO.getPrice())
+//                .productCategory(itemPostFileVO.getItemCategory())
+//                .build();
 
-        productService.save(productSaveDto, itemPostFileVO.getFiles());
+        productService.save(productSaveDto);
         return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("게시물이 등록되었어요.").data(productSaveDto).build(), HttpStatus.OK);
     }
 
     // 수정
-    @PutMapping("/{id}")
-    public ResponseEntity<Message> updateProduct(@PathVariable Long id, @ModelAttribute ItemPostFileVO itemPostFileVO) {
-        ProductSaveDto updatedDto = productService.update(id, itemPostFileVO);
-        return new ResponseEntity<>(Message.builder()
-                .status(StatusEnum.OK)
-                .message("게시물을 수정했어요.")
-                .data(updatedDto)
-                .build(), HttpStatus.OK);
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Message> updateProduct(@PathVariable Long id, @ModelAttribute ItemPostFileVO itemPostFileVO) {
+//        ProductSaveDto updatedDto = productService.update(id, itemPostFileVO);
+//        return new ResponseEntity<>(Message.builder()
+//                .status(StatusEnum.OK)
+//                .message("게시물을 수정했어요.")
+//                .data(updatedDto)
+//                .build(), HttpStatus.OK);
+//    }
 
     // 삭제
     @DeleteMapping("/{id}")
