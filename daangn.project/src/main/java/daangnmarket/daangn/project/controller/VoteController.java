@@ -1,28 +1,32 @@
 package daangnmarket.daangn.project.controller;
 
-import daangnmarket.daangn.project.dto.VoteParticipateDto;
-import daangnmarket.daangn.project.dto.VoteSaveDto;
-import daangnmarket.daangn.project.dto.VoteUpdateDto;
+import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.vote.Vote;
+import daangnmarket.daangn.project.dto.vote.*;
+import daangnmarket.daangn.project.service.MemberService;
 import daangnmarket.daangn.project.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/votes")
 public class VoteController {
     private final VoteService voteService;
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Long> showVote(@PathVariable String id) {
-        return null;
+    private final MemberService memberService;
+    @PostMapping
+    public ResponseEntity<VoteSaveDto> createVote(@RequestBody VoteSaveDto voteSaveDto) throws IOException {
+        voteService.save(voteSaveDto);
+        return ResponseEntity.ok(voteSaveDto);
     }
 
-
-    @PostMapping
-    public ResponseEntity<Long> createVote(@RequestBody VoteSaveDto voteSaveDto){
-        return null;
+    @GetMapping("/{id}")
+    public ResponseEntity<VoteResponseDto> showVote(@PathVariable Long id) {
+        VoteResponseDto voteResponseDto = new VoteResponseDto(voteService.findById(id));
+        return ResponseEntity.ok(voteResponseDto);
     }
 
     @PutMapping
@@ -32,7 +36,6 @@ public class VoteController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> deleteVote(@PathVariable String id) {
-
         return null;
     }
 

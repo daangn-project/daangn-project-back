@@ -16,7 +16,7 @@ public class ProductByUserDto {
     private Long id;
     private String title;
     private String description;
-    private String itemCategory;
+    private String productCategory;
     private Integer viewCount;
     private Integer price;
     private LocalDateTime createdDate;
@@ -31,7 +31,7 @@ public class ProductByUserDto {
         this.description = entity.getDescription();
         this.viewCount = entity.getViewCount();
         this.price = entity.getPrice();
-        this.itemCategory = entity.getItemCategory().getValue();
+        this.productCategory = entity.getProductCategory().getValue();
         this.imageUrls = entity.getPhotoList().stream().map(Photo::getPath).collect(Collectors.toList());
         this.thumbnailImg = entity.getPhotoList().isEmpty() ? null : entity.getPhotoList().get(0).getPath();
         this.createdDate = entity.getCreatedTime();

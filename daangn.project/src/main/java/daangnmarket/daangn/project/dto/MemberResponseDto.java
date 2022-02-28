@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 public class MemberResponseDto {
     private String nickname;
     private String email;
-    private List<ProductDetailResponseDto> itemPostResponseDtoList;
+    private List<ProductDetailResponseDto> productDetailResponseDtoList;
 
     public  MemberResponseDto(Member member){
         this.nickname = member.getNickname();
         this.email = member.getNickname();
-        this.itemPostResponseDtoList = member.getItemPostList()
+        this.productDetailResponseDtoList = member.getProductList()
                 .stream().map(ProductDetailResponseDto::new).collect(Collectors.toList());
     }
 }

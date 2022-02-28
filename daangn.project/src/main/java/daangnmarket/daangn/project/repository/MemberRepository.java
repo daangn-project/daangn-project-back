@@ -19,7 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
     int updateUserNickname(@Param(value="nickname") String nickname, @Param(value="id")Long id);
 
     @Query("select m from Member m where m.nickname = :nickname")
-    Member findByNickname(@Param(value="nickname") String writer);
+    Optional<Member> findByNickname(@Param(value="nickname") String nickname);
 
     @Query("select m from Member m where m.username = :username")
     Optional<Member> findByUsername(@Param(value="username") String username);
