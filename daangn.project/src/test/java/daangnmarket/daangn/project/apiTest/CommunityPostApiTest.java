@@ -1,8 +1,8 @@
 package daangnmarket.daangn.project.apiTest;
 
 
-import daangnmarket.daangn.project.controller.CommunityPostController;
-import daangnmarket.daangn.project.repository.CommunityPostRepository;
+import daangnmarket.daangn.project.controller.CommunityController;
+import daangnmarket.daangn.project.repository.CommunityRepository;
 import daangnmarket.daangn.project.service.CommunityPostService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,10 +18,10 @@ public class CommunityPostApiTest {
     private CommunityPostService communityPostService;
 
     @Autowired
-    private CommunityPostController communityPostController;
+    private CommunityController communityController;
 
     @Autowired
-    private CommunityPostRepository communityPostRepository;
+    private CommunityRepository communityPostRepository;
 
 
     @Test
