@@ -29,8 +29,8 @@ public class Photo {
     private Product product;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "COMMUNITY_POST_ID")
-    private CommunityPost communityPost;
+    @JoinColumn(name = "COMMUNITY_ID")
+    private Community community;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "VOTE_ID")
@@ -52,10 +52,10 @@ public class Photo {
     }
 
     // 동네 생활
-    public void setCommunityPost(CommunityPost communityPost) {
-        this.communityPost = communityPost;
-        if(!communityPost.getPhotoList().contains(this)){
-            communityPost.getPhotoList().add(this);
+    public void setCommunityPost(Community community) {
+        this.community = community;
+        if(!community.getPhotoList().contains(this)){
+            community.getPhotoList().add(this);
         }
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class CommunityPostSaveDto {
+public class CommunitySaveDto {
 
     private String title;
     private String description;

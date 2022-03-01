@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class CommunityPostUpdateDto {
+public class CommunityUpdateDto {
     private String content;
     private CommunityCategory communityCategory;
 
     @Builder
-    public CommunityPostUpdateDto(String content, CommunityCategory communityCategory){
+    public CommunityUpdateDto(String content, CommunityCategory communityCategory){
 
         this.communityCategory = communityCategory;
         this.content = content;

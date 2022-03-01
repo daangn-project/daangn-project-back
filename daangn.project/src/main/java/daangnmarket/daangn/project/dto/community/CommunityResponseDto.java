@@ -1,6 +1,10 @@
 package daangnmarket.daangn.project.dto.community;
 
+<<<<<<< HEAD:daangn.project/src/main/java/daangnmarket/daangn/project/dto/community/CommunityPostResponseDto.java
 import daangnmarket.daangn.project.domain.CommunityPost;
+=======
+import daangnmarket.daangn.project.domain.Community;
+>>>>>>> eb71564 (fix: change name community):daangn.project/src/main/java/daangnmarket/daangn/project/dto/communitypost/CommunityPostResponseDto.java
 import daangnmarket.daangn.project.domain.Photo;
 import lombok.Data;
 
@@ -13,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class CommunityPostResponseDto {
+public class CommunityResponseDto {
     private Long id;
     private Long memberId;
     private String writer;
@@ -28,7 +32,7 @@ public class CommunityPostResponseDto {
     private List<String> imageUrls = new ArrayList<>();
     private String thumbnailImg;
 
-    public CommunityPostResponseDto(CommunityPost entity) {
+    public CommunityResponseDto(Community entity) {
         this.id = entity.getId();
         this.memberId = entity.getMember().getId();
         this.writer = entity.getMember().getNickname();
