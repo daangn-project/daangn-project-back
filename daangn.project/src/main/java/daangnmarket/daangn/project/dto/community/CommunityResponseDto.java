@@ -1,10 +1,7 @@
 package daangnmarket.daangn.project.dto.community;
 
-<<<<<<< HEAD:daangn.project/src/main/java/daangnmarket/daangn/project/dto/community/CommunityPostResponseDto.java
-import daangnmarket.daangn.project.domain.CommunityPost;
-=======
 import daangnmarket.daangn.project.domain.Community;
->>>>>>> eb71564 (fix: change name community):daangn.project/src/main/java/daangnmarket/daangn/project/dto/communitypost/CommunityPostResponseDto.java
+
 import daangnmarket.daangn.project.domain.Photo;
 import lombok.Data;
 

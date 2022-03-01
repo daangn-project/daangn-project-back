@@ -40,7 +40,7 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
-    private List<Community> communityPostList = new ArrayList<>();
+    private List<Community> communityList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
