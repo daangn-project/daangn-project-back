@@ -40,7 +40,6 @@ public class Product extends BaseTimeEntity {
 
     private Integer price;
 
-
     public void addPhoto(Photo photo){
         this.photoList.add(photo);
         // 게시글에 파일이 저장되어있지 않은 경우

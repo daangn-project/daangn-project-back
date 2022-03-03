@@ -5,6 +5,7 @@ import daangnmarket.daangn.project.domain.Photo;
 import daangnmarket.daangn.project.domain.vote.Vote;
 import daangnmarket.daangn.project.domain.vote.VoteOption;
 import daangnmarket.daangn.project.domain.vote.VoteResult;
+import daangnmarket.daangn.project.dto.vote.VoteParticipateDto;
 import daangnmarket.daangn.project.dto.vote.VoteResponseDto;
 import daangnmarket.daangn.project.dto.vote.VoteResultResponseDto;
 import daangnmarket.daangn.project.dto.vote.VoteSaveDto;
@@ -73,4 +74,11 @@ public class VoteService {
         voteResponseDto.setVoteResultResponseDtos(collectedVoteResult);
     }
 
+    public void participate(VoteParticipateDto voteParticipateDto) {
+        VoteResult voteResult = VoteResult.builder()
+                .voteOption(voteOptionRepository.findById(voteParticipateDto.getVoteOptionId()).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 항목입니다.")))
+                .member(memberRepository.findByNickname(voteParticipateDto.getParticipantName()).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다.")))
+                .build();
+        voteResultRepository.save(voteResult);
+    }
 }

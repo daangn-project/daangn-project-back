@@ -18,6 +18,6 @@ public class ProductLike {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ITEM_POST_ID")
-    private Product itemPost;
+    @JoinColumn(name = "PRODUCT_ID")
+    private Product product;
 }

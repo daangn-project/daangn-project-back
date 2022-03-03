@@ -17,30 +17,32 @@ import java.io.IOException;
 public class VoteController {
     private final VoteService voteService;
     @PostMapping
-    public ResponseEntity<VoteSaveDto> createVote(@RequestBody VoteSaveDto voteSaveDto) throws IOException {
+    public ResponseEntity<VoteSaveDto> voteCreate(@RequestBody VoteSaveDto voteSaveDto) throws IOException {
         voteService.save(voteSaveDto);
         return ResponseEntity.ok(voteSaveDto);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VoteResponseDto> showVote(@PathVariable Long id) {
+    public ResponseEntity<VoteResponseDto> voteDetails(@PathVariable Long id) {
         VoteResponseDto voteResponseDto = new VoteResponseDto(voteService.findById(id));
         voteService.getResultForVote(voteResponseDto);
         return ResponseEntity.ok(voteResponseDto);
     }
 
     @PutMapping
-    public ResponseEntity<Long> updateVote(@RequestBody VoteUpdateDto voteUpdateDto) {
+    public ResponseEntity<Long> voteModify(@RequestBody VoteUpdateDto voteUpdateDto) {
         return null;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deleteVote(@PathVariable String id) {
+    public ResponseEntity<Long> voteRemove(@PathVariable String id) {
         return null;
     }
 
-    @PostMapping("/participate")
-    public ResponseEntity<Long> participateVote(@RequestBody VoteParticipateDto voteParticipateDto) {
-        return null;
+    @PutMapping("/{id}")
+    public ResponseEntity<VoteParticipateDto> voteParticipate(@PathVariable Long id, @RequestBody VoteParticipateDto voteParticipateDto) {
+        // voteOptionId를 조회하여 해당 투표 결과에 회원의 이름 추가
+        voteService.participate(voteParticipateDto);
+        return ResponseEntity.ok(voteParticipateDto);
     }
 }

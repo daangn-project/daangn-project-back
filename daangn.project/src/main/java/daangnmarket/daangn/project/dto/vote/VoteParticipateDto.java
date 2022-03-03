@@ -4,4 +4,6 @@ import lombok.Data;
 
 @Data
 public class VoteParticipateDto {
+    private Long voteOptionId;
+    private String participantName;
 }
