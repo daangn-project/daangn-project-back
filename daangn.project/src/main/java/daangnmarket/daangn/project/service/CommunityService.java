@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class CommunityPostService {
+public class CommunityService {
     private final CommunityRepository communityRepository;
     private final S3Uploader s3Uploader;
     private final MemberRepository memberRepository;
