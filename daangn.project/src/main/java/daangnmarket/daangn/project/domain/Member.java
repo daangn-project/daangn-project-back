@@ -2,6 +2,7 @@ package daangnmarket.daangn.project.domain;
 
 
 import daangnmarket.daangn.project.domain.community.Community;
+import daangnmarket.daangn.project.domain.community.CommunityComment;
 import daangnmarket.daangn.project.domain.product.Product;
 import daangnmarket.daangn.project.domain.vote.Vote;
 import lombok.*;
@@ -47,6 +48,8 @@ public class Member {
     @Builder.Default
     private List<Vote> voteList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<CommunityComment> commentList = new ArrayList<>();
 
 
 }
