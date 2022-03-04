@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/community-posts")
+@RequestMapping("/communities")
 public class CommunityController {
     private final CommunityPostService communityPostService;
     private final MemberService memberService;

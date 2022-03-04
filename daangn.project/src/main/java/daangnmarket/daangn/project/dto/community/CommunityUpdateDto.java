@@ -1,6 +1,6 @@
 package daangnmarket.daangn.project.dto.community;
 
-import daangnmarket.daangn.project.domain.CommunityCategory;
+import daangnmarket.daangn.project.domain.community.CommunityCategory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
