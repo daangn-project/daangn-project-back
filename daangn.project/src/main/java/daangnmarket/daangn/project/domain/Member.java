@@ -1,6 +1,7 @@
 package daangnmarket.daangn.project.domain;
 
 
+import daangnmarket.daangn.project.domain.community.Community;
 import daangnmarket.daangn.project.domain.product.Product;
 import daangnmarket.daangn.project.domain.vote.Vote;
 import lombok.*;

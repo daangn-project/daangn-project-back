@@ -1,4 +1,4 @@
-package daangnmarket.daangn.project.domain;
+package daangnmarket.daangn.project.domain.community;
 
 import lombok.Getter;
 

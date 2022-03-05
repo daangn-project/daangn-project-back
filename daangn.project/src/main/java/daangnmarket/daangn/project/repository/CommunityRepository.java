@@ -1,7 +1,7 @@
 package daangnmarket.daangn.project.repository;
 
-import daangnmarket.daangn.project.domain.CommunityCategory;
-import daangnmarket.daangn.project.domain.Community;
+import daangnmarket.daangn.project.domain.community.CommunityCategory;
+import daangnmarket.daangn.project.domain.community.Community;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

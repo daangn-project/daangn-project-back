@@ -3,6 +3,8 @@ package daangnmarket.daangn.project.service;
 
 import daangnmarket.daangn.project.domain.*;
 
+import daangnmarket.daangn.project.domain.community.Community;
+import daangnmarket.daangn.project.domain.community.CommunityCategory;
 import daangnmarket.daangn.project.dto.community.CommunityResponseDto;
 import daangnmarket.daangn.project.dto.community.CommunitySaveDto;
 import daangnmarket.daangn.project.handler.S3Uploader;
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class CommunityPostService {
+public class CommunityService {
     private final CommunityRepository communityRepository;
     private final S3Uploader s3Uploader;
     private final MemberRepository memberRepository;

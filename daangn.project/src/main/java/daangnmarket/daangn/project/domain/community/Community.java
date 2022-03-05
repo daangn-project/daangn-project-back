@@ -1,5 +1,8 @@
-package daangnmarket.daangn.project.domain;
+package daangnmarket.daangn.project.domain.community;
 
+import daangnmarket.daangn.project.domain.BaseTimeEntity;
+import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.Photo;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Community extends BaseTimeEntity{
+public class Community extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

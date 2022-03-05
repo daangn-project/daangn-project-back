@@ -1,6 +1,6 @@
 package daangnmarket.daangn.project.vo;
 
-import daangnmarket.daangn.project.domain.CommunityCategory;
+import daangnmarket.daangn.project.domain.community.CommunityCategory;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 

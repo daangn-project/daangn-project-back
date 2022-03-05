@@ -1,6 +1,6 @@
 package daangnmarket.daangn.project.dto.community;
 
-import daangnmarket.daangn.project.domain.Community;
+import daangnmarket.daangn.project.domain.community.Community;
 
 import daangnmarket.daangn.project.domain.Photo;
 import lombok.Data;

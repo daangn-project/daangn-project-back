@@ -2,6 +2,8 @@ package daangnmarket.daangn.project;
 
 import daangnmarket.daangn.project.domain.*;
 
+import daangnmarket.daangn.project.domain.community.Community;
+import daangnmarket.daangn.project.domain.community.CommunityCategory;
 import daangnmarket.daangn.project.repository.CommunityRepository;
 
 import daangnmarket.daangn.project.repository.MemberRepository;
@@ -53,7 +55,7 @@ public class InitDb2 {
 
                 Community community = Community.builder()
                         .member(member)
-                        .title("communityPost : " + i)
+                        .title("동네생활게시물 : " + i)
                         .viewCount(0)
                         .communityCategory(category)
                         .description(i +"번 동네생활에 대한 설명입니다.")
