@@ -1,5 +1,8 @@
 package daangnmarket.daangn.project.domain;
 
+import daangnmarket.daangn.project.domain.community.Community;
+import daangnmarket.daangn.project.domain.product.Product;
+import daangnmarket.daangn.project.domain.vote.Vote;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,26 +25,37 @@ public class Photo {
 //    private Long size;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ITEM_POST_ID")
-    private ItemPost itemPost;
+    @JoinColumn(name = "PRODUCT_ID")
+    private Product product;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "COMMUNITY_POST_ID")
-    private CommunityPost communityPost;
+    @JoinColumn(name = "COMMUNITY_ID")
+    private Community community;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "VOTE_ID")
+    private Vote vote;
 
     // 연관관계 메서드
-    public void setItemPost(ItemPost itemPost) {
-        this.itemPost = itemPost;
-        if (!itemPost.getPhotoList().contains(this)) {
-            itemPost.getPhotoList().add(this);
+    public void setProduct(Product product) {
+        this.product = product;
+        if (!product.getPhotoList().contains(this)) {
+            product.getPhotoList().add(this);
+        }
+    }
+
+    public void setVote(Vote vote) {
+        this.vote = vote;
+        if (!vote.getPhotoList().contains(this)) {
+            vote.getPhotoList().add(this);
         }
     }
 
     // 동네 생활
-    public void setCommunityPost(CommunityPost communityPost) {
-        this.communityPost = communityPost;
-        if(!communityPost.getPhotoList().contains(this)){
-            communityPost.getPhotoList().add(this);
+    public void setCommunityPost(Community community) {
+        this.community = community;
+        if(!community.getPhotoList().contains(this)){
+            community.getPhotoList().add(this);
         }
     }
 

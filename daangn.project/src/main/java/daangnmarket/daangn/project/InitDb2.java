@@ -1,10 +1,13 @@
 package daangnmarket.daangn.project;
 
 import daangnmarket.daangn.project.domain.*;
-import daangnmarket.daangn.project.repository.CommunityPostRepository;
-import daangnmarket.daangn.project.repository.ItemPostRepository;
+
+import daangnmarket.daangn.project.domain.community.Community;
+import daangnmarket.daangn.project.domain.community.CommunityCategory;
+import daangnmarket.daangn.project.repository.CommunityRepository;
+
 import daangnmarket.daangn.project.repository.MemberRepository;
-import daangnmarket.daangn.project.service.ItemPostService;
+import daangnmarket.daangn.project.service.ProductService;
 import daangnmarket.daangn.project.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,9 +32,9 @@ public class InitDb2 {
     static class InitService {
 
         private final MemberService memberService;
-        private final ItemPostService itemPostService;
+        private final ProductService itemPostService;
         private final MemberRepository memberRepository;
-        private final CommunityPostRepository communityPostRepository;
+        private final CommunityRepository communityRepository;
 
         public void dbInit2() {
             Member member1 = Member.builder().nickname("skc1").email("skc1@naver.com").password("1234").username("member4").build();
@@ -47,19 +50,19 @@ public class InitDb2 {
             for(int i = 0; i < 10; i++){
                 Member member = memberArr[new Random().nextInt(memberArr.length)];
                 CommunityCategory category = categories[new Random().nextInt(categories.length)];
-                int communityPostImageIdx = (int) (1 + Math.random() * 8);
-                Photo p = Photo.builder().path("https://daangn-images.s3.ap-northeast-2.amazonaws.com/static/test-"+String.valueOf(communityPostImageIdx)+".jpeg").build();
+                int communityImageIdx = (int) (1 + Math.random() * 8);
+                Photo p = Photo.builder().path("https://daangn-images.s3.ap-northeast-2.amazonaws.com/static/test-"+String.valueOf(communityImageIdx)+".jpeg").build();
 
-                CommunityPost communityPost = CommunityPost.builder()
+                Community community = Community.builder()
                         .member(member)
-                        .title("communityPost : " + i)
+                        .title("동네생활게시물 : " + i)
                         .viewCount(0)
                         .communityCategory(category)
                         .description(i +"번 동네생활에 대한 설명입니다.")
                         .build();
-                communityPost.addPhoto(p);
-                communityPost.setMember(member);
-                communityPostRepository.save(communityPost);
+                community.addPhoto(p);
+                community.setMember(member);
+                communityRepository.save(community);
             }
         }
     }

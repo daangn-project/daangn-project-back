@@ -1,6 +1,10 @@
 package daangnmarket.daangn.project.domain;
 
 
+import daangnmarket.daangn.project.domain.community.Community;
+import daangnmarket.daangn.project.domain.community.CommunityComment;
+import daangnmarket.daangn.project.domain.product.Product;
+import daangnmarket.daangn.project.domain.vote.Vote;
 import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -35,16 +39,20 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
-    private List<ItemPost> itemPostList = new ArrayList<>();
-
+    private List<Product> productList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
-    private List<CommunityPost> communityPostList = new ArrayList<>();
+    private List<Community> communityList = new ArrayList<>();
 
-    private String appendDate;
-    private String updateDate;
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    private List<Vote> voteList = new ArrayList<>();
 
-    private String userAuth;
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    private List<CommunityComment> commentList = new ArrayList<>();
+
+
 }
 

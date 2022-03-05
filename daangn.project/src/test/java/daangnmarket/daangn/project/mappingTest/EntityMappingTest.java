@@ -1,12 +1,10 @@
 package daangnmarket.daangn.project.mappingTest;
 
 
-import daangnmarket.daangn.project.domain.ItemPost;
+import daangnmarket.daangn.project.domain.product.Product;
 import daangnmarket.daangn.project.domain.Member;
-import daangnmarket.daangn.project.repository.ItemPostRepository;
+import daangnmarket.daangn.project.repository.ProductRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
-import org.assertj.core.api.Assert;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,10 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,7 +26,7 @@ public class EntityMappingTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private ItemPostRepository itemPostRepository;
+    private ProductRepository itemPostRepository;
 
     @BeforeEach
     public void deleteAll(){
@@ -48,11 +43,11 @@ public class EntityMappingTest {
 
         List<Member> all = memberRepository.findAll();
         Long memberId = all.get(0).getId();
-        ItemPost p = new ItemPost();
+        Product p = new Product();
         p.setMember(member);
 
         itemPostRepository.save(p);
-        List<ItemPost> x = itemPostRepository.findByMemberId(memberId);
+        List<Product> x = itemPostRepository.findByMemberId(memberId);
 
         assertThat(x.get(0)).isEqualTo(member);
     }
