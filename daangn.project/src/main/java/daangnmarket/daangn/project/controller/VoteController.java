@@ -3,9 +3,12 @@ package daangnmarket.daangn.project.controller;
 import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.domain.vote.Vote;
 import daangnmarket.daangn.project.dto.vote.*;
+import daangnmarket.daangn.project.message.Message;
+import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.service.MemberService;
 import daangnmarket.daangn.project.service.VoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +29,10 @@ public class VoteController {
     @GetMapping("/{id}")
     public ResponseEntity<VoteResponseDto> showVote(@PathVariable Long id) {
         VoteResponseDto voteResponseDto = new VoteResponseDto(voteService.findById(id));
+<<<<<<< Updated upstream
+=======
+        voteService.getResultOfVote(voteResponseDto);
+>>>>>>> Stashed changes
         return ResponseEntity.ok(voteResponseDto);
     }
 
@@ -39,8 +46,17 @@ public class VoteController {
         return null;
     }
 
+<<<<<<< Updated upstream
     @PostMapping("/participate")
     public ResponseEntity<Long> participateVote(@RequestBody VoteParticipateDto voteParticipateDto) {
         return null;
+=======
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> voteParticipate(@PathVariable Long id, @RequestBody VoteParticipateDto voteParticipateDto) {
+        if(voteService.participate(id, voteParticipateDto))
+            return ResponseEntity.ok(voteParticipateDto);
+        return new ResponseEntity<>(Message.builder().status(StatusEnum.BAD_REQUEST).message("이미 투표하셨습니다.").build(), HttpStatus.BAD_REQUEST);
+
+>>>>>>> Stashed changes
     }
 }
