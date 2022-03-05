@@ -48,7 +48,8 @@ public class Member {
     @Builder.Default
     private List<Vote> voteList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
     private List<CommunityComment> commentList = new ArrayList<>();
 
 

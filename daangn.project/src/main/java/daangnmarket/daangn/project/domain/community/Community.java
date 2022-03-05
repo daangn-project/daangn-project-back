@@ -38,7 +38,7 @@ public class Community extends BaseTimeEntity {
 
     private Integer viewCount;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<CommunityComment> commentList = new ArrayList<>(); // 동네생활 댓글 리스트
 
     // itemPost에서 파일 처리
