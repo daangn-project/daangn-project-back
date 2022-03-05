@@ -36,6 +36,8 @@ dependencies {
 	implementation 'commons-io:commons-io:2.11.0'
 	implementation 'com.sun.xml.bind:jaxb-impl:2.3.3'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE' // s3 설정
+
+	implementation 'org.springframework.boot:spring-boot-starter-validation' // validation처리
 }
 
 test {

@@ -8,6 +8,7 @@ import daangnmarket.daangn.project.domain.vote.Vote;
 import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 @Entity
 @Getter @Setter
