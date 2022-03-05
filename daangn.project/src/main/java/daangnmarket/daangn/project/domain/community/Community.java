@@ -38,9 +38,8 @@ public class Community extends BaseTimeEntity {
 
     private Integer viewCount;
 
-//    public void update(String description){
-//        this.description = description;
-//    }
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval=true)
+    private List<CommunityComment> commentList = new ArrayList<>(); // 동네생활 댓글 리스트
 
     // itemPost에서 파일 처리
     public void addPhoto(Photo photo){
@@ -54,6 +53,7 @@ public class Community extends BaseTimeEntity {
         this.member = member;
         member.getCommunityList().add(this);
     }
+
     @Builder
     public Community(String description, Member member, CommunityCategory communityCategory){
         this.description = description;
