@@ -11,7 +11,19 @@ import java.util.List;
 
 @Repository
 public interface VoteResultRepository extends JpaRepository<VoteResult, Long> {
+<<<<<<< HEAD
 
     @Query("select vr.member from VoteResult vr where vr.voteOption.id = :voteOptionId")
     List<Member> findAllMemberByVoteOptionId(@Param(value="voteOptionId") Long voteOptionId);
+=======
+<<<<<<< Updated upstream
+=======
+
+    @Query("select vr.member from VoteResult vr where vr.voteOption.id = :voteOptionId")
+    List<Member> findAllMemberByVoteOptionId(@Param(value="voteOptionId") Long voteOptionId);
+
+    @Query("select vr from VoteResult vr where vr.id = :voteId")
+    List<VoteResult> findByVoteId(@Param(value="voteId") Long voteId);
+>>>>>>> Stashed changes
+>>>>>>> jsh/vote
 }

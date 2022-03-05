@@ -3,9 +3,12 @@ package daangnmarket.daangn.project.controller;
 import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.domain.vote.Vote;
 import daangnmarket.daangn.project.dto.vote.*;
+import daangnmarket.daangn.project.message.Message;
+import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.service.MemberService;
 import daangnmarket.daangn.project.service.VoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +28,7 @@ public class VoteController {
     @GetMapping("/{id}")
     public ResponseEntity<VoteResponseDto> voteDetails(@PathVariable Long id) {
         VoteResponseDto voteResponseDto = new VoteResponseDto(voteService.findById(id));
-        voteService.getResultForVote(voteResponseDto);
+        voteService.getResultOfVote(voteResponseDto);
         return ResponseEntity.ok(voteResponseDto);
     }
 
@@ -40,9 +43,10 @@ public class VoteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VoteParticipateDto> voteParticipate(@PathVariable Long id, @RequestBody VoteParticipateDto voteParticipateDto) {
-        // voteOptionId를 조회하여 해당 투표 결과에 회원의 이름 추가
-        voteService.participate(voteParticipateDto);
-        return ResponseEntity.ok(voteParticipateDto);
+    public ResponseEntity<Object> voteParticipate(@PathVariable Long id, @RequestBody VoteParticipateDto voteParticipateDto) {
+        if(voteService.participate(id, voteParticipateDto))
+            return ResponseEntity.ok(voteParticipateDto);
+        return new ResponseEntity<>(Message.builder().status(StatusEnum.BAD_REQUEST).message("이미 투표하셨습니다.").build(), HttpStatus.BAD_REQUEST);
+
     }
 }
