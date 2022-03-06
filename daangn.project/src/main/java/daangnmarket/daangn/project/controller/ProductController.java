@@ -69,15 +69,6 @@ public class ProductController {
     // 생성
     @PostMapping("")
     public ResponseEntity<Message> createProduct(@ModelAttribute ProductSaveDto productSaveDto) throws IOException{
-//        Member member = memberService.findByNickname(productSaveDto.getWriter());
-//        ProductSaveDto productSaveDto = ProductSaveDto.builder()
-//                .writer(member.getNickname())
-//                .title(itemPostFileVO.getTitle())
-//                .description(itemPostFileVO.getDescription())
-//                .price(itemPostFileVO.getPrice())
-//                .productCategory(itemPostFileVO.getItemCategory())
-//                .build();
-
         productService.save(productSaveDto);
         return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("게시물이 등록되었어요.").data(productSaveDto).build(), HttpStatus.OK);
     }

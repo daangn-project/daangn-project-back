@@ -50,50 +50,47 @@ public class CommunityService {
     }
 
     // 생성
-    public void save(CommunitySaveDto communityPostSaveDto, List<MultipartFile> files) throws IOException {
-
-        Member member = memberRepository.findByNickname(communityPostSaveDto.getWriter()).orElseThrow(
+    public void save(CommunitySaveDto communitySaveDto) throws IOException {
+        Member member = memberRepository.findByNickname(communitySaveDto.getWriter()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
         Community community = Community.builder()
 
                 .member(member)
-                .title(communityPostSaveDto.getTitle())
-                .description(communityPostSaveDto.getDescription())
-                .communityCategory(communityPostSaveDto.getCommunityCategory())
+                .title(communitySaveDto.getTitle())
+                .description(communitySaveDto.getDescription())
+                .communityCategory(communitySaveDto.getCommunityCategory())
                 .viewCount(0)
                 .build();
 
-        files.forEach((f) -> {
+        communitySaveDto.getImages().forEach((f) -> {
             try {
                 String S3Url = s3Uploader.upload(f, "static");
                 community.addPhoto(photoRepository.save(Photo.builder().path(S3Url).build()));
-                communityPostSaveDto.getPhotoList().add(S3Url);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+
         community.setMember(member);
         communityRepository.save(community);
     }
 
     // 동네 생활 수정
-    @Transactional
-    public CommunitySaveDto update(Long id, CommunityPostFileVO communityPostFileVO) {
-        Community communityPost = communityRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 동네생활이 없습니다. id="+id));
-
-        return CommunitySaveDto.builder()
-                .writer(communityPost.getMember().getNickname())
-                .title(communityPostFileVO.getTitle())
-                .description(communityPostFileVO.getDescription())
-                .communityCategory(communityPostFileVO.getCommunityCategory())
-                .build();
-    }
+//    @Transactional
+//    public CommunitySaveDto update(Long id, CommunityPostFileVO communityPostFileVO) {
+//        Community communityPost = communityRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 동네생활이 없습니다. id="+id));
+//
+//        return CommunitySaveDto.builder()
+//                .writer(communityPost.getMember().getNickname())
+//                .title(communityPostFileVO.getTitle())
+//                .description(communityPostFileVO.getDescription())
+//                .communityCategory(communityPostFileVO.getCommunityCategory())
+//                .build();
+//    }
 
     // 동네 생활 삭제
     public void delete(Long id) throws IllegalArgumentException {
         Community community = communityRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 동네생활이 없습니다. id="+id));
         communityRepository.delete(community);
     }
-
-
 }

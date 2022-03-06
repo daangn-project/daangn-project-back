@@ -37,8 +37,8 @@ public class MemberService {
                     .password(signVo.getPassword())
                     .username(signVo.getUsername())
                     .nickname(signVo.getNickname())
-                    .appendDate(localTime)
-                    .updateDate(localTime)
+//                    .appendDate(localTime)
+//                    .updateDate(localTime)
                     .build();
 
             member.setPassword(new BCryptPasswordEncoder().encode(member.getPassword()));

@@ -60,29 +60,21 @@ public class CommunityController {
 
     // 동네 생활 생성
     @PostMapping("")
-    public ResponseEntity<Message> createCommunityPost(@ModelAttribute CommunityPostFileVO communityPostFileVO) throws IOException {
-        Member member = memberService.findById(Long.parseLong(communityPostFileVO.getMemberId()));
-
-        CommunitySaveDto communityPostSaveDto = CommunitySaveDto.builder()
-                .writer(member.getNickname())
-                .title(communityPostFileVO.getTitle())
-                .description(communityPostFileVO.getDescription())
-                .communityCategory(communityPostFileVO.getCommunityCategory())
-                .build();
-
-        communityService.save(communityPostSaveDto, communityPostFileVO.getFiles());
-        return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("동네 생활이 생성되었어요.").data(communityPostSaveDto).build(), HttpStatus.OK);
+    public ResponseEntity<Message> createCommunityPost(@ModelAttribute CommunitySaveDto communitySaveDto) throws IOException {
+        communityService.save(communitySaveDto);
+        return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("동네 생활이 생성되었어요.").data(communitySaveDto).build(), HttpStatus.OK);
     }
-    // 동네 생활 수정
-    @PutMapping("/{id}")
-    public ResponseEntity<Message> updateCommunityPost(@PathVariable Long id, @ModelAttribute CommunityPostFileVO communityPostFileVO) {
-        CommunitySaveDto communitySaveDto = communityService.update(id, communityPostFileVO);
-        return new ResponseEntity<>(Message.builder()
-                .status(StatusEnum.OK)
-                .message("동네 생활을 수정했어요.")
-                .data(communitySaveDto)
-                .build(), HttpStatus.OK);
-    }
+
+//    // 동네 생활 수정
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Message> updateCommunityPost(@PathVariable Long id, @ModelAttribute CommunityPostFileVO communityPostFileVO) {
+//        CommunitySaveDto communitySaveDto = communityService.update(id, communityPostFileVO);
+//        return new ResponseEntity<>(Message.builder()
+//                .status(StatusEnum.OK)
+//                .message("동네 생활을 수정했어요.")
+//                .data(communitySaveDto)
+//                .build(), HttpStatus.OK);
+//    }
 
     // 동네 생활삭제
     @DeleteMapping("/{id}")

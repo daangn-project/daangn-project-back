@@ -1,21 +1,19 @@
 package daangnmarket.daangn.project.dto.community;
 
 import daangnmarket.daangn.project.domain.community.CommunityCategory;
+import daangnmarket.daangn.project.domain.product.ProductCategory;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
 public class CommunitySaveDto {
-
+    private String writer;
     private String title;
     private String description;
-    private String writer;
     private CommunityCategory communityCategory;
-    @Builder.Default // 기본 생성자를 만들어준다.
-    private List<String> photoList = new ArrayList<>();
-
+    private List<MultipartFile> images = new ArrayList<>();
 }
