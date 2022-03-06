@@ -16,6 +16,7 @@ public class VoteResponseDto {
     private String title;
     private String description;
     private String writer;
+    private Boolean isMultipleVote;
     private List<String> imageUrls;
     private List<VoteOptionResponseDto> voteOptionResponseDtos;
     private List<VoteResultResponseDto> voteResultResponseDtos;
@@ -25,6 +26,7 @@ public class VoteResponseDto {
         this.title = vote.getTitle();
         this.description = vote.getDescription();
         this.writer = vote.getMember().getNickname();
+        this.isMultipleVote = vote.getIsMultipleVote();
         this.imageUrls = vote.getPhotoList().stream().map(Photo::getPath).collect(Collectors.toList());
         this.voteOptionResponseDtos = vote.getVoteOptionList().stream().map(
                 VoteOptionResponseDto::new).collect(Collectors.toList());

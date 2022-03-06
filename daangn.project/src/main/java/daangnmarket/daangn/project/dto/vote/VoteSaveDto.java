@@ -11,6 +11,7 @@ public class VoteSaveDto {
     private String writer;
     private String title;
     private String description;
+    private Boolean isMultipleVote;
     private List<MultipartFile> images = new ArrayList<>();
     private List<VoteOptionCreateDto> voteOptionCreateDtoList;
 }

@@ -44,6 +44,8 @@ public class Vote {
     @Column(columnDefinition = "")
     private Date expirationTime;
 
+    private Boolean isMultipleVote;
+
     // 연관관계 메서드
     public void setMember(Member member){
         this.member = member;

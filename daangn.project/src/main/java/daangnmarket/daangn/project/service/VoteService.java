@@ -47,6 +47,7 @@ public class VoteService {
                 .member(member)
                 .title(voteSaveDto.getTitle())
                 .description(voteSaveDto.getDescription())
+                .isMultipleVote(voteSaveDto.getIsMultipleVote())
                 .build();
 
         voteSaveDto.getImages().forEach((f) -> {
