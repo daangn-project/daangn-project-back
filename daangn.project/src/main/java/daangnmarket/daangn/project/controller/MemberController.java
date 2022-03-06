@@ -1,10 +1,7 @@
 package daangnmarket.daangn.project.controller;
 
-import daangnmarket.daangn.project.domain.Member;
-import daangnmarket.daangn.project.dto.MemberLoginDto;
-import daangnmarket.daangn.project.dto.MemberSaveDto;
+import daangnmarket.daangn.project.dto.member.MemberLoginDto;
 import daangnmarket.daangn.project.message.ApiResponse;
-import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.service.MemberService;
 import daangnmarket.daangn.project.vo.SignVo;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

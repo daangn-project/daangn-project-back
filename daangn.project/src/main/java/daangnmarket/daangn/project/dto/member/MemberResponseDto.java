@@ -1,4 +1,4 @@
-package daangnmarket.daangn.project.dto;
+package daangnmarket.daangn.project.dto.member;
 
 import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.dto.product.ProductDetailResponseDto;

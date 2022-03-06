@@ -1,6 +1,7 @@
 package daangnmarket.daangn.project.repository;
 
 import daangnmarket.daangn.project.domain.Member;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,8 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
 
     @Query("select m from Member m where m.username = :username")
     Optional<Member> findByUsername(@Param(value="username") String username);
+
+
+    @EntityGraph(attributePaths = "authorities")
+    Optional<Member> findOneWithAuthoritiesByUsername(String username);
 }
