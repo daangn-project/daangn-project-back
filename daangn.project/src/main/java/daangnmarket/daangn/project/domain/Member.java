@@ -10,6 +10,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 @Entity
 @Getter @Setter
 @Builder
@@ -32,10 +34,18 @@ public class Member {
 
     private String profileImg;
 
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
+    @Column(name = "activated")
+    private boolean activated;
 
-    private String auth;
+    @ManyToMany
+    @JoinTable(
+            name = "MEMBER_AUTHORITY",
+            joinColumns = {@JoinColumn(name = "MEMBER_ID", referencedColumnName = "MEMBER_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_NAME", referencedColumnName = "AUTHORITY_NAME")})
+    private Set<Authority> authorities;
+
+
+//    private String auth;
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
