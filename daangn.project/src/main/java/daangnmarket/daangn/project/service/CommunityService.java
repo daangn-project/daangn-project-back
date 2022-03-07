@@ -5,8 +5,11 @@ import daangnmarket.daangn.project.domain.*;
 
 import daangnmarket.daangn.project.domain.community.Community;
 import daangnmarket.daangn.project.domain.community.CommunityCategory;
+import daangnmarket.daangn.project.domain.vote.Vote;
 import daangnmarket.daangn.project.dto.community.CommunityResponseDto;
 import daangnmarket.daangn.project.dto.community.CommunitySaveDto;
+import daangnmarket.daangn.project.dto.vote.VoteResponseDto;
+import daangnmarket.daangn.project.dto.vote.VoteSaveDto;
 import daangnmarket.daangn.project.handler.S3Uploader;
 import daangnmarket.daangn.project.repository.CommunityRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
@@ -28,6 +31,7 @@ public class CommunityService {
     private final S3Uploader s3Uploader;
     private final MemberRepository memberRepository;
     private final PhotoRepository photoRepository;
+    private final VoteService voteService;
 
     // 모든 동네생활 게시물 조회
     @Transactional(readOnly = true)
@@ -38,7 +42,9 @@ public class CommunityService {
     // 동네생활 조회 by Id
     public CommunityResponseDto findById(Long id){
         Community entity = communityRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 동네 생활이 없습니다. id="+id));
-        return new CommunityResponseDto(entity);
+        CommunityResponseDto returnDto = new CommunityResponseDto(entity);
+        voteService.getResultOfVote(returnDto.getVoteResponseDto());
+        return returnDto;
     }
 
     // 동네생활 조회 by category
@@ -53,13 +59,17 @@ public class CommunityService {
     public void save(CommunitySaveDto communitySaveDto) throws IOException {
         Member member = memberRepository.findByNickname(communitySaveDto.getWriter()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
-        Community community = Community.builder()
 
+        Vote createdVote = null;
+        if(communitySaveDto.getIsVoteArticle())
+            createdVote = voteService.save(new VoteSaveDto(communitySaveDto.getIsMultipleVote(), communitySaveDto.getVoteOptions()));
+        Community community = Community.builder()
                 .member(member)
                 .title(communitySaveDto.getTitle())
                 .description(communitySaveDto.getDescription())
                 .communityCategory(communitySaveDto.getCommunityCategory())
                 .viewCount(0)
+                .vote(createdVote)
                 .build();
 
         communitySaveDto.getImages().forEach((f) -> {

@@ -5,13 +5,14 @@ import daangnmarket.daangn.project.converter.ProductCategoryConverter;
 import daangnmarket.daangn.project.domain.BaseTimeEntity;
 import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.domain.Photo;
+import daangnmarket.daangn.project.domain.vote.Vote;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity @Getter @Setter
+@Entity @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,27 +27,28 @@ public class Community extends BaseTimeEntity {
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY) // 지연로딩
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default // 빌더 패턴으로 생성 시 기본값으로 비어있는 리스트 생성
+    @Builder.Default
     private List<Photo> photoList = new ArrayList<>();
-
 
     @Convert(converter = CommunityCategoryConverter.class)
     private CommunityCategory communityCategory;
 
     private Integer viewCount;
 
-    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval=true)
-    private List<CommunityComment> commentList = new ArrayList<>(); // 동네생활 댓글 리스트
+    @OneToOne
+    @JoinColumn(name = "VOTE_ID")
+    private Vote vote;
 
-    // itemPost에서 파일 처리
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval=true)
+    private List<CommunityComment> commentList = new ArrayList<>();
+
     public void addPhoto(Photo photo){
         this.photoList.add(photo);
-        // 게시글에 파일이 저장되어있지 않은 경우
         if(photo.getCommunity() != this) photo.setCommunityPost(this);
     }
 
@@ -54,12 +56,5 @@ public class Community extends BaseTimeEntity {
     public void setMember(Member member){
         this.member = member;
         member.getCommunityList().add(this);
-    }
-
-    @Builder
-    public Community(String description, Member member, CommunityCategory communityCategory){
-        this.description = description;
-        this.member = member;
-        this.communityCategory = communityCategory;
     }
 }

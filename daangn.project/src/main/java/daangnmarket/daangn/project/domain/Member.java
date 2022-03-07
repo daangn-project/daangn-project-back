@@ -57,10 +57,6 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
-    private List<Vote> voteList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    @Builder.Default
     private List<CommunityComment> commentList = new ArrayList<>();
 
 

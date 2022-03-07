@@ -44,13 +44,6 @@ public class Photo {
         }
     }
 
-    public void setVote(Vote vote) {
-        this.vote = vote;
-        if (!vote.getPhotoList().contains(this)) {
-            vote.getPhotoList().add(this);
-        }
-    }
-
     // 동네 생활
     public void setCommunityPost(Community community) {
         this.community = community;

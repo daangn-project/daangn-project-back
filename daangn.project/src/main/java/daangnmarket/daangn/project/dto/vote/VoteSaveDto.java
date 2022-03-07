@@ -1,17 +1,15 @@
 package daangnmarket.daangn.project.dto.vote;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class VoteSaveDto {
-    private String writer;
-    private String title;
-    private String description;
     private Boolean isMultipleVote;
-    private List<MultipartFile> images = new ArrayList<>();
-    private List<VoteOptionCreateDto> voteOptionCreateDtoList;
+    private List<String> voteOptions;
+
+    public VoteSaveDto(Boolean isMultipleVote, List<String> voteOptions) {
+        this.isMultipleVote = isMultipleVote;
+        this.voteOptions = voteOptions;
+    }
 }

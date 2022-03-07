@@ -24,11 +24,15 @@ import java.util.NoSuchElementException;
 @RequestMapping("/communities")
 public class CommunityController {
     private final CommunityService communityService;
-    private final MemberService memberService;
+
+    @PostMapping("")
+    public ResponseEntity<Message> communityCreate(@ModelAttribute CommunitySaveDto communitySaveDto) throws IOException {
+        communityService.save(communitySaveDto);
+        return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("동네 생활이 생성되었어요.").data(communitySaveDto).build(), HttpStatus.OK);
+    }
 
     @GetMapping("")
-    public ResponseEntity<Message> showAllCommunityPosts() {
-        // 전체 동네 생활 조회
+    public ResponseEntity<Message> communityList() {
         List<CommunityResponseDto> communityPostResponseDtoList = communityService.findAll();
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
@@ -36,9 +40,9 @@ public class CommunityController {
                 .data(communityPostResponseDtoList)
                 .build(), HttpStatus.OK);
     }
-    // 개별 동네생활 조회 by id
+
     @GetMapping("/{id}")
-    public ResponseEntity<Message> showCommunityPost(@PathVariable String id) {
+    public ResponseEntity<Message> communityDetails(@PathVariable String id) {
         CommunityResponseDto communityResponseDto = communityService.findById(Long.parseLong(id));
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
@@ -49,7 +53,7 @@ public class CommunityController {
 
     // 카테고리에 해당하는 모든 CommunityPost 조회
     @GetMapping("/category/{category}")
-    public ResponseEntity<Message> showCommunityPostByCategory(@PathVariable String category) {
+    public ResponseEntity<Message> communityListByCategory(@PathVariable String category) {
         List<CommunityResponseDto> communityPostResponseDtoList = communityService.findByCategory(category);
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
@@ -58,16 +62,10 @@ public class CommunityController {
                 .build(), HttpStatus.OK);
     }
 
-    // 동네 생활 생성
-    @PostMapping("")
-    public ResponseEntity<Message> createCommunityPost(@ModelAttribute CommunitySaveDto communitySaveDto) throws IOException {
-        communityService.save(communitySaveDto);
-        return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("동네 생활이 생성되었어요.").data(communitySaveDto).build(), HttpStatus.OK);
-    }
 
 //    // 동네 생활 수정
 //    @PutMapping("/{id}")
-//    public ResponseEntity<Message> updateCommunityPost(@PathVariable Long id, @ModelAttribute CommunityPostFileVO communityPostFileVO) {
+//    public ResponseEntity<Message> communityModify(@PathVariable Long id, @ModelAttribute CommunityPostFileVO communityPostFileVO) {
 //        CommunitySaveDto communitySaveDto = communityService.update(id, communityPostFileVO);
 //        return new ResponseEntity<>(Message.builder()
 //                .status(StatusEnum.OK)
@@ -78,7 +76,7 @@ public class CommunityController {
 
     // 동네 생활삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deleteCommunityPost(@PathVariable Long id) {
+    public ResponseEntity<Long> communityRemoive(@PathVariable Long id) {
         try {
             communityService.delete(id);
         } catch (NoSuchElementException e) {

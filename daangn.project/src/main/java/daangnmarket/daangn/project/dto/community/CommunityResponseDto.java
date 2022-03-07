@@ -3,6 +3,7 @@ package daangnmarket.daangn.project.dto.community;
 import daangnmarket.daangn.project.domain.community.Community;
 
 import daangnmarket.daangn.project.domain.Photo;
+import daangnmarket.daangn.project.dto.vote.VoteResponseDto;
 import lombok.Data;
 
 import java.time.Duration;
@@ -16,22 +17,20 @@ import java.util.stream.Collectors;
 @Data
 public class CommunityResponseDto {
     private Long id;
-    private Long memberId;
     private String writer;
     private String title;
     private String description;
     private String communityCategory;
     private Integer viewCount;
-//    private Integer price;
     private LocalDateTime createdDate;
     private String adjustedCreatedDate;
     private LocalDateTime modifiedDate;
-    private List<String> imageUrls = new ArrayList<>();
+    private List<String> imageUrls;
     private String thumbnailImg;
+    private VoteResponseDto voteResponseDto;
 
     public CommunityResponseDto(Community entity) {
         this.id = entity.getId();
-        this.memberId = entity.getMember().getId();
         this.writer = entity.getMember().getNickname();
         this.title = entity.getTitle();
         this.description = entity.getDescription();
@@ -42,6 +41,7 @@ public class CommunityResponseDto {
         this.createdDate = entity.getCreatedTime();
         this.modifiedDate = entity.getModifiedTime();
         this.adjustedCreatedDate = adjustCreatedTime();
+        this.voteResponseDto = entity.getVote() != null ? new VoteResponseDto(entity.getVote()) : null;
     }
 
     public String adjustCreatedTime(){ // 보여지는 시간 카운트

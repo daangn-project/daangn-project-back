@@ -12,22 +12,12 @@ import java.util.stream.Collectors;
 @Data
 @RequiredArgsConstructor
 public class VoteResponseDto {
-    private Long id;
-    private String title;
-    private String description;
-    private String writer;
-    private Boolean isMultipleVote;
-    private List<String> imageUrls;
+    private boolean isMultipleVote;
     private List<VoteOptionResponseDto> voteOptionResponseDtos;
     private List<VoteResultResponseDto> voteResultResponseDtos;
 
     public VoteResponseDto(Vote vote){
-        this.id = vote.getId();
-        this.title = vote.getTitle();
-        this.description = vote.getDescription();
-        this.writer = vote.getMember().getNickname();
         this.isMultipleVote = vote.getIsMultipleVote();
-        this.imageUrls = vote.getPhotoList().stream().map(Photo::getPath).collect(Collectors.toList());
         this.voteOptionResponseDtos = vote.getVoteOptionList().stream().map(
                 VoteOptionResponseDto::new).collect(Collectors.toList());
     }
