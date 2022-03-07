@@ -34,6 +34,9 @@ public class Member {
 
     private String profileImg;
 
+    @Column(name = "activated")
+    private boolean activated;
+
     @ManyToMany
     @JoinTable(
             name = "MEMBER_AUTHORITY",

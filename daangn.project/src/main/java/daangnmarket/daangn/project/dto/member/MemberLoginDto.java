@@ -1,10 +1,15 @@
 package daangnmarket.daangn.project.dto.member;
 
 import com.sun.istack.NotNull;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.Size;
 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class MemberLoginDto {
 

@@ -18,13 +18,13 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api")
 public class JwtAuthController {
 
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    @PostMapping("/login")
+    @PostMapping("/authenticate")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody MemberLoginDto memberLoginDto) {
 
         UsernamePasswordAuthenticationToken authenticationToken =

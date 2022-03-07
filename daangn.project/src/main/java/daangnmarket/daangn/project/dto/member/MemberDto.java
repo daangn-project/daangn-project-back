@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -29,24 +30,24 @@ public class MemberDto {
     @Size(min = 3, max = 50)
     private String nickname;
 
-//    private Set<AuthorityDto> authorityDtoSet;
+    private Set<AuthorityDto> authorityDtoSet;
 
     @NotNull
     @Email
     private String email;
 
-//    public static MemberDto from(Member member) {
-//        if(member == null) return null;
-//
-//        return MemberDto.builder()
-//                .username(member.getUsername())
-//                .nickname(member.getNickname())
-//                .email(member.getEmail())
-//                .authorityDtoSet(member.getAuthorities().stream()
-//                        .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
-//                        .collect(Collectors.toSet()))
-//                .build();
-//    }
+    public static MemberDto from(Member member) {
+        if(member == null) return null;
+
+        return MemberDto.builder()
+                .username(member.getUsername())
+                .nickname(member.getNickname())
+                .email(member.getEmail())
+                .authorityDtoSet(member.getAuthorities().stream()
+                        .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
+                        .collect(Collectors.toSet()))
+                .build();
+    }
 
 //    public Member toEntity(){
 //        return Member.builder()
