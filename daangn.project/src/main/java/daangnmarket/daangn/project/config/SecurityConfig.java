@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/h2-console/**"
                         ,"/error"
+                        ,"/**"
                 );
     }
 
@@ -48,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .csrf().disable()
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
@@ -68,8 +70,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/login").permitAll()
-                .antMatchers("/api/signup").permitAll()
+//                .antMatchers("/auth/login").permitAll()
+//                .antMatchers("/api/signup").permitAll()
+                .antMatchers("/**").permitAll()
 
                 .anyRequest().authenticated()
 
