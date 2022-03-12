@@ -1,5 +1,6 @@
 package daangnmarket.daangn.project.controller;
 
+import daangnmarket.daangn.project.dto.member.MemberDto;
 import daangnmarket.daangn.project.dto.member.MemberLoginDto;
 import daangnmarket.daangn.project.message.ApiResponse;
 import daangnmarket.daangn.project.service.MemberService;
@@ -7,8 +8,11 @@ import daangnmarket.daangn.project.vo.SignVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,8 +37,20 @@ public class MemberController {
     @Transactional
     public ResponseEntity<ApiResponse> saveUser(@RequestBody SignVo signVo){
 
-        memberService.save(signVo);
+        memberService.signup(signVo);
         return new ResponseEntity<>(new ApiResponse(), HttpStatus.OK);
+    }
+
+    @GetMapping()
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<MemberDto> getMyUserInfo(HttpServletRequest request) {
+        return ResponseEntity.ok(memberService.getMyUserWithAuthorities());
+    }
+
+    @GetMapping("/{username}")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<MemberDto> getUserInfo(@PathVariable String username) {
+        return ResponseEntity.ok(memberService.getUserWithAuthorities(username));
     }
 
 //    //이메일 중복체크

@@ -1,13 +1,19 @@
 package daangnmarket.daangn.project.service;
 
+import daangnmarket.daangn.project.domain.Authority;
 import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.dto.member.MemberDto;
 import daangnmarket.daangn.project.repository.MemberRepository;
+import daangnmarket.daangn.project.util.SecurityUtil;
 import daangnmarket.daangn.project.vo.SignVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 
@@ -16,30 +22,42 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:sss");
     Date time = new Date();
     String localTime = format.format(time);
 
-    public Long save(SignVo signVo){
+    public Long signup(SignVo signVo){
         Optional<Member> alreadyMember = memberRepository.findByUsername(signVo.getUsername());
         if(alreadyMember.isPresent()){
             return alreadyMember.get().getId();
         }else {
+            Authority authority = Authority.builder().authorityName("ROLE_ADMIN").build();
             Member member = Member.builder()
                     .email(signVo.getEmail())
-                    .password(signVo.getPassword())
+                    .password(passwordEncoder.encode(signVo.getPassword()))
                     .username(signVo.getUsername())
                     .nickname(signVo.getNickname())
-//                    .appendDate(localTime)
-//                    .updateDate(localTime)
+                    .activated(true)
+                    .authorities(Collections.singleton(authority))
                     .build();
-
-            member.setPassword(new BCryptPasswordEncoder().encode(member.getPassword()));
             memberRepository.save(member);
             return member.getId();
         }
     }
+    // username을 통해 해당 유저의 정보 및 권한 정보를 리턴
+    @Transactional(readOnly = true)
+    public MemberDto getUserWithAuthorities(String username) {
+        return MemberDto.from(memberRepository.findOneWithAuthoritiesByUsername(username).orElse(null));
+    }
+
+    // 위에서 작성한 SecurityUtil의 getCurrentUsername() 메서드를 통해 username의 유저 및 권한 정보를 리턴
+    @Transactional(readOnly = true)
+    public MemberDto getMyUserWithAuthorities() {
+        return MemberDto.from(SecurityUtil.getCurrentUsername().flatMap(memberRepository::findOneWithAuthoritiesByUsername).orElse(null));
+    }
+
 
     public Member findById(Long id){
         return memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
