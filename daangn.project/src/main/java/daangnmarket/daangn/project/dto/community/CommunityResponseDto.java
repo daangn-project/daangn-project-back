@@ -3,6 +3,7 @@ package daangnmarket.daangn.project.dto.community;
 import daangnmarket.daangn.project.domain.community.Community;
 
 import daangnmarket.daangn.project.domain.Photo;
+import daangnmarket.daangn.project.dto.comment.CommentResponseDto;
 import daangnmarket.daangn.project.dto.vote.VoteResponseDto;
 import lombok.Data;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,7 @@ public class CommunityResponseDto {
     private List<String> imageUrls;
     private String thumbnailImg;
     private VoteResponseDto voteResponseDto;
+    private List<CommentResponseDto> commentResponseDtoList;
 
     public CommunityResponseDto(Community entity) {
         this.id = entity.getId();
@@ -42,6 +45,13 @@ public class CommunityResponseDto {
         this.modifiedDate = entity.getModifiedTime();
         this.adjustedCreatedDate = adjustCreatedTime();
         this.voteResponseDto = entity.getVote() != null ? new VoteResponseDto(entity.getVote()) : null;
+        this.commentResponseDtoList = entity.getCommentList().stream().map(CommentResponseDto::new).collect(Collectors.toList());
+    }
+    public void sortCommentsByParentOrderThenCommentOrder(){
+        Comparator<CommentResponseDto> orderComparator = Comparator.comparing(CommentResponseDto::getCommentOrder);
+        List<CommentResponseDto> comments = this.getCommentResponseDtoList();
+        comments.sort(Comparator.comparing(CommentResponseDto::getParentCommentNum)
+                .thenComparing(orderComparator));
     }
 
     public String adjustCreatedTime(){ // 보여지는 시간 카운트

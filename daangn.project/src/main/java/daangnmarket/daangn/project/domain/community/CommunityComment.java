@@ -2,14 +2,16 @@ package daangnmarket.daangn.project.domain.community;
 
 import daangnmarket.daangn.project.domain.BaseTimeEntity;
 import daangnmarket.daangn.project.domain.Member;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
-@Getter
+@Entity @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class CommunityComment extends BaseTimeEntity {
 
@@ -27,28 +29,24 @@ public class CommunityComment extends BaseTimeEntity {
 
     private String content; // 댓글 내용
 
-    private long parentCommentNum; // 자신이 속한 원댓글의 번호
+    private Long parentCommentNum; // 자신이 속한 원댓글의 번호
+    private Long commentOrder; // 자신의 댓글 번호
+    private Long childCommentCount; // 자식 댓글의 개수
+    private Boolean isDeleted; // 댓글 삭제 여부
+    private Integer likeCount; // 댓글 좋아요
+    private Integer hateCount; // 댓글 싫어요
 
-    private long commentNum; // 자신의 댓글 번호
-
-    private long childCommentCount; // 자식 댓글의 개수
-
-    private boolean isDeleted; // 댓글 상태 (죽었는지 살았는지)
-
-    private Integer likeCount; // 댓글 좋아요카운트
-
-    @Builder
-    public CommunityComment createComment(Member member,Community community, String content, long parentCommentNum, long commentNum){
+    // 연관관계 메서드
+    public void setMemberAndCommunity(Member member, Community community){
         this.member = member;
+        member.getCommentList().add(this);
         this.community = community;
-        this.content = content;
-        this.likeCount = 0;
-        this.childCommentCount = 0;
-        this.isDeleted = false;
-        this.parentCommentNum = parentCommentNum;
-        this.commentNum = commentNum;
-        this.member.getCommentList().add(this);
-        this.community.getCommentList().add(this);
-        return this;
+        community.getCommentList().add(this);
     }
+
+    public void setDeleted(){
+        this.isDeleted = true;
+    }
+    public void plusChildCommentCount(){this.childCommentCount++;}
+    public void minusChildCommentCount(){this.childCommentCount--;}
 }

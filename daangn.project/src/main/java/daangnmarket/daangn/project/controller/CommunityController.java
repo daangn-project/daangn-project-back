@@ -2,6 +2,7 @@ package daangnmarket.daangn.project.controller;
 
 import daangnmarket.daangn.project.domain.Member;
 
+import daangnmarket.daangn.project.dto.comment.CommentResponseDto;
 import daangnmarket.daangn.project.dto.community.CommunityResponseDto;
 import daangnmarket.daangn.project.dto.community.CommunitySaveDto;
 
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -44,6 +46,7 @@ public class CommunityController {
     @GetMapping("/{id}")
     public ResponseEntity<Message> communityDetails(@PathVariable String id) {
         CommunityResponseDto communityResponseDto = communityService.findById(Long.parseLong(id));
+        communityResponseDto.sortCommentsByParentOrderThenCommentOrder();
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
                 .message("ID: " + id + " 게시물 조회")
@@ -76,7 +79,7 @@ public class CommunityController {
 
     // 동네 생활삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> communityRemoive(@PathVariable Long id) {
+    public ResponseEntity<Long> communityRemove(@PathVariable Long id) {
         try {
             communityService.delete(id);
         } catch (NoSuchElementException e) {

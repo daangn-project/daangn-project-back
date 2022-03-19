@@ -45,6 +45,7 @@ public class Community extends BaseTimeEntity {
     private Vote vote;
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval=true)
+    @Builder.Default
     private List<CommunityComment> commentList = new ArrayList<>();
 
     public void addPhoto(Photo photo){
