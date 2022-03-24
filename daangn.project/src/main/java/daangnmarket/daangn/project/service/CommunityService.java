@@ -68,7 +68,6 @@ public class CommunityService {
                 .title(communitySaveDto.getTitle())
                 .description(communitySaveDto.getDescription())
                 .communityCategory(communitySaveDto.getCommunityCategory())
-                .viewCount(0)
                 .vote(createdVote)
                 .build();
 

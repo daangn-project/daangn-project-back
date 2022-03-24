@@ -40,7 +40,6 @@ public class ProductService {
                 .description(productSaveDto.getDescription())
                 .price(productSaveDto.getPrice())
                 .productCategory(productSaveDto.getProductCategory())
-                .viewCount(0)
                 .build();
 
         productSaveDto.getImages().forEach((f) -> {
@@ -75,14 +74,6 @@ public class ProductService {
         );
         return itemPost.getPhotoList().stream().map(PhotoResponseDto::new).collect(Collectors.toList());
     }
-
-//    // 아이템 포스트 조회
-//    @Transactional(readOnly = true)
-//    public ItemPostResponseDto searchById(String id, List<Long> photoId) {
-//        ItemPost itemPost = itemPostRepository.findById(Long.parseLong(id)).orElseThrow(()
-//                -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
-//        return injectMemberIntoItemPostDto(new ItemPostResponseDto(itemPost),Long.parseLong(id));
-//    }
 
     // 삭제
     public void delete(Long id) throws IllegalArgumentException {

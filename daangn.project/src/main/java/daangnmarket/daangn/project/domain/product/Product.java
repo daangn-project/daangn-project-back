@@ -36,8 +36,6 @@ public class Product extends BaseTimeEntity {
     @Convert(converter = ProductCategoryConverter.class)
     private ProductCategory productCategory;
 
-    private Integer viewCount;
-
     private Integer price;
 
     public void addPhoto(Photo photo){

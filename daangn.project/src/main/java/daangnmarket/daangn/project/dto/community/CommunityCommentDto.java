@@ -17,7 +17,4 @@ public class CommunityCommentDto {
     private long parentCommentNum;
     private long childCommentCount;
     private boolean isDeleted;
-
-
-
 }
