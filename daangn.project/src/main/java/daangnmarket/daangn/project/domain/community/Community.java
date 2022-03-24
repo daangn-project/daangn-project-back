@@ -38,8 +38,6 @@ public class Community extends BaseTimeEntity {
     @Convert(converter = CommunityCategoryConverter.class)
     private CommunityCategory communityCategory;
 
-    private Integer viewCount;
-
     @OneToOne
     @JoinColumn(name = "VOTE_ID")
     private Vote vote;
