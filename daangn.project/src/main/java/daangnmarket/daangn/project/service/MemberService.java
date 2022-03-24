@@ -2,12 +2,11 @@ package daangnmarket.daangn.project.service;
 
 import daangnmarket.daangn.project.domain.Authority;
 import daangnmarket.daangn.project.domain.Member;
-import daangnmarket.daangn.project.dto.member.MemberDto;
+import daangnmarket.daangn.project.dto.MemberDTO;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.util.SecurityUtil;
 import daangnmarket.daangn.project.vo.SignVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,14 +47,14 @@ public class MemberService {
     }
     // username을 통해 해당 유저의 정보 및 권한 정보를 리턴
     @Transactional(readOnly = true)
-    public MemberDto getUserWithAuthorities(String username) {
-        return MemberDto.from(memberRepository.findOneWithAuthoritiesByUsername(username).orElse(null));
+    public MemberDTO.infoDTO getUserWithAuthorities(String username) {
+        return MemberDTO.infoDTO.from(memberRepository.findOneWithAuthoritiesByUsername(username).orElse(null));
     }
 
     // 위에서 작성한 SecurityUtil의 getCurrentUsername() 메서드를 통해 username의 유저 및 권한 정보를 리턴
     @Transactional(readOnly = true)
-    public MemberDto getMyUserWithAuthorities() {
-        return MemberDto.from(SecurityUtil.getCurrentUsername().flatMap(memberRepository::findOneWithAuthoritiesByUsername).orElse(null));
+    public MemberDTO.infoDTO  getMyUserWithAuthorities() {
+        return MemberDTO.infoDTO.from(SecurityUtil.getCurrentUsername().flatMap(memberRepository::findOneWithAuthoritiesByUsername).orElse(null));
     }
 
 

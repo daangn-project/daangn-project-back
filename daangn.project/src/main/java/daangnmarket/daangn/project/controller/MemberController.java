@@ -1,7 +1,6 @@
 package daangnmarket.daangn.project.controller;
 
-import daangnmarket.daangn.project.dto.member.MemberDto;
-import daangnmarket.daangn.project.dto.member.MemberLoginDto;
+import daangnmarket.daangn.project.dto.MemberDTO;
 import daangnmarket.daangn.project.message.ApiResponse;
 import daangnmarket.daangn.project.service.MemberService;
 import daangnmarket.daangn.project.vo.SignVo;
@@ -22,7 +21,7 @@ public class MemberController {
 
     // 임시 메서드
     @PostMapping("/login")
-    public String login(@RequestBody MemberLoginDto memberLoginDto ){
+    public String login(@RequestBody MemberDTO.LoginDTO memberLoginDto ){
         return "Login!";
     }
 
@@ -43,13 +42,13 @@ public class MemberController {
 
     @GetMapping()
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<MemberDto> getMyUserInfo(HttpServletRequest request) {
+    public ResponseEntity<MemberDTO.infoDTO> getMyUserInfo(HttpServletRequest request) {
         return ResponseEntity.ok(memberService.getMyUserWithAuthorities());
     }
 
     @GetMapping("/{username}")
 //    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<MemberDto> getUserInfo(@PathVariable String username) {
+    public ResponseEntity<MemberDTO.infoDTO> getUserInfo(@PathVariable String username) {
         return ResponseEntity.ok(memberService.getUserWithAuthorities(username));
     }
 
