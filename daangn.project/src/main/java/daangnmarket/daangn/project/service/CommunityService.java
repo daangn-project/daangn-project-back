@@ -3,6 +3,7 @@ package daangnmarket.daangn.project.service;
 import daangnmarket.daangn.project.domain.*;
 import daangnmarket.daangn.project.domain.community.Community;
 import daangnmarket.daangn.project.domain.community.CommunityCategory;
+import daangnmarket.daangn.project.domain.member.Member;
 import daangnmarket.daangn.project.domain.vote.Vote;
 import daangnmarket.daangn.project.dto.CommunityDTO;
 import daangnmarket.daangn.project.dto.VoteDTO;

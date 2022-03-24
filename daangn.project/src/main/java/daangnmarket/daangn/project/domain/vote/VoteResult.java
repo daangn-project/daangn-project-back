@@ -1,6 +1,6 @@
 package daangnmarket.daangn.project.domain.vote;
 
-import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.member.Member;
 import lombok.*;
 
 import javax.persistence.*;

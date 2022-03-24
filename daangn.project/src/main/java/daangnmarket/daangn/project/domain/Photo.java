@@ -20,9 +20,9 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PHOTO_ID")
     private Long id;
+
+    @Column(name="path", nullable = false)
     private String path;
-//    private String name;
-//    private Long size;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PRODUCT_ID")

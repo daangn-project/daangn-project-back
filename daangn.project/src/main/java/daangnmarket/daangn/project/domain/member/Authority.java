@@ -1,4 +1,4 @@
-package daangnmarket.daangn.project.domain;
+package daangnmarket.daangn.project.domain.member;
 
 import lombok.*;
 import javax.persistence.*;

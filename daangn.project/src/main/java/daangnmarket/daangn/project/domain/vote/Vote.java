@@ -1,7 +1,5 @@
 package daangnmarket.daangn.project.domain.vote;
 
-import daangnmarket.daangn.project.domain.Member;
-import daangnmarket.daangn.project.domain.Photo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

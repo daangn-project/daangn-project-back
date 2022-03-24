@@ -1,7 +1,7 @@
 package daangnmarket.daangn.project.domain.community;
 
 import daangnmarket.daangn.project.domain.BaseTimeEntity;
-import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +27,7 @@ public class CommunityComment extends BaseTimeEntity {
     @JoinColumn(name = "MEMBER_ID")
     private Member member; // 댓글을 작성한 유저
 
+    @Column(name="content", nullable = false)
     private String content; // 댓글 내용
 
     private Long parentCommentNum; // 자신이 속한 원댓글의 번호
@@ -35,14 +36,6 @@ public class CommunityComment extends BaseTimeEntity {
     private Boolean isDeleted; // 댓글 삭제 여부
     private Integer likeCount; // 댓글 좋아요
     private Integer hateCount; // 댓글 싫어요
-
-    // 연관관계 메서드
-    public void setMemberAndCommunity(Member member, Community community){
-        this.member = member;
-        member.getCommentList().add(this);
-        this.community = community;
-        community.getCommentList().add(this);
-    }
 
     public void setDeleted(){
         this.isDeleted = true;

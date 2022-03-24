@@ -1,6 +1,6 @@
 package daangnmarket.daangn.project.service;
 
-import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.member.Member;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
