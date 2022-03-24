@@ -1,6 +1,6 @@
 package daangnmarket.daangn.project.service;
 
-import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.member.Member;
 import daangnmarket.daangn.project.domain.vote.Vote;
 import daangnmarket.daangn.project.domain.vote.VoteOption;
 import daangnmarket.daangn.project.domain.vote.VoteResult;

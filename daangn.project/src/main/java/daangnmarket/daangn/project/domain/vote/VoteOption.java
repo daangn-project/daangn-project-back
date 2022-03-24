@@ -1,15 +1,11 @@
 package daangnmarket.daangn.project.domain.vote;
 
-import daangnmarket.daangn.project.domain.Member;
-import daangnmarket.daangn.project.domain.Photo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

@@ -1,6 +1,6 @@
 package daangnmarket.daangn.project.domain.community;
 
-import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.member.Member;
 import daangnmarket.daangn.project.domain.product.Product;
 import lombok.Getter;
 

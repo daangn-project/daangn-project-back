@@ -1,7 +1,7 @@
 package daangnmarket.daangn.project.service;
 
-import daangnmarket.daangn.project.domain.Authority;
-import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.member.Authority;
+import daangnmarket.daangn.project.domain.member.Member;
 import daangnmarket.daangn.project.dto.MemberDTO;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.util.SecurityUtil;

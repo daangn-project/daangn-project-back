@@ -1,9 +1,8 @@
 package daangnmarket.daangn.project.domain.community;
 
 import daangnmarket.daangn.project.converter.CommunityCategoryConverter;
-import daangnmarket.daangn.project.converter.ProductCategoryConverter;
 import daangnmarket.daangn.project.domain.BaseTimeEntity;
-import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.member.Member;
 import daangnmarket.daangn.project.domain.Photo;
 import daangnmarket.daangn.project.domain.vote.Vote;
 import lombok.*;
@@ -23,8 +22,10 @@ public class Community extends BaseTimeEntity {
     @Column(name = "COMMUNITY_ID")
     private Long id;
 
+    @Column(name="title", nullable = false)
     private String title;
 
+    @Column(name="description", nullable = false)
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)

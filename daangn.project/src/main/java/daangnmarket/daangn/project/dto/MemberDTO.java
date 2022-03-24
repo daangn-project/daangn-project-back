@@ -2,7 +2,7 @@ package daangnmarket.daangn.project.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
-import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.member.Member;
 import lombok.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;

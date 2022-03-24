@@ -2,7 +2,7 @@ package daangnmarket.daangn.project.service;
 
 import daangnmarket.daangn.project.domain.product.ProductCategory;
 import daangnmarket.daangn.project.domain.product.Product;
-import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.member.Member;
 import daangnmarket.daangn.project.domain.Photo;
 import daangnmarket.daangn.project.dto.ProductDTO;
 import daangnmarket.daangn.project.handler.S3Uploader;

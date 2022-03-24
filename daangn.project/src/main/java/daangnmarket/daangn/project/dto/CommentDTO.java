@@ -1,6 +1,6 @@
 package daangnmarket.daangn.project.dto;
 
-import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.member.Member;
 import daangnmarket.daangn.project.domain.community.Community;
 import daangnmarket.daangn.project.domain.community.CommunityComment;
 import lombok.Data;

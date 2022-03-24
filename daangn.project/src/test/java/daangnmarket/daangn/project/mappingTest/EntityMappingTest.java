@@ -2,7 +2,7 @@ package daangnmarket.daangn.project.mappingTest;
 
 
 import daangnmarket.daangn.project.domain.product.Product;
-import daangnmarket.daangn.project.domain.Member;
+import daangnmarket.daangn.project.domain.member.Member;
 import daangnmarket.daangn.project.repository.ProductRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
