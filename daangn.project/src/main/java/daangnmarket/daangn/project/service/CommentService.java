@@ -3,8 +3,7 @@ package daangnmarket.daangn.project.service;
 import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.domain.community.Community;
 import daangnmarket.daangn.project.domain.community.CommunityComment;
-import daangnmarket.daangn.project.dto.comment.CommentResponseDto;
-import daangnmarket.daangn.project.dto.comment.CommentSaveDto;
+import daangnmarket.daangn.project.dto.CommentDTO;
 import daangnmarket.daangn.project.repository.CommunityCommentRepository;
 import daangnmarket.daangn.project.repository.CommunityRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
@@ -21,7 +20,7 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final CommunityRepository communityRepository;
 
-    public CommentResponseDto save(CommentSaveDto commentSaveDto) {
+    public CommentDTO.ResponseDTO save(CommentDTO.SaveDTO commentSaveDto) {
         Member member = memberRepository.findByNickname(commentSaveDto.getWriter()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
         Community community = communityRepository.findById(commentSaveDto.getCommunityId()).orElseThrow(
@@ -39,7 +38,7 @@ public class CommentService {
             parentComm.plusChildCommentCount();
 //            log.info("자식 댓글을 생성합니다. parentCommentNum = {}, parentChildCommentCount = {}", parentComm.getParentCommentNum(), parentComm.getChildCommentCount());
         }
-        return new CommentResponseDto(communityCommentRepository.save(commentSaveDto.toEntity(member, community)));
+        return new CommentDTO.ResponseDTO(communityCommentRepository.save(commentSaveDto.toEntity(member, community)));
     }
 
     @Transactional

@@ -4,10 +4,7 @@ import daangnmarket.daangn.project.domain.product.ProductCategory;
 import daangnmarket.daangn.project.domain.product.Product;
 import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.domain.Photo;
-import daangnmarket.daangn.project.dto.product.ProductByUserDto;
-import daangnmarket.daangn.project.dto.product.ProductDetailResponseDto;
-import daangnmarket.daangn.project.dto.product.ProductSaveDto;
-import daangnmarket.daangn.project.dto.PhotoResponseDto;
+import daangnmarket.daangn.project.dto.ProductDTO;
 import daangnmarket.daangn.project.handler.S3Uploader;
 import daangnmarket.daangn.project.repository.ProductRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
@@ -30,7 +27,7 @@ public class ProductService {
     private final S3Uploader s3Uploader;
 
     // 생성
-    public void save(ProductSaveDto productSaveDto) throws IOException {
+    public void save(ProductDTO.SaveDto productSaveDto) throws IOException {
         Member member = memberRepository.findByNickname(productSaveDto.getWriter()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
         );
@@ -67,14 +64,6 @@ public class ProductService {
 //                .build();
 //    }
 
-    // 아이템 포스트에 포함된 모든 사진들을 반환
-    public List<PhotoResponseDto> findAllPhotoById(String id) {
-        Product itemPost = productRepository.findById(Long.parseLong(id)).orElseThrow(
-                () -> new NoSuchElementException("해당 게시물이 존재하지 않습니다.")
-        );
-        return itemPost.getPhotoList().stream().map(PhotoResponseDto::new).collect(Collectors.toList());
-    }
-
     // 삭제
     public void delete(Long id) throws IllegalArgumentException {
         Product product = productRepository.findById(id).orElseThrow(()
@@ -84,27 +73,27 @@ public class ProductService {
 
     // 카테고리로 조회
     @Transactional(readOnly = true)
-    public List<ProductDetailResponseDto> findByCategory(String category) {
+    public List<ProductDTO.DetailResponseDTO> findByCategory(String category) {
         ProductCategory categoryByEnum = ProductCategory.valueOf(category);
         List<Product> byCategory = productRepository.findByCategory(categoryByEnum);
-        return byCategory.stream().map(ProductDetailResponseDto::new).collect(Collectors.toList());
+        return byCategory.stream().map(ProductDTO.DetailResponseDTO::new).collect(Collectors.toList());
     }
 
     // 모든 게시물 조회
     @Transactional(readOnly = true)
-    public List<ProductDetailResponseDto> findAll(){
-        return productRepository.findAll().stream().map(ProductDetailResponseDto::new).collect(Collectors.toList());
+    public List<ProductDTO.DetailResponseDTO> findAll(){
+        return productRepository.findAll().stream().map(ProductDTO.DetailResponseDTO::new).collect(Collectors.toList());
     }
 
     // Id로 게시물 조회
-    public ProductDetailResponseDto findById(Long id) {
-        Product itemPost = productRepository.findById(id).orElseThrow(()
+    public ProductDTO.DetailResponseDTO findById(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(()
                 -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
-        return new ProductDetailResponseDto(itemPost);
+        return new ProductDTO.DetailResponseDTO(product);
     }
 
     // 유저 ID로 유저가 작성한 게시물 조회
-    public List<ProductByUserDto> findByUserId(Long id) {
-        return productRepository.findByMemberId(id).stream().map(ProductByUserDto::new).collect(Collectors.toList());
+    public List<ProductDTO.ResponseWithMemberDTO> findByUserId(Long id) {
+        return productRepository.findByMemberId(id).stream().map(ProductDTO.ResponseWithMemberDTO::new).collect(Collectors.toList());
     }
 }

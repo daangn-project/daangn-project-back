@@ -4,10 +4,7 @@ import daangnmarket.daangn.project.domain.Member;
 import daangnmarket.daangn.project.domain.vote.Vote;
 import daangnmarket.daangn.project.domain.vote.VoteOption;
 import daangnmarket.daangn.project.domain.vote.VoteResult;
-import daangnmarket.daangn.project.dto.vote.VoteParticipateDto;
-import daangnmarket.daangn.project.dto.vote.VoteResponseDto;
-import daangnmarket.daangn.project.dto.vote.VoteResultResponseDto;
-import daangnmarket.daangn.project.dto.vote.VoteSaveDto;
+import daangnmarket.daangn.project.dto.VoteDTO;
 import daangnmarket.daangn.project.repository.*;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.repository.VoteOptionRepository;
@@ -33,7 +30,7 @@ public class VoteService {
                 new IllegalArgumentException("해당 투표가 존재하지 않습니다"));
     }
 
-    public Vote save(VoteSaveDto voteSaveDto)  throws IOException{
+    public Vote save(VoteDTO.SaveDTO voteSaveDto)  throws IOException{
         Vote vote = Vote.builder()
                 .isMultipleVote(voteSaveDto.getIsMultipleVote())
                 .build();
@@ -47,21 +44,21 @@ public class VoteService {
         return voteRepository.save(vote);
     }
 
-    public void getResultOfVote(VoteResponseDto voteResponseDto){
+    public void getResultOfVote(VoteDTO.InfoResponseDTO voteResponseDto){
         if(voteResponseDto == null) return;
-        List<VoteResultResponseDto> collectedVoteResult = voteResponseDto.getVoteOptionResponseDtos().stream().map(
+        List<VoteDTO.ResultResponseDTO> collectedVoteResult = voteResponseDto.getVoteOptionResponseDtos().stream().map(
                 (e) -> {
                     Long voteOptionId = e.getId();
                     List<Long> participants = voteResultRepository.findAllMemberByVoteOptionId(voteOptionId)
                             .stream().map(Member::getId).collect(Collectors.toList());
-                    return new VoteResultResponseDto(voteOptionId, participants);
+                    return new VoteDTO.ResultResponseDTO(voteOptionId, participants);
                 }
         ).collect(Collectors.toList());
         voteResponseDto.setVoteResultResponseDtos(collectedVoteResult);
     }
 
 
-    public boolean participate(Long voteId, VoteParticipateDto voteParticipateDto) {
+    public boolean participate(Long voteId, VoteDTO.ParticipateDTO voteParticipateDto) {
         // 이미 투표를 한 회원인지 확인
         Member m = memberRepository.findByNickname(voteParticipateDto.getParticipantName()).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         if(isParticipatedMember(voteId, m)){

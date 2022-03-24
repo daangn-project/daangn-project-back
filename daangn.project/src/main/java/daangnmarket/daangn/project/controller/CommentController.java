@@ -1,9 +1,6 @@
 package daangnmarket.daangn.project.controller;
 
-import daangnmarket.daangn.project.dto.comment.CommentResponseDto;
-import daangnmarket.daangn.project.dto.comment.CommentSaveDto;
-import daangnmarket.daangn.project.message.Message;
-import daangnmarket.daangn.project.message.StatusEnum;
+import daangnmarket.daangn.project.dto.CommentDTO;
 import daangnmarket.daangn.project.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +15,7 @@ public class CommentController {
 
     // 등록
     @PostMapping("")
-    public ResponseEntity<CommentResponseDto> CommentCreate(@RequestBody CommentSaveDto commentSaveDto){
+    public ResponseEntity<CommentDTO.ResponseDTO> CommentCreate(@RequestBody CommentDTO.SaveDTO commentSaveDto){
         return ResponseEntity.ok(commentService.save(commentSaveDto));
     }
 

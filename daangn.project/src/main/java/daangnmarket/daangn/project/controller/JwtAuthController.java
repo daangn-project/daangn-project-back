@@ -2,8 +2,7 @@ package daangnmarket.daangn.project.controller;
 
 import daangnmarket.daangn.project.auth.JwtFilter;
 import daangnmarket.daangn.project.auth.TokenProvider;
-import daangnmarket.daangn.project.dto.member.MemberLoginDto;
-import daangnmarket.daangn.project.dto.member.TokenDto;
+import daangnmarket.daangn.project.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,7 @@ public class JwtAuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody MemberLoginDto memberLoginDto) {
+    public ResponseEntity<MemberDTO.TokenDTO> authorize(@Valid @RequestBody MemberDTO.LoginDTO memberLoginDto) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(memberLoginDto.getUsername(), memberLoginDto.getPassword());
@@ -37,6 +36,6 @@ public class JwtAuthController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(new MemberDTO.TokenDTO(jwt), httpHeaders, HttpStatus.OK);
     }
 }
