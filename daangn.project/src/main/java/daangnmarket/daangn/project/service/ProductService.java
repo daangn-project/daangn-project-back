@@ -27,7 +27,7 @@ public class ProductService {
     private final S3Uploader s3Uploader;
 
     // 생성
-    public void save(ProductDTO.SaveDto productSaveDto) throws IOException {
+    public Product save(ProductDTO.SaveDto productSaveDto) {
         Member member = memberRepository.findByNickname(productSaveDto.getWriter()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
         );
@@ -48,7 +48,7 @@ public class ProductService {
             }
         });
         product.setMember(member);
-        productRepository.save(product);
+        return productRepository.save(product);
     }
 
     // 수정

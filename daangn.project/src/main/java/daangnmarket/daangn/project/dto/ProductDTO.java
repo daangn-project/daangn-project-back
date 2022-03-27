@@ -4,6 +4,7 @@ import daangnmarket.daangn.project.domain.Photo;
 import daangnmarket.daangn.project.domain.product.Product;
 import daangnmarket.daangn.project.domain.product.ProductCategory;
 import daangnmarket.daangn.project.dto.utils.Utility;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,6 +77,7 @@ public class ProductDTO {
     }
 
     @Data
+    @AllArgsConstructor
     public static class SaveDto {
         private String writer;
         private String title;
@@ -84,5 +86,4 @@ public class ProductDTO {
         private ProductCategory productCategory;
         private List<MultipartFile> images = new ArrayList<>();
     }
-
 }

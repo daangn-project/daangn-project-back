@@ -7,7 +7,10 @@ import daangnmarket.daangn.project.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,6 +18,7 @@ import java.util.NoSuchElementException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products")
+@ControllerAdvice
 public class ProductController {
     private final ProductService productService;
 
@@ -62,9 +66,8 @@ public class ProductController {
 
     // 생성
     @PostMapping("")
-    public ResponseEntity<Message> createProduct(@ModelAttribute ProductDTO.SaveDto productSaveDto) throws IOException{
-        productService.save(productSaveDto);
-        return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("게시물이 등록되었어요.").data(productSaveDto).build(), HttpStatus.OK);
+    public ProductDTO.DetailResponseDTO createProduct(@ModelAttribute @Valid ProductDTO.SaveDto productSaveDto) {
+        return new ProductDTO.DetailResponseDTO(productService.save(productSaveDto));
     }
 
     // 수정
@@ -90,4 +93,6 @@ public class ProductController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 }

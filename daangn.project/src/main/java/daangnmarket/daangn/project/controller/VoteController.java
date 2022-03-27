@@ -29,11 +29,6 @@ public class VoteController {
         return ResponseEntity.ok(voteResponseDto);
     }
 
-    @PutMapping
-    public ResponseEntity<Long> voteModify(@RequestBody VoteDTO.UpdateDTO voteUpdateDto) {
-        return null;
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> voteRemove(@PathVariable String id) {
         return null;
