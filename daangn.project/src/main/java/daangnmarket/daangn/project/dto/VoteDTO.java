@@ -5,6 +5,7 @@ import daangnmarket.daangn.project.domain.vote.VoteOption;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,10 @@ public class VoteDTO {
 
     @Data
     public static class ParticipateDTO {
+        @NotNull
         private Long voteOptionId;
+
+        @NotNull
         private String participantName;
     }
 
@@ -59,7 +63,10 @@ public class VoteDTO {
 
     @Data
     public static class SaveDTO {
+        @NotNull
         private Boolean isMultipleVote;
+
+        @NotNull
         private List<String> voteOptions;
 
         public SaveDTO(Boolean isMultipleVote, List<String> voteOptions) {
@@ -67,10 +74,4 @@ public class VoteDTO {
             this.voteOptions = voteOptions;
         }
     }
-
-    @Data
-    public static class UpdateDTO{
-
-    }
-
 }

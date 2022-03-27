@@ -5,8 +5,11 @@ import daangnmarket.daangn.project.domain.product.Product;
 import daangnmarket.daangn.project.domain.product.ProductCategory;
 import daangnmarket.daangn.project.dto.utils.Utility;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class ProductDTO {
     @Data
+    @EqualsAndHashCode(callSuper = false)
     public static class DetailResponseDTO extends Utility {
         private Long id;
         private Long memberId;
@@ -45,6 +49,7 @@ public class ProductDTO {
         }
     }
 
+    @EqualsAndHashCode(callSuper = false)
     @Data
     public static class ResponseWithMemberDTO extends Utility {
         private Long id;
@@ -74,11 +79,20 @@ public class ProductDTO {
 
     @Data
     public static class SaveDto {
+        @NotNull
         private String writer;
+
+        @NotBlank
         private String title;
+
+        @NotBlank
         private String description;
+
         private Integer price;
+
+        @NotNull
         private ProductCategory productCategory;
+
         private List<MultipartFile> images = new ArrayList<>();
     }
 

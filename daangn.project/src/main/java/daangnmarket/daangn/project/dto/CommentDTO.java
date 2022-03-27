@@ -5,6 +5,9 @@ import daangnmarket.daangn.project.domain.community.Community;
 import daangnmarket.daangn.project.domain.community.CommunityComment;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class CommentDTO {
 
     @Data
@@ -31,11 +34,22 @@ public class CommentDTO {
 
     @Data
     public static class SaveDTO {
+        @NotNull
         private String writer;
+
+        @NotEmpty
         private String content;
+
+        @NotNull
         private Long communityId;
+
+        @NotNull
         private Long parentCommentNum;
+
+        @NotNull
         private Long commentOrder;
+
+        @NotNull
         private Boolean isDeleted;
 
         public CommunityComment toEntity(Member m, Community c){
