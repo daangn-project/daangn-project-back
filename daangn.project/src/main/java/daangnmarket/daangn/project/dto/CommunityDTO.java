@@ -7,6 +7,8 @@ import daangnmarket.daangn.project.dto.utils.Utility;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -55,13 +57,26 @@ public class CommunityDTO extends Utility {
 
     @Data
     public static class SaveDTO {
+        @NotNull
         private String writer;
+
+        @NotEmpty
         private String title;
+
+        @NotEmpty
         private String description;
+
+        @NotNull
         private CommunityCategory communityCategory;
+
         private List<MultipartFile> images = new ArrayList<>();
+
+        @NotNull
         private Boolean isMultipleVote;
+
+        @NotNull
         private Boolean isVoteArticle;
+
         private List<String> voteOptions;
     }
 
