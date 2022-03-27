@@ -1,12 +1,18 @@
 package daangnmarket.daangn.project.domain.product;
 
 import daangnmarket.daangn.project.domain.member.Member;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductLike {
 
     @Id

@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public  class MemberDTO {
-    @Getter
+    @Data
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
@@ -19,7 +19,7 @@ public  class MemberDTO {
         private String authorityName;
     }
 
-    @Getter
+    @Data
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
@@ -59,7 +59,7 @@ public  class MemberDTO {
     }
 
 
-    @Getter
+    @Data
     @NoArgsConstructor
     @AllArgsConstructor
     public static class LoginDTO {
@@ -74,7 +74,7 @@ public  class MemberDTO {
     }
 
 
-    @Getter
+    @Data
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ResponseDto {
@@ -90,7 +90,7 @@ public  class MemberDTO {
         }
     }
 
-    @Getter
+    @Data
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
