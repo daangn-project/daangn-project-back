@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public  class MemberDTO {
+public class MemberDTO {
     @Data
     @Builder
     @AllArgsConstructor

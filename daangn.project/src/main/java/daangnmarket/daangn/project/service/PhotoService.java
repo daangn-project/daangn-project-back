@@ -11,7 +11,6 @@ public class PhotoService {
     private final PhotoRepository photoRepository;
 
     public Photo findByFileId(Long id) {
-        return photoRepository.findById(id).get();
-
+        return photoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("사진이 존재하지 않습니다"));
     }
 }
