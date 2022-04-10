@@ -10,6 +10,7 @@ import daangnmarket.daangn.project.repository.ProductRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.repository.PhotoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,8 +82,8 @@ public class ProductService {
 
     // 모든 게시물 조회
     @Transactional(readOnly = true)
-    public List<ProductDTO.DetailResponseDTO> findAll(){
-        return productRepository.findAll().stream().map(ProductDTO.DetailResponseDTO::new).collect(Collectors.toList());
+    public List<ProductDTO.DetailResponseDTO> findProducts(Pageable pageable){
+        return productRepository.findAll(pageable).getContent().stream().map(ProductDTO.DetailResponseDTO::new).collect(Collectors.toList());
     }
 
     // Id로 게시물 조회

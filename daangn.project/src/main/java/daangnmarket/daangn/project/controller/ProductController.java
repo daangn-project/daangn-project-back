@@ -5,6 +5,8 @@ import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -24,9 +26,9 @@ public class ProductController {
 
     // 전체 게시물 조회
     @GetMapping("")
-    public ResponseEntity<Message> showAllProducts() {
+    public ResponseEntity<Message> productList(@PageableDefault(size = 20) Pageable pageable) {
         // 전체 게시물 조회
-        List<ProductDTO.DetailResponseDTO> productDetailResponseDtoList = productService.findAll();
+        List<ProductDTO.DetailResponseDTO> productDetailResponseDtoList = productService.findProducts(pageable);
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
                 .message("전체 게시물 조회 결과입니다.")
@@ -35,7 +37,6 @@ public class ProductController {
     }
 
     // 개별 게시물 조회
-    // TODO: 1) ResponseEntity의 형태를 변경해야 하는가? 2) DTO를 분리해서 위와 같이 Setter 주입으로 하는 것이 맞는가?
     @GetMapping("/{id}")
     public ResponseEntity<Message> findItemPost(@PathVariable String id) {
         // 게시물의 상세 정보
