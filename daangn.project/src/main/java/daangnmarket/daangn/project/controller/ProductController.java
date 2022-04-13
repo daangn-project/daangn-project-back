@@ -5,9 +5,14 @@ import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,14 +20,15 @@ import java.util.NoSuchElementException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products")
+@ControllerAdvice
 public class ProductController {
     private final ProductService productService;
 
     // 전체 게시물 조회
     @GetMapping("")
-    public ResponseEntity<Message> showAllProducts() {
+    public ResponseEntity<Message> productList(@PageableDefault(size = 20) Pageable pageable) {
         // 전체 게시물 조회
-        List<ProductDTO.DetailResponseDTO> productDetailResponseDtoList = productService.findAll();
+        List<ProductDTO.DetailResponseDTO> productDetailResponseDtoList = productService.findProducts(pageable);
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
                 .message("전체 게시물 조회 결과입니다.")
@@ -31,7 +37,6 @@ public class ProductController {
     }
 
     // 개별 게시물 조회
-    // TODO: 1) ResponseEntity의 형태를 변경해야 하는가? 2) DTO를 분리해서 위와 같이 Setter 주입으로 하는 것이 맞는가?
     @GetMapping("/{id}")
     public ResponseEntity<Message> findItemPost(@PathVariable String id) {
         // 게시물의 상세 정보
@@ -62,9 +67,8 @@ public class ProductController {
 
     // 생성
     @PostMapping("")
-    public ResponseEntity<Message> createProduct(@ModelAttribute ProductDTO.SaveDto productSaveDto) throws IOException{
-        productService.save(productSaveDto);
-        return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("게시물이 등록되었어요.").data(productSaveDto).build(), HttpStatus.OK);
+    public ProductDTO.DetailResponseDTO createProduct(@ModelAttribute @Valid ProductDTO.SaveDto productSaveDto) {
+        return new ProductDTO.DetailResponseDTO(productService.save(productSaveDto));
     }
 
     // 수정
@@ -90,4 +94,6 @@ public class ProductController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 }

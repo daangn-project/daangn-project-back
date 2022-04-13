@@ -10,6 +10,7 @@ import daangnmarket.daangn.project.repository.ProductRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.repository.PhotoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ public class ProductService {
     private final S3Uploader s3Uploader;
 
     // 생성
-    public void save(ProductDTO.SaveDto productSaveDto) throws IOException {
+    public Product save(ProductDTO.SaveDto productSaveDto) {
         Member member = memberRepository.findByNickname(productSaveDto.getWriter()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
         );
@@ -48,7 +49,7 @@ public class ProductService {
             }
         });
         product.setMember(member);
-        productRepository.save(product);
+        return productRepository.save(product);
     }
 
     // 수정
@@ -81,8 +82,8 @@ public class ProductService {
 
     // 모든 게시물 조회
     @Transactional(readOnly = true)
-    public List<ProductDTO.DetailResponseDTO> findAll(){
-        return productRepository.findAll().stream().map(ProductDTO.DetailResponseDTO::new).collect(Collectors.toList());
+    public List<ProductDTO.DetailResponseDTO> findProducts(Pageable pageable){
+        return productRepository.findAll(pageable).getContent().stream().map(ProductDTO.DetailResponseDTO::new).collect(Collectors.toList());
     }
 
     // Id로 게시물 조회

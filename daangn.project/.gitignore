@@ -1,7 +1,7 @@
 
 DummyTest.java
-#application-oauth.yml
-#apllication.yml
+application-oauth.yml
+apllication.yml
 /images/
 aws.yml
 /out/
