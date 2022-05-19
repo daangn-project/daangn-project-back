@@ -79,6 +79,4 @@ public class CommunityDTO extends Utility {
 
         private List<String> voteOptions;
     }
-
-
 }

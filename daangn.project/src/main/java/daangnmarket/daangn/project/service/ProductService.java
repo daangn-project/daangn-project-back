@@ -76,17 +76,18 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<ProductDTO.DetailResponseDTO> findByCategory(String category) {
         ProductCategory categoryByEnum = ProductCategory.valueOf(category);
-        List<Product> byCategory = productRepository.findByCategory(categoryByEnum);
+        List<Product> byCategory = productRepository.findByProductCategory(categoryByEnum);
         return byCategory.stream().map(ProductDTO.DetailResponseDTO::new).collect(Collectors.toList());
     }
 
-    // 모든 게시물 조회
+    // 모든 게시물 조회 - 페이징 처리
     @Transactional(readOnly = true)
-    public List<ProductDTO.DetailResponseDTO> findProducts(Pageable pageable){
-        return productRepository.findAll(pageable).getContent().stream().map(ProductDTO.DetailResponseDTO::new).collect(Collectors.toList());
+    public List<ProductDTO.DetailResponseDTO> findProductsByPage(Long cursor, Pageable pageable){
+        return getProductList(cursor, pageable)
+                .stream().map(ProductDTO.DetailResponseDTO::new).collect(Collectors.toList());
     }
 
-    // Id로 게시물 조회
+    // Id로 개별 게시물 조회
     public ProductDTO.DetailResponseDTO findById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(()
                 -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
@@ -94,7 +95,14 @@ public class ProductService {
     }
 
     // 유저 ID로 유저가 작성한 게시물 조회
-    public List<ProductDTO.ResponseWithMemberDTO> findByUserId(Long id) {
+    public List<ProductDTO.ResponseWithMemberDTO> findByMemberId(Long id) {
         return productRepository.findByMemberId(id).stream().map(ProductDTO.ResponseWithMemberDTO::new).collect(Collectors.toList());
+    }
+
+    // 페이징 처리를 위한 메서드
+    private List<Product> getProductList(Long id, Pageable page) {
+        return id.equals(0L)
+                ? productRepository.findByOrderByIdDescWithList(page)
+                : productRepository.findByIdLessThanOrderByIdDesc(id, page);
     }
 }

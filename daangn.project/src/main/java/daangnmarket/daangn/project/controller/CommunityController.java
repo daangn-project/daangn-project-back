@@ -2,10 +2,12 @@ package daangnmarket.daangn.project.controller;
 
 import daangnmarket.daangn.project.dto.CommunityDTO;
 
+import daangnmarket.daangn.project.dto.ProductDTO;
 import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.service.CommunityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/communities")
 public class CommunityController {
     private final CommunityService communityService;
+    private static final int PAGE_DEFAULT_SIZE = 10;
 
     @PostMapping("")
     public ResponseEntity<Message> communityCreate(@ModelAttribute CommunityDTO.SaveDTO saveDTO) throws IOException {
@@ -26,8 +29,8 @@ public class CommunityController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Message> communityList() {
-        List<CommunityDTO.ResponseDTO> communityResponseDtoList = communityService.findAll();
+    public ResponseEntity<Message> communityList(Long cursor) {
+        List<CommunityDTO.ResponseDTO> communityResponseDtoList = communityService.findCommunityByPage(cursor, PageRequest.of(0,  PAGE_DEFAULT_SIZE));
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
                 .message("전체 동네 생활 조회 결과입니다.")

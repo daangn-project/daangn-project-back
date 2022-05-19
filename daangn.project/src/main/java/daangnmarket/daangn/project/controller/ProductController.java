@@ -5,15 +5,11 @@ import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -23,15 +19,14 @@ import java.util.NoSuchElementException;
 @ControllerAdvice
 public class ProductController {
     private final ProductService productService;
+    private static final int PAGE_DEFAULT_SIZE = 10;
 
-    // 전체 게시물 조회
     @GetMapping("")
-    public ResponseEntity<Message> productList(@PageableDefault(size = 20) Pageable pageable) {
-        // 전체 게시물 조회
-        List<ProductDTO.DetailResponseDTO> productDetailResponseDtoList = productService.findProducts(pageable);
+    public ResponseEntity<Message> productList(Long cursor) {
+        List<ProductDTO.DetailResponseDTO> productDetailResponseDtoList = productService.findProductsByPage(cursor, PageRequest.of(0, PAGE_DEFAULT_SIZE));
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
-                .message("전체 게시물 조회 결과입니다.")
+                .message("게시물 조회 결과입니다.")
                 .data(productDetailResponseDtoList)
                 .build(), HttpStatus.OK);
     }
@@ -43,7 +38,7 @@ public class ProductController {
         ProductDTO.DetailResponseDTO productDetailResponseDto = productService.findById(Long.parseLong(id));
 
         // 유저가 작성한 게시물도 같이 보여준다.
-        List<ProductDTO.ResponseWithMemberDTO> productResponseWithMemberDtoList = productService.findByUserId(productDetailResponseDto.getMemberId());
+        List<ProductDTO.ResponseWithMemberDTO> productResponseWithMemberDtoList = productService.findByMemberId(productDetailResponseDto.getMemberId());
         productDetailResponseDto.setProductWithMemberDtoList(productResponseWithMemberDtoList);
 
         return new ResponseEntity<>(Message.builder()
@@ -53,7 +48,7 @@ public class ProductController {
                 .build(), HttpStatus.OK);
     }
 
-    // 카테고리에 해당하는 모든 ItemPost 조회
+    // 카테고리에 해당하는 조회
     @GetMapping("/category/{category}")
     public ResponseEntity<Message> showProductsByCategory(@PathVariable String category) {
         List<ProductDTO.DetailResponseDTO> productDetailResponseDtoList = productService.findByCategory(category);
@@ -63,7 +58,6 @@ public class ProductController {
                 .data(productDetailResponseDtoList)
                 .build(), HttpStatus.OK);
     }
-
 
     // 생성
     @PostMapping("")
@@ -94,6 +88,4 @@ public class ProductController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }

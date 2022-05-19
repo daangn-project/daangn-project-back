@@ -1,5 +1,6 @@
 package daangnmarket.daangn.project.domain.community;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import daangnmarket.daangn.project.domain.product.ProductCategory;
 import lombok.Getter;
 
@@ -10,8 +11,15 @@ import java.util.Arrays;
 public enum CommunityCategory {
     QUESTION("동네질문"),
     FOOD("동네맛집"),
-    FIND("분실/실종센터");
+    FIND("분실/실종센터"),
+    INVEST("투자/주식"),
+    LOVE("썸/연애"),
+    CAREER("진로/직장"),
+    HEALTH("헬스/건강"),
+    ANNOUNCE("동네알림"),
+    HOBBY("취미");
 
+    @JsonValue
     private final String value;
 
     CommunityCategory(String value) {
