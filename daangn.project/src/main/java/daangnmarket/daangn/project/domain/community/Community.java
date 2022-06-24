@@ -22,22 +22,22 @@ public class Community extends BaseTimeEntity {
     @Column(name = "COMMUNITY_ID")
     private Long id;
 
-    @Column(name="title", nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Column(name="description", nullable = false)
+    @Column(nullable = false)
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+    @Convert(converter = CommunityCategoryConverter.class)
+    private CommunityCategory communityCategory;
+
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Photo> photoList = new ArrayList<>();
-
-    @Convert(converter = CommunityCategoryConverter.class)
-    private CommunityCategory communityCategory;
 
     @OneToOne
     @JoinColumn(name = "VOTE_ID")

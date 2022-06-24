@@ -7,6 +7,7 @@ import daangnmarket.daangn.project.domain.Photo;
 import daangnmarket.daangn.project.dto.ProductDTO;
 import daangnmarket.daangn.project.handler.S3Uploader;
 import daangnmarket.daangn.project.repository.ProductRepository;
+import daangnmarket.daangn.project.repository.ProductRepositoryImpl;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.repository.PhotoRepository;
 import lombok.RequiredArgsConstructor;

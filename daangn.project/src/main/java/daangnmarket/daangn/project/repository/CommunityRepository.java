@@ -11,13 +11,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CommunityRepository extends JpaRepository<Community, Long> {
+public interface CommunityRepository extends JpaRepository<Community, Long>, CommunityRepositoryQuerydsl {
     List<Community> findByCommunityCategory( CommunityCategory category);
-
     List<Community> findByMemberId(Long memberId);
-
-    @Query("select p from Community p order by p.id desc")
-    List<Community> findByOrderByIdDescWithList(Pageable pageable);
-
     List<Community> findByIdLessThanOrderByIdDesc(Long id, Pageable pageable);
 }

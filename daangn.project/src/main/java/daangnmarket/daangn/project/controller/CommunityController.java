@@ -1,8 +1,12 @@
 package daangnmarket.daangn.project.controller;
 
+import daangnmarket.daangn.project.domain.community.Community;
+import daangnmarket.daangn.project.domain.community.CommunityCategory;
 import daangnmarket.daangn.project.dto.CommunityDTO;
 
+import daangnmarket.daangn.project.dto.EnumDTO;
 import daangnmarket.daangn.project.dto.ProductDTO;
+import daangnmarket.daangn.project.dto.utils.EnumManager;
 import daangnmarket.daangn.project.message.Message;
 import daangnmarket.daangn.project.message.StatusEnum;
 import daangnmarket.daangn.project.service.CommunityService;
@@ -12,8 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,12 +28,24 @@ public class CommunityController {
     private final CommunityService communityService;
     private static final int PAGE_DEFAULT_SIZE = 10;
 
+    // 카테고리 리스트 조회
+    @GetMapping("/categories")
+    public List<EnumDTO> categoryList(){
+        Class<? extends EnumManager> e = CommunityCategory.class;
+        return Arrays
+                .stream(e.getEnumConstants())
+                .map(EnumDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    // 생성
     @PostMapping("")
     public ResponseEntity<Message> communityCreate(@ModelAttribute CommunityDTO.SaveDTO saveDTO) throws IOException {
         communityService.save(saveDTO);
         return new ResponseEntity<>(Message.builder().status(StatusEnum.OK).message("동네 생활이 생성되었어요.").data(saveDTO).build(), HttpStatus.OK);
     }
 
+    // 조회
     @GetMapping("")
     public ResponseEntity<Message> communityList(Long cursor) {
         List<CommunityDTO.ResponseDTO> communityResponseDtoList = communityService.findCommunityByPage(cursor, PageRequest.of(0,  PAGE_DEFAULT_SIZE));
@@ -38,6 +56,7 @@ public class CommunityController {
                 .build(), HttpStatus.OK);
     }
 
+    // 상세 페이지
     @GetMapping("/{id}")
     public ResponseEntity<Message> communityDetails(@PathVariable String id) {
         CommunityDTO.ResponseDTO communityResponseDto = communityService.findById(Long.parseLong(id));

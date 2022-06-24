@@ -25,12 +25,12 @@ public class MemberService {
 
     SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:sss");
     Date time = new Date();
-    String localTime = format.format(time);
 
-    public Long signup(SignVo signVo){
-        Optional<Member> alreadyMember = memberRepository.findByUsername(signVo.getUsername());
-        if(alreadyMember.isPresent()){
-            return alreadyMember.get().getId();
+    public Long signUp(SignVo signVo){
+        Boolean isDuplicatedUsername = memberRepository.existsByUsername(signVo.getUsername());
+        // TODO: 회원이 이미 존재할 경우 Exception 처리해야 함
+        if(isDuplicatedUsername){
+            return null;
         }else {
             Authority authority = Authority.builder().authorityName("ROLE_ADMIN").build();
             Member member = Member.builder()
@@ -45,27 +45,17 @@ public class MemberService {
             return member.getId();
         }
     }
+
     // username을 통해 해당 유저의 정보 및 권한 정보를 리턴
     @Transactional(readOnly = true)
     public MemberDTO.infoDTO getUserWithAuthorities(String username) {
-        return MemberDTO.infoDTO.from(memberRepository.findOneWithAuthoritiesByUsername(username).orElse(null));
+        return MemberDTO.infoDTO.from(memberRepository.findOneWithAuthoritiesByUsername(username));
     }
 
     // 위에서 작성한 SecurityUtil의 getCurrentUsername() 메서드를 통해 username의 유저 및 권한 정보를 리턴
     @Transactional(readOnly = true)
-    public MemberDTO.infoDTO  getMyUserWithAuthorities() {
-        return MemberDTO.infoDTO.from(SecurityUtil.getCurrentUsername().flatMap(memberRepository::findOneWithAuthoritiesByUsername).orElse(null));
-    }
-
-
-    public Member findById(Long id){
-        return memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
-    }
-
-    public Member findByUsername(String username){
-        return memberRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("유저가 없음"));
-    }
-    public Member findByNickname(String nickname){
-        return memberRepository.findByUsername(nickname).orElseThrow(() -> new IllegalArgumentException("유저가 없음"));
+    public MemberDTO.infoDTO getMyUserWithAuthorities() {
+        return MemberDTO.infoDTO.from(memberRepository.findOneWithAuthoritiesByUsername(SecurityUtil.getCurrentUsername()
+                .orElseThrow(() -> new IllegalArgumentException("로그인 유저 정보를 가져오는 데 실패했습니다."))));
     }
 }

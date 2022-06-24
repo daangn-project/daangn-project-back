@@ -35,8 +35,7 @@ public class MemberController {
     @ResponseBody
     @Transactional
     public ResponseEntity<ApiResponse> saveUser(@RequestBody SignVo signVo){
-
-        memberService.signup(signVo);
+        Long signedMemberId = memberService.signUp(signVo);
         return new ResponseEntity<>(new ApiResponse(), HttpStatus.OK);
     }
 
@@ -47,7 +46,6 @@ public class MemberController {
     }
 
     @GetMapping("/{username}")
-//    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<MemberDTO.infoDTO> getUserInfo(@PathVariable String username) {
         return ResponseEntity.ok(memberService.getUserWithAuthorities(username));
     }

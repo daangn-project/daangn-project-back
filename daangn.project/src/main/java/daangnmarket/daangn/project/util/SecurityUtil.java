@@ -1,5 +1,6 @@
 package daangnmarket.daangn.project.util;
 
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -9,12 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Optional;
 
 
+@NoArgsConstructor
 public class SecurityUtil {
-
     private static final Logger logger = LoggerFactory.getLogger(SecurityUtil.class);
-
-    private SecurityUtil(){
-    }
 
     public static Optional<String> getCurrentUsername(){
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

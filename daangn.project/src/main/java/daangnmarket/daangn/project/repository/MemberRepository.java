@@ -9,21 +9,16 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long>{
-
-    public Optional<Member> findByEmail(String email);
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryQuerydsl{
+    Optional<Member> findByEmail(String email);
+    Optional<Member> findByNickname(String nickname);
+    Optional<Member> findByUsername(String username);
 
     @Modifying(clearAutomatically = true)
     @Query("update Member m SET m.nickname = :nickname where m.id = :id")
     int updateUserNickname(@Param(value="nickname") String nickname, @Param(value="id")Long id);
 
-    @Query("select m from Member m where m.nickname = :nickname")
-    Optional<Member> findByNickname(@Param(value="nickname") String nickname);
+    //    @EntityGraph(attributePaths = "authorities")
+//    Optional<Member> findOneWithAuthoritiesByUsername(String username);
 
-    @Query("select m from Member m where m.username = :username")
-    Optional<Member> findByUsername(@Param(value="username") String username);
-
-
-    @EntityGraph(attributePaths = "authorities")
-    Optional<Member> findOneWithAuthoritiesByUsername(String username);
 }

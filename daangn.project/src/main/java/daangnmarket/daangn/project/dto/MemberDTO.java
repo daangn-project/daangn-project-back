@@ -47,7 +47,6 @@ public class MemberDTO {
 
         public static MemberDTO.infoDTO from(Member member) {
             if(member == null) return null;
-
             return MemberDTO.infoDTO.builder()
                     .username(member.getUsername())
                     .nickname(member.getNickname())
