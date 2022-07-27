@@ -31,6 +31,7 @@ public class CommunityDTO extends Utility {
         private String thumbnailImg;
         private VoteDTO.InfoResponseDTO voteResponseDto;
         private List<CommentDTO.ResponseDTO> commentResponseDtoList;
+        private Integer likeCount;
 
         public ResponseDTO(Community entity){
             this.id = entity.getId();
@@ -45,6 +46,7 @@ public class CommunityDTO extends Utility {
             this.adjustedCreatedDate = timeFormatting(createdDate);
             this.voteResponseDto = entity.getVote() != null ? new VoteDTO.InfoResponseDTO(entity.getVote()) : null;
             this.commentResponseDtoList = entity.getCommentList().stream().map(CommentDTO.ResponseDTO::new).collect(Collectors.toList());
+            this.likeCount = entity.getLikes().size();
         }
 
         public void sortCommentsByParentOrderThenCommentOrder(){

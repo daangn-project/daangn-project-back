@@ -3,7 +3,6 @@ package daangnmarket.daangn.project.controller;
 import daangnmarket.daangn.project.dto.MemberDTO;
 import daangnmarket.daangn.project.message.ApiResponse;
 import daangnmarket.daangn.project.service.MemberService;
-import daangnmarket.daangn.project.vo.SignVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,24 +19,23 @@ import javax.servlet.http.HttpServletRequest;
 public class MemberController {
     private final MemberService memberService;
 
-    // 임시 메서드
+    @PostMapping("/signup")
+    @ResponseBody
+    @Transactional
+    public ResponseEntity<ApiResponse> saveUser(@RequestBody MemberDTO.SignUpDto signUpDto){
+        Long signedMemberId = memberService.signUp(signUpDto);
+        return new ResponseEntity<>(new ApiResponse(), HttpStatus.OK);
+    }
+
     @PostMapping("/login")
-    public String login(@RequestBody MemberDTO.LoginDTO memberLoginDto ){
-        return "Login!";
+    public ResponseEntity<?> login(@Valid @RequestBody MemberDTO.LoginDTO memberLoginDto)
+    {
+        return memberService.login(memberLoginDto);
     }
 
     @PutMapping("/{id}/password")
     public ResponseEntity<Long> updatePassword(@PathVariable String id){
         return null;
-    }
-
-    // 회원가입
-    @PostMapping("/signup")
-    @ResponseBody
-    @Transactional
-    public ResponseEntity<ApiResponse> saveUser(@RequestBody SignVo signVo){
-        Long signedMemberId = memberService.signUp(signVo);
-        return new ResponseEntity<>(new ApiResponse(), HttpStatus.OK);
     }
 
     @GetMapping()
@@ -50,10 +49,4 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getUserWithAuthorities(username));
     }
 
-//    //이메일 중복체크
-//    @GetMapping("/exist_user/{userName}")
-//    public boolean findUserByName(@PathVariable String userName){
-//        Optional<Member> member = memberService.findByUsername(userName);
-//        return member.isPresent() ? true : false;
-//    }
 }

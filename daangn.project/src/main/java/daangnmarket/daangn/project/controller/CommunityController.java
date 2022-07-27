@@ -80,6 +80,8 @@ public class CommunityController {
     }
 
 
+
+
 //    // 동네 생활 수정
 //    @PutMapping("/{id}")
 //    public ResponseEntity<Message> communityModify(@PathVariable Long id, @ModelAttribute CommunityPostFileVO communityPostFileVO) {

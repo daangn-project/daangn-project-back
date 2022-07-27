@@ -13,12 +13,8 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     Optional<Member> findByEmail(String email);
     Optional<Member> findByNickname(String nickname);
     Optional<Member> findByUsername(String username);
-
     @Modifying(clearAutomatically = true)
     @Query("update Member m SET m.nickname = :nickname where m.id = :id")
     int updateUserNickname(@Param(value="nickname") String nickname, @Param(value="id")Long id);
-
-    //    @EntityGraph(attributePaths = "authorities")
-//    Optional<Member> findOneWithAuthoritiesByUsername(String username);
 
 }

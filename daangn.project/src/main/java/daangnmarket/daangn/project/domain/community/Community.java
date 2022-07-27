@@ -9,7 +9,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity @Getter
 @Builder
@@ -47,9 +49,12 @@ public class Community extends BaseTimeEntity {
     @Builder.Default
     private List<CommunityComment> commentList = new ArrayList<>();
 
-    public void addPhoto(Photo photo){
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
+    Set<CommunityPostLike> likes = new HashSet<>();
+
+    public void addPhoto(Photo photo) {
         this.photoList.add(photo);
-        if(photo.getCommunity() != this) photo.setCommunityPost(this);
+        if (photo.getCommunity() != this) photo.setCommunityPost(this);
     }
 
     // 연관관계 메서드

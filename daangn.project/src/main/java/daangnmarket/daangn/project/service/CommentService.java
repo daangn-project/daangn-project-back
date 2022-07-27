@@ -7,6 +7,7 @@ import daangnmarket.daangn.project.dto.CommentDTO;
 import daangnmarket.daangn.project.repository.CommunityCommentRepository;
 import daangnmarket.daangn.project.repository.CommunityRepository;
 import daangnmarket.daangn.project.repository.MemberRepository;
+import daangnmarket.daangn.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class CommentService {
     private final CommunityRepository communityRepository;
 
     public CommentDTO.ResponseDTO save(CommentDTO.SaveDTO commentSaveDto) {
+        System.out.println("SecurityUtil.getCurrentUsername() = " + SecurityUtil.getCurrentUsername());
+
         Member member = memberRepository.findByNickname(commentSaveDto.getWriter()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
         Community community = communityRepository.findById(commentSaveDto.getCommunityId()).orElseThrow(

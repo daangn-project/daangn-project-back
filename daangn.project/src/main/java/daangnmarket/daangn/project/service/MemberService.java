@@ -1,20 +1,26 @@
 package daangnmarket.daangn.project.service;
 
+import daangnmarket.daangn.project.auth.JwtFilter;
+import daangnmarket.daangn.project.auth.TokenProvider;
 import daangnmarket.daangn.project.domain.member.Authority;
 import daangnmarket.daangn.project.domain.member.Member;
 import daangnmarket.daangn.project.dto.MemberDTO;
 import daangnmarket.daangn.project.repository.MemberRepository;
 import daangnmarket.daangn.project.util.SecurityUtil;
-import daangnmarket.daangn.project.vo.SignVo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.text.SimpleDateFormat;
+import org.springframework.web.bind.annotation.RequestBody;
+import javax.validation.Valid;
 import java.util.Collections;
-import java.util.Date;
-import java.util.Optional;
 
 
 @Service
@@ -22,22 +28,21 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:sss");
-    Date time = new Date();
-
-    public Long signUp(SignVo signVo){
-        Boolean isDuplicatedUsername = memberRepository.existsByUsername(signVo.getUsername());
+    public Long signUp(MemberDTO.SignUpDto signUpDto){
+        Boolean isDuplicatedUsername = memberRepository.existsByUsername(signUpDto.getUsername());
         // TODO: 회원이 이미 존재할 경우 Exception 처리해야 함
         if(isDuplicatedUsername){
             return null;
         }else {
             Authority authority = Authority.builder().authorityName("ROLE_ADMIN").build();
             Member member = Member.builder()
-                    .email(signVo.getEmail())
-                    .password(passwordEncoder.encode(signVo.getPassword()))
-                    .username(signVo.getUsername())
-                    .nickname(signVo.getNickname())
+                    .email(signUpDto.getEmail())
+                    .password(passwordEncoder.encode(signUpDto.getPassword()))
+                    .username(signUpDto.getUsername())
+                    .nickname(signUpDto.getNickname())
                     .activated(true)
                     .authorities(Collections.singleton(authority))
                     .build();
@@ -45,6 +50,23 @@ public class MemberService {
             return member.getId();
         }
     }
+
+    public ResponseEntity<MemberDTO.TokenDTO> login(@Valid @RequestBody MemberDTO.LoginDTO memberLoginDto) {
+
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(memberLoginDto.getUsername(), memberLoginDto.getPassword());
+
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = tokenProvider.createToken(authentication);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
+        return new ResponseEntity<>(new MemberDTO.TokenDTO(jwt), httpHeaders, HttpStatus.OK);
+    }
+
 
     // username을 통해 해당 유저의 정보 및 권한 정보를 리턴
     @Transactional(readOnly = true)
