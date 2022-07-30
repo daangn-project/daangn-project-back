@@ -24,7 +24,7 @@ public class CommentService {
     public CommentDTO.ResponseDTO save(CommentDTO.SaveDTO commentSaveDto) {
         System.out.println("SecurityUtil.getCurrentUsername() = " + SecurityUtil.getCurrentUsername());
 
-        Member member = memberRepository.findByNickname(commentSaveDto.getWriter()).orElseThrow(
+        Member member = memberRepository.findByUsername(commentSaveDto.getWriter()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
         Community community = communityRepository.findById(commentSaveDto.getCommunityId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
