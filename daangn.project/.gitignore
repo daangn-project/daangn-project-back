@@ -5,3 +5,7 @@ apllication.yml
 /images/
 aws.yml
 /out/
+
+DS_Store
+
+build/
