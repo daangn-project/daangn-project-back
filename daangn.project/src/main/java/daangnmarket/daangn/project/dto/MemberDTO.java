@@ -59,7 +59,7 @@ public class MemberDTO {
         }
     }
     @Data
-    public class SignUpDto {
+    public static class SignUpDto {
         private String username;
 
         @NotBlank(message = "닉네임을 입력해주세요.")
@@ -101,11 +101,22 @@ public class MemberDTO {
         private String email;
         private List<ProductDTO.DetailResponseDTO> productDetailResponseDtoList;
 
-        public  ResponseDto(Member member){
+        public ResponseDto(Member member){
             this.nickname = member.getNickname();
             this.email = member.getNickname();
             this.productDetailResponseDtoList = member.getProductList()
                     .stream().map(ProductDTO.DetailResponseDTO::new).collect(Collectors.toList());
+        }
+    }
+
+    @Data
+    public static class ChatProfileDto{
+        private String nickname;
+        private String profileImage;
+
+        public ChatProfileDto(Member member){
+            this.nickname = member.getNickname();
+            this.profileImage = member.getProfileImg();
         }
     }
 

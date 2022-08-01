@@ -31,4 +31,12 @@ public class MemberRepositoryImpl implements MemberRepositoryQuerydsl{
                 .where(member.username.eq(username))
                 .fetchOne();
     }
+
+    @Override
+    public Member findMemberById(Long id) {
+        return queryFactory.selectFrom(member)
+                .where(member.id.eq(id))
+                .fetchOne();
+    }
+
 }

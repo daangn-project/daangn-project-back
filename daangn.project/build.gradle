@@ -53,6 +53,11 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE' // s3 설정
 
 	implementation 'org.springframework.boot:spring-boot-starter-validation' // validation 처리
+
+	// Chatting
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.webjars:sockjs-client:1.1.2'
+	implementation 'org.webjars:stomp-websocket:2.3.3-1'
 }
 
 test {

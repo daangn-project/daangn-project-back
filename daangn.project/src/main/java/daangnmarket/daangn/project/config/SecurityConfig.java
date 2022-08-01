@@ -1,9 +1,6 @@
 package daangnmarket.daangn.project.config;
 
-import daangnmarket.daangn.project.auth.JwtAccessDeniedHandler;
-import daangnmarket.daangn.project.auth.JwtAuthenticationEntryPoint;
-import daangnmarket.daangn.project.auth.JwtSecurityConfig;
-import daangnmarket.daangn.project.auth.TokenProvider;
+import daangnmarket.daangn.project.auth.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -35,25 +32,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring()
-                .antMatchers(
-                        "/h2-console/**"
-                        ,"/error"
-                        ,"/**"
-                );
-    }
+//    @Override
+//    public void configure(WebSecurity web) {
+//        web.ignoring()
+//                .antMatchers(
+//                        "/h2-console/**"
+//                        ,"/error"
+//                        ,"/**"
+//                );
+//    }
 
     // WebSecurityConfigureAdapter의 configure 메서드 오버라이드
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 
         httpSecurity
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .csrf().disable()
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilter(corsFilter)
+                .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)

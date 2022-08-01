@@ -7,5 +7,5 @@ import java.util.Optional;
 public interface MemberRepositoryQuerydsl {
     Boolean existsByUsername(String username);
     Member findOneWithAuthoritiesByUsername(String username);
-
+    Member findMemberById(Long id);
 }
