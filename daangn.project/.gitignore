@@ -9,3 +9,4 @@ aws.yml
 DS_Store
 
 build/
+out/
