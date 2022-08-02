@@ -35,6 +35,8 @@ public class QCommunity extends EntityPathBase<Community> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final SetPath<CommunityPostLike, QCommunityPostLike> likes = this.<CommunityPostLike, QCommunityPostLike>createSet("likes", CommunityPostLike.class, QCommunityPostLike.class, PathInits.DIRECT2);
+
     public final daangnmarket.daangn.project.domain.member.QMember member;
 
     //inherited

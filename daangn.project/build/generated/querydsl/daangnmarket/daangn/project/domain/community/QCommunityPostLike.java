@@ -22,9 +22,9 @@ public class QCommunityPostLike extends EntityPathBase<CommunityPostLike> {
 
     public static final QCommunityPostLike communityPostLike = new QCommunityPostLike("communityPostLike");
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    public final QCommunity community;
 
-    public final daangnmarket.daangn.project.domain.product.QProduct itemPost;
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final daangnmarket.daangn.project.domain.member.QMember member;
 
@@ -46,7 +46,7 @@ public class QCommunityPostLike extends EntityPathBase<CommunityPostLike> {
 
     public QCommunityPostLike(Class<? extends CommunityPostLike> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.itemPost = inits.isInitialized("itemPost") ? new daangnmarket.daangn.project.domain.product.QProduct(forProperty("itemPost"), inits.get("itemPost")) : null;
+        this.community = inits.isInitialized("community") ? new QCommunity(forProperty("community"), inits.get("community")) : null;
         this.member = inits.isInitialized("member") ? new daangnmarket.daangn.project.domain.member.QMember(forProperty("member")) : null;
     }
 
