@@ -4,6 +4,7 @@ package daangnmarket.daangn.project.auth;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -23,9 +24,12 @@ import java.util.stream.Collectors;
 
 
 @Component
+@RequiredArgsConstructor
 public class TokenProvider implements InitializingBean {
 
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
+
+    private final ClientMemberLoader clientMemberLoader;
     private static final String AUTHORITIES_KEY = "auth";
 
     @Value("${jwt.secret}")
@@ -51,9 +55,9 @@ public class TokenProvider implements InitializingBean {
 
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
-
+        String username = clientMemberLoader.getClientMember().getUsername();
         return Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(username)
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
