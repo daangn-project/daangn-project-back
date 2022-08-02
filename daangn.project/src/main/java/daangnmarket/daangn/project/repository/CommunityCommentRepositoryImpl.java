@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import static daangnmarket.daangn.project.domain.community.QCommunityComment.communityComment;
 
+
 @RequiredArgsConstructor
 @Repository
 public class CommunityCommentRepositoryImpl implements CommunityCommentRepositoryQuerydsl{

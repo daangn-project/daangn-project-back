@@ -55,9 +55,9 @@ public class TokenProvider implements InitializingBean {
 
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
-        String username = clientMemberLoader.getClientMember().getUsername();
+        String nickname = clientMemberLoader.getClientMember().getNickname();
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(nickname)
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
