@@ -1,12 +1,16 @@
 package daangnmarket.daangn.project.controller;
 
+import daangnmarket.daangn.project.domain.member.Member;
 import daangnmarket.daangn.project.dto.MemberDTO;
 import daangnmarket.daangn.project.message.ApiResponse;
+import daangnmarket.daangn.project.service.CustomUserDetailsImpl;
 import daangnmarket.daangn.project.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,5 +52,4 @@ public class MemberController {
     public ResponseEntity<MemberDTO.infoDTO> getUserInfo(@PathVariable String username) {
         return ResponseEntity.ok(memberService.getUserWithAuthorities(username));
     }
-
 }

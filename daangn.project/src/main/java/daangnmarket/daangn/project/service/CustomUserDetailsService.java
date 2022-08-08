@@ -17,26 +17,18 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CustomUserDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(final String username) {
-        return memberRepository.findByUsername(username)
-                .map(this::createUser)
-                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다."));
-    }
-
-    private org.springframework.security.core.userdetails.User createUser(Member member) {
-        if (!member.isActivated()) {
-            throw new RuntimeException(member + " -> 활성화되어 있지 않습니다.");
-        }
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
 
         List<GrantedAuthority> grantedAuthorities = member.getAuthorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
                 .collect(Collectors.toList());
-
         return new CustomUserDetailsImpl(member, grantedAuthorities);
     }
 }

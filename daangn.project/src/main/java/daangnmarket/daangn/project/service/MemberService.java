@@ -30,6 +30,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final CustomUserDetailsService customUserDetailsService;
 
     public Long signUp(MemberDTO.SignUpDto signUpDto){
         Boolean isDuplicatedUsername = memberRepository.existsByUsername(signUpDto.getUsername());
@@ -52,14 +53,15 @@ public class MemberService {
     }
 
     public ResponseEntity<MemberDTO.TokenDTO> login(@Valid @RequestBody MemberDTO.LoginDTO memberLoginDto) {
+        CustomUserDetailsImpl userDetails = (CustomUserDetailsImpl) customUserDetailsService.loadUserByUsername(memberLoginDto.getUsername());
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(memberLoginDto.getUsername(), memberLoginDto.getPassword());
+                new UsernamePasswordAuthenticationToken(userDetails, memberLoginDto.getPassword());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
+        String username = userDetails.getUsername();
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.createToken(authentication);
+        String jwt = tokenProvider.createToken(username, authentication);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);

@@ -1,6 +1,6 @@
 package daangnmarket.daangn.project.service;
 
-import daangnmarket.daangn.project.auth.ClientMemberLoader;
+import daangnmarket.daangn.project.auth.CurrentUser;
 import daangnmarket.daangn.project.domain.chat.ChatMessage;
 import daangnmarket.daangn.project.domain.chat.ChatRoom;
 import daangnmarket.daangn.project.domain.member.Member;
@@ -21,10 +21,8 @@ import java.util.List;
 public class ChatService {
     private final ChatRepository chatRepository;
     private final MemberRepository memberRepository;
-    private final ClientMemberLoader clientMemberLoader;
 
-    public Long createChatRoom(Long guestMemberId){
-        Member host = clientMemberLoader.getClientMember();
+    public Long createChatRoom(Member host, Long guestMemberId){
         // 이미 존재하는 채팅방있으면 채팅방 id 리턴
         ChatRoom foundRoom = chatRepository.findRoomByMemberId(host.getId(), guestMemberId);
         if (foundRoom != null) {
@@ -40,17 +38,17 @@ public class ChatService {
 
     // 채팅방 목록, page당 10개, 마지막 1개는 다음페이지 확인용
     @Transactional(readOnly = true)
-    public List<ChatRoom> loadChatRooms(Integer page) {
-        return chatRepository.findRooms(clientMemberLoader.getClientMember().getId(), page);
+    public List<ChatRoom> loadChatRooms(Member member, Integer page) {
+        return chatRepository.findRooms(member.getId(), page);
     }
 
     // 채팅 내용 가져오기
-    public List<ChatDTO.ChatMessageDTO> loadMessages(Long chatRoomId, Integer page) {
+    public List<ChatDTO.ChatMessageDTO> loadMessages(Member member, Long chatRoomId, Integer page) {
 //        if (!isParticipant(chatRoomId)) {
 //            throw new CustomException(2002, "잘못된 접근입니다.");
 //        }
 
-        Long clientMemberId = clientMemberLoader.getClientMember().getId();
+        Long clientMemberId = member.getId();
         ChatRoom room = chatRepository.findRoomById(chatRoomId);
         // '읽음' 상태로 변경
         if (clientMemberId.equals(room.getHost().getId())) {
@@ -73,7 +71,7 @@ public class ChatService {
     }
 
     // 메세지 보냈을 떄
-    public void sendMessage(Long chatRoomId, String message) {
+    public void sendMessage(Member member, Long chatRoomId, String message) {
 //        if (!isParticipant(chatRoomId)) {
 //            throw new CustomException(2003, "잘못된 접근입니다.");
 //        }
@@ -86,7 +84,7 @@ public class ChatService {
         room.getChatMessageList().add(chatMessage);
 
         // 메세지의 보낸사람, 받는사람 설정 + 채팅방 읽음 상태 설정
-        Long memberId = clientMemberLoader.getClientMember().getId();
+        Long memberId = member.getId();
         if (memberId == room.getHost().getId()) {
             room.setHostReadStatus(true);
             room.setGuestReadStatus(false);
@@ -106,8 +104,8 @@ public class ChatService {
     }
 
     // 요청자가 채팅방의 참여자가 맞는지 확인
-    private Boolean isParticipant(Long chatRoomId) {
-        Long memberId = clientMemberLoader.getClientMember().getId();
+    private Boolean isParticipant(@CurrentUser Member member, Long chatRoomId) {
+        Long memberId = member.getId();
         ChatRoom room = chatRepository.findRoomById(chatRoomId);
         if (memberId == room.getHost().getId() || memberId == room.getGuest().getId()) {
             return true;

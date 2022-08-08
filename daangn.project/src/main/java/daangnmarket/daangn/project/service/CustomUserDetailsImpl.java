@@ -12,7 +12,7 @@ public class CustomUserDetailsImpl extends User {
     private final Member member;
 
     public CustomUserDetailsImpl(Member member, Collection<? extends GrantedAuthority> authorities) {
-        super(member.getEmail(), member.getPassword(), authorities);
+        super(member.getUsername(), member.getPassword(), authorities);
         this.member = member;
     }
 }

@@ -1,6 +1,9 @@
 package daangnmarket.daangn.project.auth;
 
 
+import daangnmarket.daangn.project.domain.member.Member;
+import daangnmarket.daangn.project.service.CustomUserDetailsImpl;
+import daangnmarket.daangn.project.service.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -29,7 +32,7 @@ public class TokenProvider implements InitializingBean {
 
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
-    private final ClientMemberLoader clientMemberLoader;
+    private final CustomUserDetailsService customUserDetailsService;
     private static final String AUTHORITIES_KEY = "auth";
 
     @Value("${jwt.secret}")
@@ -48,21 +51,21 @@ public class TokenProvider implements InitializingBean {
     }
 
     // createToken 메서드는 Authentication 객체에 포함된 권한 정보들을 담은 토큰을 생성한 뒤, 현재 시간을 기준으로 토큰의 만료 시간을 설정
-    public String createToken(Authentication authentication) {
+    public String createToken(String username, Authentication authentication) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
-        String nickname = clientMemberLoader.getClientMember().getNickname();
         return Jwts.builder()
-                .setSubject(nickname)
+                .setSubject(username)
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
     }
+
     // 토큰에 담겨있는 권한 정보들을 이용해 Authentication 객체를 리턴
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts
@@ -77,9 +80,10 @@ public class TokenProvider implements InitializingBean {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        User principal = new User(claims.getSubject(), "", authorities);
+        CustomUserDetailsImpl userDetails = (CustomUserDetailsImpl)
+                customUserDetailsService.loadUserByUsername(claims.getSubject());
 
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(userDetails, token, authorities);
     }
 
 
