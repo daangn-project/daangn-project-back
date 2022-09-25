@@ -3,6 +3,7 @@ package daangnmarket.daangn.project.service;
 import daangnmarket.daangn.project.auth.CurrentUser;
 import daangnmarket.daangn.project.domain.chat.ChatMessage;
 import daangnmarket.daangn.project.domain.chat.ChatRoom;
+import daangnmarket.daangn.project.domain.chat.ChatRoomHistory;
 import daangnmarket.daangn.project.domain.member.Member;
 import daangnmarket.daangn.project.dto.ChatDTO;
 import daangnmarket.daangn.project.repository.ChatRepository;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +35,34 @@ public class ChatService {
 
         // 채팅방 없으면 생성
         ChatRoom room = ChatRoom.builder().host(host).guest(guestMember).build();
-        return chatRepository.saveChatRoom(room);
+
+        // 최초 채팅방 방문 시간 생성
+        ChatRoomHistory chatRoomHistoryForHost = ChatRoomHistory.builder().
+                member(host).chatRoom(room).latestVisitTime(LocalDateTime.now()).build();
+
+        ChatRoomHistory chatRoomHistoryForGuest = ChatRoomHistory.builder().
+                member(guestMember).chatRoom(room).latestVisitTime(LocalDateTime.now()).build();
+
+        Long savedChatRoomId = chatRepository.saveChatRoom(room);
+        chatRepository.saveChatRoomHistory(chatRoomHistoryForHost);
+        chatRepository.saveChatRoomHistory(chatRoomHistoryForGuest);
+
+        return savedChatRoomId;
     }
 
     // 채팅방 목록, page당 10개, 마지막 1개는 다음페이지 확인용
     @Transactional(readOnly = true)
     public List<ChatRoom> loadChatRooms(Member member, Integer page) {
         return chatRepository.findRooms(member.getId(), page);
+    }
+
+    @Transactional
+    public ChatDTO.ChatRoomDTO countUnreadMessages(ChatDTO.ChatRoomDTO chatRoomDTO, Member member) {
+        Long chatRoomId = chatRoomDTO.getChatRoomId();
+        ChatRoomHistory history = chatRepository.findChatRoomHistoryByChatRoomAndMember(chatRoomId, member);
+        LocalDateTime lastVisitTime = history.getLatestVisitTime();
+        chatRoomDTO.setUnreadMessageCount(chatRepository.countMessagesByCreatedTimeAfter(chatRoomId, lastVisitTime));
+        return chatRoomDTO;
     }
 
     // 채팅 내용 가져오기
@@ -56,6 +79,9 @@ public class ChatService {
         } else {
             room.setGuestReadStatus(true);
         }
+
+        // 자신의 최근 채팅방 방문 시간 업데이트
+        chatRepository.updateChatRoomHistory(clientMemberId, chatRoomId);
 
         // 요청자 본인 메세지 탐색
         List<ChatMessage> chatMessageList = chatRepository.findChatContents(chatRoomId, page);

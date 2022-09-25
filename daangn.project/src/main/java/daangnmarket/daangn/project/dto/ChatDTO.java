@@ -22,10 +22,15 @@ public class ChatDTO {
         private String latestMessage;
 
         public ChatRoomDTO(ChatRoom chatRoom, Member member) {
+            if(member.getId().equals(chatRoom.getHost().getId())){
+                this.readStatus = chatRoom.getHostReadStatus();
+                this.chatPartner = new MemberDTO.ChatProfileDto(chatRoom.getGuest());
+            } else {
+                this.readStatus = chatRoom.getGuestReadStatus();
+                this.chatPartner = new MemberDTO.ChatProfileDto(chatRoom.getHost());
+            }
             this.chatRoomId = chatRoom.getId();
-            this.chatPartner = new MemberDTO.ChatProfileDto(member);
-            this.readStatus = chatRoom.getHostReadStatus();
-            this.latestChatTime = chatRoom.getUpdateTime();
+            this.latestChatTime = chatRoom.getModifiedTime();
             this.latestChatTimeAsString = timeFormatting(latestChatTime);
             this.latestMessage = chatRoom.getLatestMessage();
         }
@@ -43,7 +48,6 @@ public class ChatDTO {
             this.writer = message.getFromMember().getNickname();
             this.message = message.getMessage();
             this.sendTime = message.getCreatedTime();
-
         }
     }
 

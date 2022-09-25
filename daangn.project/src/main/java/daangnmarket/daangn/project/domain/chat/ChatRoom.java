@@ -38,8 +38,6 @@ public class ChatRoom extends BaseTimeEntity {
     @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ChatMessage> chatMessageList = new ArrayList<>();
 
-    private LocalDateTime updateTime;
-
     public void setHostReadStatus(Boolean status){
         this.hostReadStatus = status;
     }

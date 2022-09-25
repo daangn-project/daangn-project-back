@@ -23,14 +23,15 @@ public class ChatController {
 
     @GetMapping("/rooms")
     public ResponseEntity<Message> chatRooms(@CurrentUser Member member, @RequestParam(required = false, defaultValue = "1") Integer page) {
-        List<ChatDTO.ChatRoomDTO> chatRoomDtos = chatService.loadChatRooms(member,page - 1)
+        List<ChatDTO.ChatRoomDTO> chatRoomDTOList = chatService.loadChatRooms(member,page - 1)
                 .stream()
                 .map(e -> new ChatDTO.ChatRoomDTO(e, member))
+                .map(e -> chatService.countUnreadMessages(e, member))
                 .collect(Collectors.toList());
         return new ResponseEntity<>(Message.builder()
                 .status(StatusEnum.OK)
                 .message("채팅 조회 결과입니다.")
-                .data(chatRoomDtos)
+                .data(chatRoomDTOList)
                 .build(), HttpStatus.OK);
     }
 

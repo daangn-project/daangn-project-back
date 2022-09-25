@@ -23,5 +23,13 @@ public class ChatRoomHistory {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chat_room_id")
+    private ChatRoom chatRoom;
+
     private LocalDateTime latestVisitTime;
+
+    public void updateLatestVisitTime(LocalDateTime latestVisitTime) {
+        this.latestVisitTime = latestVisitTime;
+    }
 }
