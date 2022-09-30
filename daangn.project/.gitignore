@@ -1,12 +1,19 @@
+.gradle
+/build
+!gradle/wrapper/gradle-wrapper.jar
+/out
 
-DummyTest.java
-application-oauth.yml
-apllication.yml
-/images/
-aws.yml
-/out/
+# Compiled class file
+*.class
+**/target/*
 
-DS_Store
+# Log file
+*.log
 
-build/
-out/
+*.tar.gz
+
+# Intellij
+.idea
+*.iml
+*.iws
+*.ipr
